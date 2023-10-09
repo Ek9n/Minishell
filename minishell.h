@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/10/05 19:45:58 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/10/08 11:27:03 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ typedef struct t_words
 # define _GNU_SOURCE
 
 # include <signal.h>
-# include <stdio.h>
+ #include <stdio.h>
+ #include <readline/readline.h>
+ #include <readline/history.h>
 # include <sys/types.h>
 # include <unistd.h>
 # include "./libft/libft.h"
