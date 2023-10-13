@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2023/10/13 13:37:45 by jfoltan          ###   ########.fr        #
+#    Updated: 2023/10/13 14:25:03 by marvin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,7 @@ SAVEF 	= $(SAVEF_FOLDER)ft_savef.a
 HEADERS = -I ./include
 SRCS	= 	Main.c \
 			Error.c \
-#firstry.c	\			utils_1.c	
-
+			parser_utils_1.c \
 
 OBJS = $(SRCS:.c=.o)
 
