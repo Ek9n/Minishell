@@ -1,113 +1,51 @@
-#  |  |  ___ \    \  |         |
-#  |  |     ) |  |\/ |   _  |  |  /   _ 
-# ___ __|  __/   |   |  (   |    <    __/ 
-#    _|  _____| _|  _| \__,_| _|\_\ \___|
-#                              by jcluzet
-################################################################################
-#                                     CONFIG                                   #
-################################################################################
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
+#    Updated: 2023/10/13 13:37:45 by jfoltan          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-NAME        := minishell
-SRCS = Main.c
-CC        := cc
-CFLAGS    := -Wall -Wextra -g -Werror
-LIBFT_DIR = ./libft
-LIBFT = $(LIBFT_DIR)/libft.a
-INCLUDES = -I$(LIBFT_DIR)
-LDFLAGS = -L$(LIBFT_DIR) -lft -lreadline
-################################################################################
-#                                 PROGRAM'S SRCS                               #
-################################################################################
-
-SRCS        :=      libft/ft_memmove.c \
-                          libft/ft_strteri.c \
-                          libft/ft_toupper.c \
-                          libft/ft_strchr.c \
-                          libft/ft_atol.c \
-                          libft/ft_strlen.c \
-                          libft/ft_putstr_fd.c \
-                          libft/ft_putchar_fd.c \
-                          libft/ft_tolower.c \
-                          libft/ft_memcpy.c \
-                          libft/ft_isalnum.c \
-                          libft/ft_isprint.c \
-                          libft/ft_putnbr_fd.c \
-                          libft/ft_substr.c \
-                          libft/ft_isalpha.c \
-                          libft/ft_strncmp.c \
-                          libft/ft_strjoin.c \
-                          libft/ft_strrchr.c \
-                          libft/ft_lstadd_front.c \
-                          libft/ft_lstiter.c \
-                          libft/ft_calloc.c \
-                          libft/ft_lstadd_back.c \
-                          libft/ft_strmapi.c \
-                          libft/ft_lstclear.c \
-                          libft/ft_memchr.c \
-                          libft/ft_isdigit.c \
-                          libft/ft_strlcat.c \
-                          libft/ft_isascii.c \
-                          libft/ft_strreverse.c \
-                          libft/ft_lstmap.c \
-                          libft/ft_split.c \
-                          libft/ft_putendl_fd.c \
-                          libft/ft_lstsize.c \
-                          libft/ft_lstlast.c \
-                          libft/ft_bzero.c \
-                          libft/ft_strtrim.c \
-                          libft/ft_strdup.c \
-                          libft/ft_lstdelone.c \
-                          libft/ft_memcmp.c \
-                          libft/ft_itoa.c \
-                          libft/ft_atoi.c \
-                          libft/ft_strlcpy.c \
-                          libft/ft_memset.c \
-                          libft/ft_lstnew.c \
-                          libft/ft_strnstr.c \
-                          Main.c \
-                          
-OBJS        := $(SRCS:.c=.o)
-
-.c.o:
-	${CC} ${FLAGS} -c $< -o ${<:.c=.o}
-
-################################################################################
-#                                  Makefile  objs                              #
-################################################################################
+NAME	= parser
+CFLAGS	= -g #-Wall -Wextra -Werror 
+RM		= rm -rf
+LIBFT_FOLDER  	= ./libft/
+LIBFT  	= $(LIBFT_FOLDER)libft.a
+SAVEF_FOLDER  	= ../ft_savef/
+SAVEF 	= $(SAVEF_FOLDER)ft_savef.a
+HEADERS = -I ./include
+SRCS	= 	Main.c \
+			Error.c \
+#firstry.c	\			utils_1.c	
 
 
-CLR_RMV		:= \033[0m
-RED		    := \033[1;31m
-GREEN		:= \033[1;32m
-YELLOW		:= \033[1;33m
-BLUE		:= \033[1;34m
-CYAN 		:= \033[1;36m
-RM		    := rm -f
+OBJS = $(SRCS:.c=.o)
 
-${NAME}:	$(OBJS) ${LIBFT}
-			@echo "$(GREEN)Compilation ${CLR_RMV}of ${YELLOW}$(NAME) ${CLR_RMV}..."
-			$(CC) $(CFLAGS) $(INCLUDES) $(SRCS) $(LDFLAGS) -o $(NAME)
-			@echo "$(GREEN)$(NAME) created[0m ✔️"
-
-
-all:		libft ${NAME}
+all: $(NAME) $(LIBFT) $(SAVEF)
 
 libft:
-		make -C $(LIBFT_DIR)
+	make -C $(LIBFT_FOLDER)
 
-bonus:		all
+savef:
+	make -C $(SAVEF_FOLDER)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+
+$(NAME): $(OBJS)
+	$(CC) $(OBJS) $(CFLAGS) $(HEADERS) -o $(NAME) $(LIBFT) $(SAVEF)
 
 clean:
-			@ ${RM} $(OBJS)
-			make -C $(LIBFT) clean
-			@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)objs ✔️"
+	make clean -C $(LIBFT_FOLDER) $(SAVEF_FOLDER)
+	$(RM) $(OBJS)
 
-fclean:		clean
-			@ ${RM} ${NAME}
-			@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)binary ✔️"
+fclean: clean
+	$(RM) $(NAME)
 
-re:			fclean all
+re: fclean all
 
-.PHONY:		all clean fclean re
-
-
+.PHONY: all clean fclean re

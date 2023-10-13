@@ -6,35 +6,69 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/10/09 14:22:05 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/10/13 13:36:59 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char *check_redirection(char *str, int start)
+int		is_in_quotes(char * line)
 {
-	if (str[start] == '<' && str[start + 1] == '<')
-		return(ft_strdup("<<"));
-	if (str[start] == '>' && str[start + 1] == '>')
-		return(ft_strdup(">>"));
-	if (str[start] == '&' && str[start + 1] == '&')
-		return(ft_strdup("&&"));
-	return(NULL);
+	int		i;
+	int		check;
+
+	check = 0;
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == 34 || line[i] == 39)
+			check += 1;
+		if (check == 2)
+			return(i+1);
+		i++;	
+	}
+		return(0);
+}
+int check_token_syntax(char *str)
+{
+	if (ft_strlen(str) == 2)
+		if (str[0] == '<' || str[0] == '>' || str[0] == '&' || str[0] == '|')
+			return(1);		
+	else if (ft_strlen(str) == 3)
+	{
+	if (str[0] == '<' && str[1] == '<')
+		return (1);
+	if (str[0] == '>' && str[1] == '>')
+		return (1);
+	if (str[0] == '&' && str[1] == '&')
+		return (1);
+	}
+	return(0);
 }
 char	*trimstr(char *str,int i)
 {
 	int		a;
 	char  *returnstr;
-	returnstr = ft_calloc(i,sizeof(char));
-	while(a < i)
+	int start;
+	
+	start = i;
+	a = 0;
+	while (str[i])
 	{
-		returnstr[a] = str[a];
+		i++;
 		a++;
 	}
-	returnstr[a] = 0;
-	//printf("fg");
-	return (returnstr);
+	returnstr = ft_calloc(a + 1,sizeof(char));
+	if (!returnstr)
+		puterr(ALLOCERR);// exit with failure
+	i = 0;
+	while (str[start] != '\0')
+	{
+		returnstr[i] = str[start];
+		i++;
+		start++;
+	}
+	returnstr[i] = 0;
+	return(returnstr);
 }
 char *tokenizer(char **line)
 {
@@ -42,32 +76,45 @@ char *tokenizer(char **line)
 	char *buffer;
 
 	i = 0;
-	while (*line[i] && !(*line[i] != '>' && *line[i] != '&' && *line[i] != '|' && *line[i] != '<'))
+	if(*line[i] == 0)
+		return(NULL);
+	while ((*line)[i] == '>' || (*line)[i] == '&' || (*line)[i] == '|' || (*line)[i] == '<')
 		i++;
 	buffer = ft_substr(*line,0,i);
 	*line = trimstr(*line,i);
+	if (!check_token_syntax(buffer));
+		puterr(SYNERR);	
 	return(buffer);
 }
 t_words	**init_word_stack(char *line,t_words **words)
 {
 	int		i;
-	int		a;
 	static int b = 0;
+	
 	i = 0;
-	a = 0;
-		if (!words[b])
-			words[b]  = ft_calloc(1,sizeof(t_words));
-		while (line[i])
+		words = ft_calloc(1, sizeof(t_words));
+		while (line[i] != '\0')
 		{
-			a = i;
+		words[b] = ft_calloc(1, sizeof(t_words));
+		if (!words[b])
+			puterr(ALLOCERR);// exit with failure
+		i = 0;
+		if (!is_in_quotes(line))
 			while (line[i] && (line[i] != '>' && line[i] != '&' && line[i] != '|' && line[i] != '<'))
 				i++;
-		words[b]->word = ft_substr(line,a,i);
-		line = trimstr(line,i);
-		words[b]->token_after_word = tokenizer(&line); //edge case of >< <<< >>> etc have to handle correct input, probably after occupying the array, if special charcters are left, its a problem
-		b++;
-		init_word_stack(line,words);// initialize the array of stuff
+		else
+		{
+			i = is_in_quotes(line);
+			words[b]->quotes_case = 1;
 		}
+		words[b]->word = ft_substr(line,0,i);
+		line = trimstr(line,i);
+		words[b]->token_after_word = tokenizer(&line);
+		words[b]->num_of_elements = b;
+		b++;
+		i = 0;
+		}
+	words[b] = NULL;
 	return(words);
 }
 void	signal_handler(int sig, siginfo_t *info, void *context)
@@ -89,15 +136,16 @@ int	main(void)
 	int		b;
 
 	b = 0;
-	words = ft_calloc(1,sizeof(t_words**));
+	words = NULL;
 	sigemptyset(&act.sa_mask);
 	act.sa_sigaction = &signal_handler;
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGQUIT, &act, NULL);
 	sigaction(SIGINT, &act, NULL);
 	input = readline("Minishell>>: ");
-	words = init_word_stack(input,words);
-	while (words[b])
+	words = init_word_stack(input,words); // I guess separation is done, now to implement syntax and quote checks
+	
+	while (words[b] != NULL)
 	{
 	printf("word: %s at index: %d\n",words[b]->word,b);
 	printf("Token: %s at index %d\n",words[b]->token_after_word,b);
