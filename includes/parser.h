@@ -1,0 +1,30 @@
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# define _GNU_SOURCE
+
+# include <signal.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <sys/types.h>
+# include <unistd.h>
+# include <stddef.h>
+# include <stdbool.h>
+# include "../libft/libft.h"
+# include "../ft_savef/ft_savef.h"
+
+typedef struct t_words
+{
+	char	*word; //julius Lexer
+	int		num_of_elements; //julius Lexer
+	char	*token_after_word; //julius Lexer
+ 	char 	*output; // Hannes Parser
+}	t_words;
+
+int		ft_strcmp(const char *s1, const char *s2);
+char	*echo(char *word);
+char	*getpwd(void);
+int		cd(char *dir);
+
+#endif

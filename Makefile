@@ -10,40 +10,48 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME	= parser
-CFLAGS	= -g #-Wall -Wextra -Werror 
-RM		= rm -rf
-LIBFT_FOLDER  	= ./libft/
-LIBFT  	= $(LIBFT_FOLDER)libft.a
-SAVEF_FOLDER  	= ../ft_savef/
-SAVEF 	= $(SAVEF_FOLDER)ft_savef.a
-HEADERS = -I ./include
-SRCS	= 	Main.c \
-			Error.c \
-			parser_utils_1.c \
+NAME			=	Minishell
+CFLAGS			=	-g #-Wall -Wextra -Werror
+LDFLAGS			=	-lreadline -lhistory
+RM				=	rm -rf
+LIBFT_FOLDER	=	./libft/
+LIBFT			=	$(LIBFT_FOLDER)libft.a
+SAVEF_FOLDER	=	./ft_savef/
+SAVEF			=	$(SAVEF_FOLDER)ft_savef.a
+SRC_FOLDER		=	./srcs/
+INC_FOLDER		=	./includes/
+HEADERS			=	-I $(INC_FOLDER)
+VPATH			=	$(SRC_FOLDER)
+
+SRCS =	Main.c \
+		Error.c \
+		parser_utils_1.c
 
 OBJS = $(SRCS:.c=.o)
 
-all: $(NAME) $(LIBFT) $(SAVEF)
+all: $(LIBFT) $(SAVEF) $(NAME)
 
-libft:
+$(LIBFT):
 	make -C $(LIBFT_FOLDER)
 
-savef:
+$(SAVEF):
 	make -C $(SAVEF_FOLDER)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(CFLAGS) $(HEADERS) -o $(NAME) $(LIBFT) $(SAVEF)
+	$(CC) $(OBJS) $(CFLAGS) $(HEADERS) -o $(NAME) $(LIBFT) $(SAVEF) $(LDFLAGS)
 
 clean:
-	make clean -C $(LIBFT_FOLDER) $(SAVEF_FOLDER)
+	make clean -C $(LIBFT_FOLDER)
+	make clean -C $(SAVEF_FOLDER)
 	$(RM) $(OBJS)
 
 fclean: clean
 	$(RM) $(NAME)
+	$(RM) $(LIBFT)
+	$(RM) $(SAVEF)
 
 re: fclean all
 

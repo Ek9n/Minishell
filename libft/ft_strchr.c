@@ -3,30 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/02 18:43:15 by jfoltan           #+#    #+#             */
-/*   Updated: 2022/12/02 18:43:17 by jfoltan          ###   ########.fr       */
+/*   Created: 2022/12/04 13:08:06 by sung-hle          #+#    #+#             */
+/*   Updated: 2022/12/13 15:46:00 by sung-hle         ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include <stdio.h>
 #include <string.h>
-#include <stddef.h>
 
 char	*ft_strchr(const char *s, int c)
 {
-	int	i;
+	int		i;
+	char	a;
+	char	*b;
 
 	i = 0;
-	while (s[i])
+	a = (char) c;
+	b = (char *) s;
+	while (b[i])
 	{
-		if (s[i] == (char)c)
-			return (&((char *)s)[i]);
-		if (s[i + 1] == '\0' && s[i + 1] == (char)c)
-			return (&((char *)s)[i + 1]);
+		if (b[i] == a)
+			return (&b[i]);
 		i++;
 	}
-	if (s[i] == (char)c)
-		return (&((char *)s)[i]);
-	return (NULL);
+	if (b[i] == a)
+		return (&b[i]);
+	return (0);
 }
+/*
+int main()
+{
+	char	check[] = "abcdefg";
+	char	c = 'c' + 256;
+
+	printf("%s\n", ft_strchr(check, c));
+printf("%c\n", c);
+}*/

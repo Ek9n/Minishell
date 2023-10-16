@@ -3,24 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/19 10:49:47 by jfoltan           #+#    #+#             */
-/*   Updated: 2022/12/19 10:49:48 by jfoltan          ###   ########.fr       */
+/*   Created: 2022/12/04 13:52:00 by sung-hle          #+#    #+#             */
+/*   Updated: 2022/12/04 13:57:19 by sung-hle         ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
-#include <stddef.h>
 
-void	*ft_memset(void *s, int c, size_t n)
+#include <string.h>
+#include <stdio.h>
+
+char	*ft_memset(char *target, int value, size_t size)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < n)
+	while (i < size)
 	{
-		*(char *)(s + i) = c;
+		target[i] = (unsigned char) value;
 		i++;
 	}
-	return (s);
+	return (target);
 }
+/*
+int main()
+{
+	char	test[] = "qwerty";
+	char	c = 'a';
+	size_t	n = 5;
+
+	printf("%s\n", ft_memset(test, c, n));
+}*/

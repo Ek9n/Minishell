@@ -3,18 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/30 18:54:35 by jfoltan           #+#    #+#             */
-/*   Updated: 2022/11/30 18:54:36 by jfoltan          ###   ########.fr       */
+/*   Created: 2022/12/04 12:58:44 by sung-hle          #+#    #+#             */
+/*   Updated: 2022/12/09 16:43:52 by sung-hle         ###   ########.de       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include <stdio.h>
 
 int	ft_tolower(int c)
 {
-	if (c >= 65 && c <= 90)
+	if (65 <= c && c <= 90)
 		return (c + 32);
 	else
 		return (c);
 }
+
+/*int main()
+{
+	printf("A: %c\n", ft_tolower('A'));
+	printf("a: %c\n", ft_tolower('a'));
+	char text[] = "Welcome2C programming !!!\n";
+	int i = 0;
+	while( text[i] )
+	{
+    	printf( "%c", ft_tolower(text[i])); 
+    	i++;
+	}
+}*/

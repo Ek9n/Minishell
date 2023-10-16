@@ -10,54 +10,31 @@
 #                                                                              #
 # **************************************************************************** #
 
-# SRCS			= ft_printf.c ft_printf_utils_A.c ft_printf_utils_B.c
-# OBJS			= $(SRCS:.c=.o)
-
-# CC				= cc
-# CFLAGS			= -Wall -Wextra -Werror
-# RM				= rm -f
-
-# NAME			= libftprintf.a
-
-# LIBFT_PATH		= ./libft
-# LIBFT			= $(LIBFT_PATH)/libft.a
-
-# all:			$(NAME)
-
-# $(NAME):		$(OBJS)
-# 				make -C $(LIBFT_PATH)
-# 				ar rcs $(LIBFT) $(OBJS) $(NAME)
-
-# clean:
-# 				$(RM) $(OBJS) $(BONUS_OBJS)
-
-# fclean:			clean
-# 				$(RM) $(NAME)
-
-# re:				fclean $(NAME)
-
-# .PHONY:			all clean fclean re
-
 CC := cc
 CFLAGS := -Wall -Wextra -Werror
 NAME := ft_savef.a
 NAMELFT := libft.a
-sources :=  ft_savef.c ft_printf_utils_A.c ft_printf_utils_B.c
-objects := $(sources:.c=.o)
-LIBDIR := libft
+SOURCES := ft_savef.c ft_savef_utils_A.c ft_savef_utils_B.c
+OBJECTS := $(SOURCES:.c=.o)
+LIBDIR := ../libft
+HEADERS := -I ../libft -I ../includes
+
 all: $(NAME)
-$(NAME): $(objects)
+
+$(NAME): $(OBJECTS)
 	make -C $(LIBDIR)
 	cp -v $(LIBDIR)/$(NAMELFT) $(NAME)
 	ar cr $@ $^
-# cp -v (verbose = explain what is being dong)
-$(objects): %.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJECTS): %.o: %.c
+	$(CC) $(CFLAGS) $(HEADERS) -c -o $@ $<
+
 clean:
-	$(RM) $(objects)
-	$(RM) *.o $(LIBDIR)/*.o
+	$(RM) $(OBJECTS)
+
 fclean: clean
 	$(RM) $(NAME)
-	$(RM) $(LIBDIR)/$(NAMELFT)
+
 re: fclean all
+
 .PHONY: all clean fclean re
