@@ -15,12 +15,14 @@
 
 # define _GNU_SOURCE
 # include <signal.h>
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/types.h>
 # include <unistd.h>
 # include "../libft/libft.h"
+# include <stdbool.h>
+
 
 typedef struct t_words
 {
@@ -31,10 +33,14 @@ typedef struct t_words
  	char 	*output; // Hannes Parser
 }		t_words;
 
+// LEXER
 enum	errors {
 	ALLOCERR,
 	SYNERR,		
 };
 void	puterr(int err);
+// 
+int		parser(t_words **INstruct);
+
 
 #endif

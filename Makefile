@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME			=	Minishell
-CFLAGS			=	-g #-Wall -Wextra -Werror
+CFLAGS			=	-g -Wall -Wextra -Werror
 LDFLAGS			=	-lreadline -lhistory
 RM				=	rm -rf
 LIBFT_FOLDER	=	./libft/
@@ -26,6 +26,7 @@ VPATH			=	$(SRC_FOLDER)
 
 SRCS =	Main.c				\
 		Error.c				\
+		Parser.c			\
 		parser_utils_1.c
 
 OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))

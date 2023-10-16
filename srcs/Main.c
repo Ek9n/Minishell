@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int		is_in_quotes(char * line)
 {
@@ -32,8 +32,10 @@ int		is_in_quotes(char * line)
 int check_token_syntax(char *str)
 {
 	if (ft_strlen(str) == 2)
+	{
 		if (str[0] == '<' || str[0] == '>' || str[0] == '&' || str[0] == '|')
 			return(1);		
+	}
 	else if (ft_strlen(str) == 3)
 	{
 	if (str[0] == '<' && str[1] == '<')
@@ -83,7 +85,7 @@ char *tokenizer(char **line)
 		i++;
 	buffer = ft_substr(*line,0,i);
 	*line = trimstr(*line,i);
-	if (!check_token_syntax(buffer));
+	if (!check_token_syntax(buffer))
 		puterr(SYNERR);	
 	return(buffer);
 }
@@ -111,7 +113,7 @@ t_words	**init_word_stack(char *line,t_words **words)
 		words[b]->word = ft_substr(line,0,i);
 		line = trimstr(line,i);
 		words[b]->token_after_word = tokenizer(&line);
-		words[b]->num_of_elements = b;
+		words[b]->num_of_elements = b + 1;
 		b++;
 		i = 0;
 		}
@@ -143,14 +145,17 @@ int	main(void)
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGQUIT, &act, NULL);
 	sigaction(SIGINT, &act, NULL);
-	input = readline("Minishell>>: ");
-	words = init_word_stack(input,words); // I guess separation is done, now to implement syntax and quote checks
-	
+	while(true)
+	{
+		input = readline("Minishell>>: ");
+		words = init_word_stack(input,words); // I guess separation is done, now to implement syntax and quote checks
+		parser(words);
+	}
 	while (words[b] != NULL)
 	{
-	printf("word: %s at index: %d\n",words[b]->word,b);
-	printf("Token: %s at index %d\n",words[b]->token_after_word,b);
-	b++;
+		printf("word: %s at index: %d\n",words[b]->word,b);
+		printf("Token: %s at index %d\n",words[b]->token_after_word,b);
+		b++;
 	}
 	
 }
