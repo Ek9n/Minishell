@@ -20,14 +20,15 @@ SAVEF_FOLDER	=	./ft_savef/
 SAVEF			=	$(SAVEF_FOLDER)ft_savef.a
 SRC_FOLDER		=	./srcs/
 INC_FOLDER		=	./includes/
+OBJ_FOLDER		=	./objs/
 HEADERS			=	-I $(INC_FOLDER)
 VPATH			=	$(SRC_FOLDER)
 
-SRCS =	Main.c \
-		Error.c \
+SRCS =	Main.c				\
+		Error.c				\
 		parser_utils_1.c
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))
 
 all: $(LIBFT) $(SAVEF) $(NAME)
 
@@ -37,7 +38,7 @@ $(LIBFT):
 $(SAVEF):
 	make -C $(SAVEF_FOLDER)
 
-%.o: %.c
+$(OBJ_FOLDER)/%.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 $(NAME): $(OBJS)
