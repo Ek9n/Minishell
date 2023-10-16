@@ -39,6 +39,7 @@ $(SAVEF):
 	make -C $(SAVEF_FOLDER)
 
 $(OBJ_FOLDER)/%.o: %.c
+	mkdir -p $(OBJ_FOLDER)
 	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
 
 $(NAME): $(OBJS)
@@ -47,7 +48,7 @@ $(NAME): $(OBJS)
 clean:
 	make clean -C $(LIBFT_FOLDER)
 	make clean -C $(SAVEF_FOLDER)
-	$(RM) $(OBJS)
+	$(RM) $(OBJ_FOLDER)
 
 fclean: clean
 	$(RM) $(NAME)
