@@ -91,13 +91,14 @@ char *tokenizer(char **line)
 }
 t_words	**init_word_stack(char *line,t_words **words)
 {
-	int		i;
-	static int b = 0;
+	int	i;
+	int	b; //was static, changed to normal cuz otherways we get segfaults... why it was static?
 	
+	b = 0;
 	i = 0;
-		words = ft_calloc(1, sizeof(t_words));
-		while (line[i] != '\0')
-		{
+	words = ft_calloc(1, sizeof(t_words));
+	while (line[i] != '\0')
+	{
 		words[b] = ft_calloc(1, sizeof(t_words));
 		if (!words[b])
 			puterr(ALLOCERR);// exit with failure
@@ -116,14 +117,14 @@ t_words	**init_word_stack(char *line,t_words **words)
 		words[b]->num_of_elements = b + 1;
 		b++;
 		i = 0;
-		}
+	}
 	words[b] = NULL;
 	return(words);
 }
 void	signal_handler(int sig, siginfo_t *info, void *context)
 {
 	(void) info;
-	(void)	context;
+	(void) context;
 	if (sig == SIGINT)
 		exit(1);
 	if (sig == SIGQUIT)
@@ -148,7 +149,7 @@ int	main(void)
 	while(true)
 	{
 		input = readline("Minishell>>: ");
-		words = init_word_stack(input,words); // I guess separation is done, now to implement syntax and quote checks
+		words = init_word_stack(input, words); // I guess separation is done, now to implement syntax and quote checks
 		parser(words);
 	}
 	while (words[b] != NULL)

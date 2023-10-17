@@ -15,14 +15,10 @@ int	cmp_keyword(char *keyword, char *str)
 int	parser(t_words **INstruct)
 {
 	int	i;
-	printf("DEBUG NUMOFELEMENTS -> SEGFAULT\n");
-	printf("PARSER %i\n", INstruct[0]->num_of_elements);
 
 	i = 0;
 	while (i < INstruct[0]->num_of_elements)
 	{
-	//printf("inwhile\n");
-
 		// if (ft_strcmp("echo ", INstruct[i].word) == 0)
 		if (cmp_keyword("echo", INstruct[i]->word))
 		{
