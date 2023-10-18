@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME			=	Minishell
-CFLAGS			=	-g -Wall -Wextra -Werror
+CFLAGS			=	-g# -Wall -Wextra -Werror
 LDFLAGS			=	-lreadline -lhistory
 RM				=	rm -rf
 LIBFT_FOLDER	=	./libft/
