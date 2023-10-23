@@ -27,6 +27,7 @@
 typedef struct t_words
 {
 	char	*word; //julius Lexer
+	char	*word_clean; //Hannes Parser
 	int		num_of_elements; //julius Lexer
 	int		quotes_case;
 	char	*token_after_word; //julius Lexer

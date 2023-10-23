@@ -18,7 +18,6 @@
 // 	return (0);
 // }
 
-
 int	cmp_keyword(char *keyword, char *str, int len)
 {
 	if ((ft_strcmp(keyword, str) == 0) && \
@@ -27,19 +26,72 @@ int	cmp_keyword(char *keyword, char *str, int len)
 	return (0);
 }
 
-int	parser(t_words **INstruct)
+void	skip_prespaces(char **str)
+{
+	// while (**str == ' ')
+		// (*str)++; // Inkrementiere den Zeiger auf die Zeichenkette, um Leerzeichen zu überspringen
+	while (*(str[0]) == ' ')
+		(*str)++; // Inkrementiere den Zeiger auf die Zeichenkette, um Leerzeichen zu überspringen
+}
+
+// char	*clean_spaces(char *word)
+// {
+// 	char	*tmp_word;
+
+// 	tmp_word = word;
+// 	printf("|%s|\n", tmp_word);
+// 	skip_prespaces(&tmp_word);
+// 	printf("|%s|\n", tmp_word);
+// 	return (ft_strdup(tmp_word));
+// }
+
+char	*clean_spaces(char *word)
+{
+	char	*tmp_word;
+
+	// tmp_word = word;
+	printf("|%s|\n", word);
+	skip_prespaces(&word);
+	word = ft_strdup(word); //FREE
+
+	printf("|%s|\n", word);
+	return (word);
+}
+
+void	clean_words(t_words	**INstruct)
 {
 	int	i;
 
 	i = 0;
 	while (i < INstruct[0]->num_of_elements)
 	{
-		printf("word=%s\n", INstruct[i]->word);
+		// INstruct[i]->word_clean = malloc(ft_strlen(INstruct[i]->word));
+		INstruct[i]->word_clean = clean_spaces(INstruct[i]->word);
+		
+		i++;
+	}
+
+	// skip spaces
+
+	// replace env-variables
+	// get rid of quotes
+}
+
+int	parser(t_words **INstruct)
+{
+	int	i;
+
+	clean_words(INstruct);
+	i = 0;
+		// printf("elements:%d\n",INstruct[0]->num_of_elements);
+	while (i < INstruct[0]->num_of_elements)
+	{
+		// printf("word=%s\n", INstruct[i]->word);
 		// if (ft_strcmp("echo ", INstruct[i].word) == 0)
-		if (cmp_keyword("echo", INstruct[i]->word, 4))
+		if (cmp_keyword("echo", INstruct[i]->word_clean, 4))
 		{
 			// echo(INstruct[i]->word);
-			INstruct[i]->output = echo(INstruct[i]->word);
+			INstruct[i]->output = echo(INstruct[i]->word_clean);
 			printf("%s", INstruct[i]->output);
 		}
 		else if (cmp_keyword("pwd", INstruct[i]->word, 3))

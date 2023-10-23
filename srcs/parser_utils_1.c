@@ -36,10 +36,11 @@ int	ft_strcmp(const char *s1, const char *s2)
 // 	}
 // 	return (NULL);
 // }
+
 char	*echo(char *word)
 {
 	bool	flag;
-
+	// printf("word|%s|\n", word);
 	flag = false;
 	word += 5;
 	while (ft_strcmp("-n ", word) == 0)
@@ -81,15 +82,57 @@ int	cd(char *dir)
 	return (EXIT_SUCCESS);
 }
 
-int	ls(char *dir) {
-    // Verwenden von execve, um ls im Verzeichnis aufzurufen
-    char *ls_argv[] = {"ls", dir, NULL};
-    if (execve("/bin/ls", ls_argv, NULL) == -1) {
-        perror("Fehler bei execve");
-        return 1;
-    }
-    return 0;
+int	ls(char *dir)
+{
+	pid_t p = fork();
+
+	if(p < 0)
+	{
+		perror("fork fail");
+		exit(1);
+	}
+	// if (p == 0)
+	// {
+	// 	char *ls_argv[] = {"ls", dir, NULL};
+
+	// 	if (execve("/bin/ls", ls_argv, NULL) == -1)
+	// 		perror("(ls) Fehler bei execve\n");
+	// 	exit(0);
+	// }
+	if (p == 0) { // Dieser Code wird nur im Kindprozess ausgeführt
+		char *ls_argv[] = {"ls", dir, NULL};
+		execv("/bin/ls", ls_argv);
+		perror("execv failed");
+		exit(1);
+	}
+	return 0;
 }
+
+// int	ls(char *dir) {
+// 	pid_t p = fork();
+
+// 	if(p < 0)
+// 	{
+// 		perror("fork fail");
+// 		exit(1);
+// 	}
+// 	if (p == 0)
+// 	{
+// 		printf("Hello world!, process_id(pid) = %d \n",getpid());
+// 		exit(0);
+// 	}
+// 	return 0;
+// }
+
+    // printf("Hello world!, process_id(pid) = %d \n",getpid());
+
+	// char *ls_argv[] = {"ls", dir, NULL};
+	// if (execve("/bin/ls", ls_argv, NULL) == -1) {
+	//     perror("Fehler bei execve");
+	//     return 1;
+	// }
+
+
 
 // #include <stdio.h>
 // #include <stdlib.h>
