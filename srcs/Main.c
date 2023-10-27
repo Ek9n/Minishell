@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/10/13 13:36:59 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/10/27 15:04:46 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char *tokenizer(char **line)
 		i++;
 	buffer = ft_substr(*line,0,i);
 	*line = trimstr(*line,i);
-	if (!check_token_syntax(buffer))
+	if (!check_token_syntax(buffer))                            //macht Probleme! -> Eingabe:echo e "bla"ee
 		puterr(SYNERR);	
 	return(buffer);
 }
