@@ -135,7 +135,7 @@ void	signal_handler(int sig, siginfo_t *info, void *context)
 int	main(void)
 {
 	struct sigaction	act;
-	t_words **words;
+	static t_words **words;
 	char * input;
 	int		b;
 
@@ -146,17 +146,30 @@ int	main(void)
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGQUIT, &act, NULL);
 	sigaction(SIGINT, &act, NULL);
+
+	words = malloc(sizeof(t_words*));
+	words[0] = malloc(sizeof(t_words*));
+	words[0]->num_of_elements = 1;
 	while(true)
 	{
 		input = readline("Minishell>>: ");
-		words = init_word_stack(input, words); // I guess separation is done, now to implement syntax and quote checks
+		words[0]->word = malloc(1000);
+		words[0]->word = input;
 		parser(words);
+		free(words[0]->word);
 	}
-	while (words[b] != NULL)
-	{
-		printf("word: %s at index: %d\n",words[b]->word,b);
-		printf("Token: %s at index %d\n",words[b]->token_after_word,b);
-		b++;
-	}
+
+	// while(true)
+	// {
+	// 	input = readline("Minishell>>: ");
+	// 	words = init_word_stack(input, words); // I guess separation is done, now to implement syntax and quote checks
+	// 	parser(words);
+	// }
+	// while (words[b] != NULL)
+	// {
+	// 	printf("word: %s at index: %d\n",words[b]->word,b);
+	// 	printf("Token: %s at index %d\n",words[b]->token_after_word,b);
+	// 	b++;
+	// }
 	
 }

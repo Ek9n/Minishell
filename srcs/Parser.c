@@ -113,13 +113,14 @@ void	clean_word(t_words *INstruct)
 			quotes = 2;
 		else if (INstruct->word[i] == '\"' && quotes == 2)
 			quotes = 0;
-
+		if ((INstruct->word[i] == '\'' && quotes != 2) || 
+				(INstruct->word[i] == '\"' && quotes != 1))
+			i++;
 		if (INstruct->word[i] == ' ' && quotes == 0)
 		{
 			i += skip_spaces(&INstruct->word[i]);
 			i--;
 		}
-
 		if (INstruct->word[i] == '$' && quotes != 1)
 			tmp_clean[j] = '@';
 		else
