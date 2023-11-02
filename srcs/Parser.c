@@ -58,15 +58,13 @@ void	clean_word(t_words *INstruct)
 {
 	char	*tmp_clean;
 	int		quotes; 	// 0 no, 1 single, 2 double quotes
-	int		i, j, k;
+	int		i, j;
 
 	tmp_clean = malloc(ft_strlen(INstruct->word));
 	quotes = 0;
 	i = 0;
 	j = 0;
-	k = 0;
 	i += skip_spaces(&INstruct->word[i]);
-	// printf("HELLO%c\n", '\'');
 	while (INstruct->word[i] != '\0')
 	{
 		if (INstruct->word[i] == ' ' && quotes == 0)
@@ -82,9 +80,6 @@ void	clean_word(t_words *INstruct)
 			quotes = 2;
 		else if (INstruct->word[i] == '\"' && quotes == 2)
 			quotes = 0;
-		// if ((INstruct->word[i] == '\'' && quotes != 2) || 
-		// 		(INstruct->word[i] == '\"' && quotes != 1))
-		// 	i++;
 
 		if (INstruct->word[i] == '$' && quotes != 1)
 		{
@@ -102,7 +97,8 @@ void	clean_word(t_words *INstruct)
 	}
 	while (tmp_clean[--j] == ' ');
 	tmp_clean[j + 1] = '\0';
-	INstruct->word_clean = tmp_clean;
+	INstruct->word_clean = ft_strdup(tmp_clean);
+	free(tmp_clean);
 }
 
 void	clean_words(t_words **INstruct)
@@ -124,6 +120,17 @@ int	parser(t_words **INstruct)
 	// char tmpword[] = "  echo   bla bla\"bla\" kann  ";
 	// INstruct[0]->word = tmpword; // temporary, cuz the lexer do some mistakes while errorchecking
 	clean_words(INstruct);
+
+// export env 
+	char *user = getenv("A");
+
+	if (user != NULL) {
+		printf("Der Benutzername ist: %s\n", user);
+	} else {
+		printf("Die Umgebungsvariable USER existiert nicht.\n");
+	}
+
+
 	i = 0;
 		// printf("elements:%d\n",INstruct[0]->num_of_elements);
 		printf("FWord:|%s|\n",INstruct[0]->word);
