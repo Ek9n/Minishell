@@ -12,7 +12,7 @@ int	cmp_keyword(char *keyword, char *str)
 }
 
 
-int	parser(t_words **INstruct)
+int	parser(t_words **INstruct, char **envp)
 {
 	int	i;
 
@@ -31,6 +31,7 @@ int	parser(t_words **INstruct)
 			printf("%s\n", INstruct[i]->output);
 		}
 		else
+			//executor(INstruct[i],envp); doesnt work yet
 			printf("could not find word\n");
 		i++;
 	}

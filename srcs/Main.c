@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/10/13 13:36:59 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/11/02 19:48:11 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	signal_handler(int sig, siginfo_t *info, void *context)
 	fflush(0);
 }
 
-int	main(void)
+int	main(int agrc, char **argv, char **envp)
 {
 	struct sigaction	act;
 	t_words **words;
@@ -150,7 +150,7 @@ int	main(void)
 	{
 		input = readline("Minishell>>: ");
 		words = init_word_stack(input, words); // I guess separation is done, now to implement syntax and quote checks
-		parser(words);
+		parser(words,envp);
 	}
 	while (words[b] != NULL)
 	{
