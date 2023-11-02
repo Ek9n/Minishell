@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/10/13 13:36:59 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/10/31 14:57:20 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int		is_in_quotes(char * line)
 }
 int check_token_syntax(char *str)
 {
-	if (ft_strlen(str) == 2)
+	if (ft_strlen(str) == 1)
 	{
 		if (str[0] == '<' || str[0] == '>' || str[0] == '&' || str[0] == '|')
 			return(1);		
 	}
-	else if (ft_strlen(str) == 3)
+	else if (ft_strlen(str) == 2)
 	{
 	if (str[0] == '<' && str[1] == '<')
 		return (1);
@@ -146,12 +146,13 @@ int	main(void)
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGQUIT, &act, NULL);
 	sigaction(SIGINT, &act, NULL);
-	while(true)
-	{
+	//while(true)
+	//{
 		input = readline("Minishell>>: ");
 		words = init_word_stack(input, words); // I guess separation is done, now to implement syntax and quote checks
-		parser(words);
-	}
+		//executor(words);
+		//parser(words);
+	//}
 	while (words[b] != NULL)
 	{
 		printf("word: %s at index: %d\n",words[b]->word,b);
