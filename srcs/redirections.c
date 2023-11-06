@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/06 13:15:05 by jfoltan          ###   ########.fr       */
+/*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
+/*   Updated: 2023/11/06 13:55:38 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
 
-# define _GNU_SOURCE
+#include "../includes/minishell.h"
+//command1 < input1.txt > output1.txt 2> error.txt < input2.txt > output2.txt < input3.txt
+void	init_redirection(t_words *words)
+{
+	
+}
 
-# include "lexer.h"
-# include <signal.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <unistd.h>
-# include "../ft_savef/ft_savef.h"
-# include "../libft/libft.h"
-# include <stdbool.h>
-# include "parser.h"
-# include "executor.h"
-
+/*
 typedef struct t_words
 {
 	char	*word; //julius Lexer
@@ -39,17 +29,10 @@ typedef struct t_words
 	char 	**enviroment;
 	int		redirection;
 }		t_words;
-
-// LEXER
-enum	errors {
-	ALLOCERR,
-	SYNERR,		
-};
-
-void	puterr(int err);
-// 
-int		parser(t_words **INstruct);
-char	**arrdup(char **enviroment);
-t_words	**init_word_stack(char *line,t_words **words,char **envp);
-
-#endif
+*/
+/*
+< = 2
+> = 3
+<< = 4
+>> = 5
+*/

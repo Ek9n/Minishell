@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/05 15:09:06 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/11/06 13:27:00 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,19 @@ int check_token_syntax(char *str)
 {
 	if (ft_strlen(str) == 2)
 	{
-		if (str[0] == '<' || str[0] == '>' || str[0] == '&' || str[0] == '|')
-			return(1);		
+		if ( str[0] == '|')
+			return(1);
+		if (str[0] == '<') 
+			return(2);		
+		if (str[0] == '>')
+			return(3);
 	}
 	else if (ft_strlen(str) == 3)
 	{
 	if (str[0] == '<' && str[1] == '<')
-		return (1);
+		return (4);
 	if (str[0] == '>' && str[1] == '>')
-		return (1);
-	if (str[0] == '&' && str[1] == '&')
-		return (1);
+		return (5);
 	}
 	return(0);
 }
@@ -82,7 +84,7 @@ char *tokenizer(char **line)
 	i = 0;
 	if(*line[i] == 0)
 		return(NULL);
-	while ((*line)[i] == '>' || (*line)[i] == '&' || (*line)[i] == '|' || (*line)[i] == '<')
+	while ((*line)[i] == '>' || (*line)[i] == '&' || (*line)[i] == '|' || (*line)[i] == '<') // have to get rid of &
 		i++;
 	buffer = ft_substr(*line,0,i);
 	*line = trimstr(*line,i);
@@ -115,6 +117,7 @@ t_words	**init_word_stack(char *line,t_words **words,char **envp)
 		words[b]->word = ft_substr(line,0,i);
 		line = trimstr(line,i);
 		words[b]->token_after_word = tokenizer(&line);
+		words[b] -> redirection = check_token_syntax(words[b]->token_after_word);
 		words[b]->num_of_elements = b + 1;
 		words[b]->enviroment = arrdup(envp);
 		b++;

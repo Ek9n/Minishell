@@ -19,6 +19,8 @@ int	parser(t_words **INstruct)
 	i = 0;
 	while (i < INstruct[0]->num_of_elements)
 	{
+		if (INstruct[i]->redirection != 0 && INstruct[i]->redirection != 1)
+			init_redirection();
 		// if (ft_strcmp("echo ", INstruct[i].word) == 0)
 		if (cmp_keyword("echo", INstruct[i]->word))
 		{
