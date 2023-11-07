@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2023/10/13 14:25:03 by marvin           ###   ########.fr        #
+#    Updated: 2023/11/07 01:35:41 by hstein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,10 @@ VPATH			=	$(SRC_FOLDER)
 
 SRCS =	Main.c				\
 		Error.c				\
+		utils_1.c			\
 		Parser.c			\
-		parser_utils_1.c
+		parser_utils_1.c	\
+		enviromentvars.c
 
 OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))
 
