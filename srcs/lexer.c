@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/07 16:17:16 by hstein           ###   ########.fr       */
+/*   Updated: 2023/11/07 22:04:30 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int		is_in_quotes(char * line)
 	}
 		return(0);
 }
+
 int check_token_syntax(char *str)
 {
 	if (ft_strlen(str) == 2)
@@ -49,6 +50,7 @@ int check_token_syntax(char *str)
 	}
 	return(0);
 }
+
 char	*trimstr(char *str,int i)
 {
 	int		a;
@@ -75,6 +77,7 @@ char	*trimstr(char *str,int i)
 	returnstr[i] = 0;
 	return(returnstr);
 }
+
 char *tokenizer(char **line)
 {
 	int		i;
@@ -91,6 +94,7 @@ char *tokenizer(char **line)
 		puterr(SYNERR);	
 	return(buffer);
 }
+
 t_words	**init_word_stack(char *line,t_words **words,char **envp)
 {
 	int	i;

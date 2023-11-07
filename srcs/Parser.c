@@ -1,7 +1,7 @@
 #include "minishell.h"
 
 
-int	cmp_keyword(char *keyword, char *str) //len integrieren mit ft_strlen
+int	cmp_keyword(char *keyword, char *str)
 {
 	int	len;
 
@@ -118,6 +118,7 @@ int	parser(t_words **INstruct)
 	int	i;
 
 	clean_words(INstruct);
+	printf("|%s|", INstruct[0]->word_clean);
 	i = 0;
 	while (i < INstruct[0]->num_of_elements)
 	{
@@ -135,12 +136,8 @@ int	parser(t_words **INstruct)
 		{
 			cd(INstruct[i]->word_clean);
 		}
-		// else if (cmp_keyword("ls", INstruct[i]->word_clean))
-		// {
-		// 	ls(INstruct[i]->word_clean);
-		// }
 		else
-			executor(INstruct[i]->word_clean,INstruct[i]->enviroment);
+			executor(INstruct[i]->word_clean, INstruct[i]->enviroment);
 			// printf("(parser) could not find word\n");
 		i++;
 	}
