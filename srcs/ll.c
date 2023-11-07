@@ -19,6 +19,13 @@ void	list_print(t_list *head)
 	}
 }
 
+void	list_add(t_list *head)
+{
+	while (head->next != NULL)
+		head = head->next;
+	printf("hohoh\n");
+}
+
 int	main()
 {
 
@@ -29,7 +36,8 @@ int	main()
 	// printf("%s\n", (char *)head->content);
 
 	list_print(head);
-
+	list_add(head);
+	// printf("hohoh\n");
 	// lstadd_back(t_list **lst, t_list *new)
 
 
