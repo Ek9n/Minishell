@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/06 13:15:05 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/11/07 19:18:38 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
-# include <sys/wait.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 # include <unistd.h>
 # include "../ft_savef/ft_savef.h"
 # include "../libft/libft.h"

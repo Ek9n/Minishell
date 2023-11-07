@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/05 15:40:41 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/11/07 14:07:26 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **envp)
 		if (input)
 			add_history(input); // history works
 		words = init_word_stack(input, words,envp);
+		
 		parser(words); // maybe just having one copy and passing that to functions as arguments is better, idk. 
 	}
 	while (words[b] != NULL)
