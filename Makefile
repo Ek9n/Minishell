@@ -6,7 +6,7 @@
 #    By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2023/11/07 01:35:41 by hstein           ###   ########.fr        #
+#    Updated: 2023/11/07 16:16:24 by hstein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,10 @@ VPATH			=	$(SRC_FOLDER)
 SRCS =	Main.c				\
 		Error.c				\
 		utils_1.c			\
+		lexer.c				\
 		Parser.c			\
 		parser_utils_1.c	\
+		executor.c			\
 		enviromentvars.c
 
 OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))

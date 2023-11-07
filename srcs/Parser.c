@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "minishell.h"
 
 
 int	cmp_keyword(char *keyword, char *str) //len integrieren mit ft_strlen
@@ -117,31 +117,12 @@ int	parser(t_words **INstruct)
 {
 	int	i;
 
-	// char tmpword[] = "  echo   bla bla\"bla\" kann  ";
-	// INstruct[0]->word = tmpword; // temporary, cuz the lexer do some mistakes while errorchecking
 	clean_words(INstruct);
-
-// export env 
-	char *user = getenv("A");
-
-	if (user != NULL) {
-		printf("Der Benutzername ist: %s\n", user);
-	} else {
-		printf("Die Umgebungsvariable USER existiert nicht.\n");
-	}
-
-
 	i = 0;
-		// printf("elements:%d\n",INstruct[0]->num_of_elements);
-		printf("FWord:|%s|\n",INstruct[0]->word);
-		printf("FWord:|%s|\n",INstruct[0]->word_clean);
 	while (i < INstruct[0]->num_of_elements)
 	{
-		// printf("word=%s\n", INstruct[i]->word);
-		// if (ft_strcmp("echo ", INstruct[i].word) == 0)
 		if (cmp_keyword("echo", INstruct[i]->word_clean))
 		{
-			// echo(INstruct[i]->word);
 			INstruct[i]->output = echo(INstruct[i]->word_clean);
 			printf("%s", INstruct[i]->output);
 		}
@@ -153,26 +134,14 @@ int	parser(t_words **INstruct)
 		else if (cmp_keyword("cd", INstruct[i]->word_clean))
 		{
 			cd(INstruct[i]->word_clean);
-			// if (chdir(" ") != 0)
-			// 	printf("shit happens1!\n");
-			// if (chdir("") != 0)
-			// 	printf("shit happens2!\n");
-			// if (chdir("..") != 0)
-			// 	printf("shit happens3!\n");
-			// if (chdir(" ..") != 0)
-			// 	printf("shit happens4!\n");
-			// if (chdir(".. ") != 0)
-			// 	printf("shit happens5!\n");
-
-			// INstruct[i]->output = cd(char *dir);
-			// printf("%s\n", INstruct[i]->output);
 		}
-		else if (cmp_keyword("ls", INstruct[i]->word_clean))
-		{
-			ls(INstruct[i]->word_clean);
-		}
+		// else if (cmp_keyword("ls", INstruct[i]->word_clean))
+		// {
+		// 	ls(INstruct[i]->word_clean);
+		// }
 		else
-			printf("(parser) could not find word\n");
+			executor(INstruct[i]->word_clean,INstruct[i]->enviroment);
+			// printf("(parser) could not find word\n");
 		i++;
 	}
 	return (0);
