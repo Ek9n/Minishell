@@ -119,6 +119,7 @@ int	parser(t_words **INstruct)
 
 	clean_words(INstruct);
 	printf("|%s|", INstruct[0]->word_clean);
+	fflush(0);
 	i = 0;
 	while (i < INstruct[0]->num_of_elements)
 	{

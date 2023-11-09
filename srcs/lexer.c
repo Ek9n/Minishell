@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/07 22:04:30 by hstein           ###   ########.fr       */
+/*   Updated: 2023/11/09 11:01:43 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		is_in_quotes(char * line)
 
 int check_token_syntax(char *str)
 {
-	if (ft_strlen(str) == 2)
+	if (ft_strlen(str) == 1)
 	{
 		if ( str[0] == '|')
 			return(1);
@@ -41,7 +41,7 @@ int check_token_syntax(char *str)
 		if (str[0] == '>')
 			return(3);
 	}
-	else if (ft_strlen(str) == 3)
+	else if (ft_strlen(str) == 2)
 	{
 	if (str[0] == '<' && str[1] == '<')
 		return (4);
@@ -103,7 +103,7 @@ t_words	**init_word_stack(char *line,t_words **words,char **envp)
 	b = 0;
 	i = 0;
 	words = ft_calloc(1, sizeof(t_words));
-	while (line[i] != '\0')
+	while (line[i])
 	{
 		words[b] = ft_calloc(1, sizeof(t_words));
 		if (!words[b])
@@ -118,11 +118,14 @@ t_words	**init_word_stack(char *line,t_words **words,char **envp)
 			words[b]->quotes_case = 1;
 		}
 		words[b]->word = ft_substr(line,0,i);
-		line = trimstr(line,i);
-		words[b]->token_after_word = tokenizer(&line);
-		words[b] -> redirection = check_token_syntax(words[b]->token_after_word);
 		words[b]->num_of_elements = b + 1;
 		words[b]->enviroment = arrdup(envp);
+		line = trimstr(line,i);
+		if (line[0] != '\0')
+		{
+			words[b]->token_after_word = tokenizer(&line);
+			words[b] -> redirection = check_token_syntax(words[b]->token_after_word);
+		}
 		b++;
 		i = 0;
 	}
