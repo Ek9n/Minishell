@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/07 23:31:32 by hstein           ###   ########.fr       */
+/*   Updated: 2023/11/10 21:27:51 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ struct t_words; // Vorwärtsdeklaration für t_words
 # include <unistd.h>
 # include "../libft/libft.h"
 # include <stdbool.h>
+# include <errno.h>
 
 // # include "lexer.h"
 # include "parser.h"
@@ -51,7 +52,8 @@ enum	errors {
 };
 void	puterr(int err);
 // 
-int		parser(t_words **INstruct);
+int		parser(t_words *INstruct);
+void	routine(t_words **INstruct);
 
 int		ft_strcmp(const char *s1, const char *s2);
 

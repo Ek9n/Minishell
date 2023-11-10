@@ -80,7 +80,6 @@ void	clean_word(t_words *INstruct)
 			quotes = 2;
 		else if (INstruct->word[i] == '\"' && quotes == 2)
 			quotes = 0;
-
 		if (INstruct->word[i] == '$' && quotes != 1)
 		{
 			tmp_clean[j] = '@';
@@ -113,57 +112,158 @@ void	clean_words(t_words **INstruct)
 	}
 }
 
-int	parser(t_words **INstruct)
+void error_exit(char *msg)
+{
+	perror(msg);
+	exit(EXIT_FAILURE);
+}
+
+static void	free_piperino(char **cmd1, char **cmd2, char *path1, char *path2)
 {
 	int	i;
 
+	i = 0;
+	while(cmd1[i] != NULL)
+		free(cmd1[i++]);
+	free(cmd1);
+	i = 0;
+	while(cmd2[i] != NULL)
+		free(cmd2[i++]);
+	free(cmd2);	
+	free(path1);
+	free(path2);
+}
+// int	piperino(t_words **INstruct, char *cmd1, char *cmd2)
+int	piperino(t_words **INstruct)
+{
+	char	**cmd1 = ft_split(INstruct[0]->word_clean, ' ');
+	char	**cmd2 = ft_split(INstruct[1]->word_clean, ' '); 
+	char	*path1 = ft_strjoin("/bin/", cmd1[0]);
+	char	*path2 = ft_strjoin("/bin/", cmd2[0]);
+	int		pipe_fd[2];
+
+	// Erzeuge die Pipe
+	if (pipe(pipe_fd) == -1)
+		error_exit("(piperino) Pipe creation failed\n");
+
+	pid_t	pid_cat = fork();
+	if (pid_cat == -1)
+		error_exit("(piperino) Fork failed\n");
+
+	if (pid_cat == 0)
+	{
+		close(pipe_fd[0]); 
+		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+		{
+			perror("dup2 for stdout failed");
+			fprintf(stderr, "Error details: %s\n", strerror(errno));
+			exit(EXIT_FAILURE);
+		}
+		close(pipe_fd[1]);
+		execve(path1, cmd1, NULL);
+		error_exit("(piperino) Exec1 failed");
+	}
+	else
+	{
+		close(pipe_fd[1]);
+		pid_t pid_wc = fork();
+		if (pid_wc == -1) 
+		{
+			error_exit("Fork failed");
+		}
+		if (pid_wc == 0)
+		{	
+			dup2(pipe_fd[0], STDIN_FILENO);
+			close(pipe_fd[0]);
+			execve(path2, cmd2, NULL);
+			error_exit("(piperino) Exec2 failed");
+		}
+		else {
+			close(pipe_fd[0]); 
+			// printf("Jo1\n");
+			waitpid(pid_cat, NULL, 0);
+			// printf("Jo2\n");
+			waitpid(pid_wc, NULL, 0);
+			// printf("Jo3\n");
+
+		}
+	}
+	free_piperino(cmd1, cmd2, path1, path2);
+	// printf("Jo4\n");
+	return 0;
+}
+
+void	routine(t_words **INstruct)
+{
+	int	i;
+	// printf("elements:%d\n", INstruct[0]->num_of_elements);
 	clean_words(INstruct);
-	printf("|%s|", INstruct[0]->word_clean);
-	fflush(0);
 	i = 0;
 	while (i < INstruct[0]->num_of_elements)
 	{
-		if (cmp_keyword("echo", INstruct[i]->word_clean))
+		// printf("fuck2\n");
+		if (INstruct[i]->token_after_word != NULL)
 		{
-			INstruct[i]->output = echo(INstruct[i]->word_clean);
-			printf("%s", INstruct[i]->output);
-		}
-		else if (cmp_keyword("pwd", INstruct[i]->word_clean))
-		{
-			INstruct[i]->output = getpwd();
-			printf("%s\n", INstruct[i]->output);
-		}
-		else if (cmp_keyword("cd", INstruct[i]->word_clean))
-		{
-			cd(INstruct[i]->word_clean);
+			if (INstruct[i]->token_after_word[0] == '|')
+				piperino(&INstruct[i]);
+			i++;
 		}
 		else
-			executor(INstruct[i]->word_clean, INstruct[i]->enviroment);
-			// printf("(parser) could not find word\n");
+			parser(INstruct[i]);
 		i++;
+		// printf("fuck1\n");
 	}
+}
+
+int	parser(t_words *INstruct)
+{
+	if (cmp_keyword("echo", INstruct->word_clean))
+	{
+		INstruct->output = echo(INstruct->word_clean);
+		printf("%s", INstruct->output);
+	}
+	else if (cmp_keyword("pwd", INstruct->word_clean))
+	{
+		INstruct->output = getpwd();
+		printf("%s\n", INstruct->output);
+	}
+	else if (cmp_keyword("cd", INstruct->word_clean))
+	{
+		cd(INstruct->word_clean);
+	}
+	else
+		executor(INstruct->word_clean, INstruct->enviroment);
 	return (0);
 }
 
-// echo bla ls >> test.c | something
+// int	parser(t_words **INstruct)
+// {
+// 	int	i;
 
-// #words:
-// echo bla ls
-// test.c
-// something
-// #tokens:
-// >>
-// |
-
-// Lexer:
-// >go through string and check for errors: token at the beginning more than one token next to each, 
-// >go through string and check for tokens at the beginning
-
-// while(!\0)
-//  split first word (ft_strsub)
-//  safe token
-
-// char **words
-// char **tokens
-// or
-// char ***wordsAndtokens
+// 	clean_words(INstruct);
+// 	// printf("|%s|", INstruct[0]->word_clean);
+// 	fflush(0);
+// 	i = 0;
+// 	while (i < INstruct[0]->num_of_elements)
+// 	{
+// 		if (cmp_keyword("echo", INstruct[i]->word_clean))
+// 		{
+// 			INstruct[i]->output = echo(INstruct[i]->word_clean);
+// 			printf("%s", INstruct[i]->output);
+// 		}
+// 		else if (cmp_keyword("pwd", INstruct[i]->word_clean))
+// 		{
+// 			INstruct[i]->output = getpwd();
+// 			printf("%s\n", INstruct[i]->output);
+// 		}
+// 		else if (cmp_keyword("cd", INstruct[i]->word_clean))
+// 		{
+// 			cd(INstruct[i]->word_clean);
+// 		}
+// 		else
+// 			executor(INstruct[i]->word_clean, INstruct[i]->enviroment);
+// 			// printf("(parser) could not find word\n");
+// 		i++;
+// 	}
+// 	return (0);
+// }

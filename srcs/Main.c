@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/09 11:00:40 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/11/10 22:19:05 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	int					b;
 
 	(void)argc;
-	(void)argv; // We should duplicate argc argv and envp to our struct,
+	(void)argv; // We should duplicate argc argv and envp to our struct,./Md
 	b = 0;
 	words = NULL;
 	sigemptyset(&act.sa_mask);
@@ -46,13 +46,13 @@ int	main(int argc, char **argv, char **envp)
 		if (input)
 			add_history(input); // history works
 		words = init_word_stack(input, words,envp);
-		parser(words); // maybe just having one copy and passing that to functions as arguments is better, idk. 
-	}
-	while (words[b] != NULL)
-	{
-		printf("word: %s at index: %d\n", words[b]->word, b);
-		printf("Token: %s at index: %d\n", words[b]->token_after_word, b);
-		b++;
+		// while (words[b] != NULL)
+		// {
+		// 	printf("word: %s at index: %d\n", words[b]->word, b);
+		// 	printf("Token: %s at index: %d\n", words[b]->token_after_word, b);
+		// 	b++;
+		// }
+		routine(words);
 	}
 }
 

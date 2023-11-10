@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/09 11:01:43 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/11/10 17:24:04 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ t_words	**init_word_stack(char *line,t_words **words,char **envp)
 			words[b]->quotes_case = 1;
 		}
 		words[b]->word = ft_substr(line,0,i);
-		words[b]->num_of_elements = b + 1;
+		// words[b]->num_of_elements++;
 		words[b]->enviroment = arrdup(envp);
 		line = trimstr(line,i);
 		if (line[0] != '\0')
@@ -130,5 +130,7 @@ t_words	**init_word_stack(char *line,t_words **words,char **envp)
 		i = 0;
 	}
 	words[b] = NULL;
+	while (words[i] != NULL)
+		words[i++]->num_of_elements = b;
 	return(words);
 }

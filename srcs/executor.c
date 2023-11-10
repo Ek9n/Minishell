@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/08 11:56:55 by hstein           ###   ########.fr       */
+/*   Updated: 2023/11/10 13:42:52 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	executor(char *clean_word, char **envp)
 	(void)envp;
 	// i = 0;
 	char	**args = ft_split(clean_word, ' ');
-	printf("->%s\n", clean_word);
+	// printf("->%s\n", clean_word);
 	if ((pid = fork()) == -1)
 	perror("fork error");
 	else if (pid == 0) 
