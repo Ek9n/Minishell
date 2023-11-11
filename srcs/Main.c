@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/10 22:19:05 by hstein           ###   ########.fr       */
+/*   Updated: 2023/11/11 01:21:38 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int	main(int argc, char **argv, char **envp)
 		// 	printf("Token: %s at index: %d\n", words[b]->token_after_word, b);
 		// 	b++;
 		// }
-		routine(words);
+		if (*words != NULL)
+			routine(words);
 	}
 }
 

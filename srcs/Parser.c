@@ -175,6 +175,21 @@ int	piperino(t_words **INstruct)
 		{	
 			dup2(pipe_fd[0], STDIN_FILENO);
 			close(pipe_fd[0]);
+			// if another pipe:
+				//->new pipe -> dup2(pipe_fd[0], STDOUT_FILENO)
+			// if (INstruct[1]->token_after_word[0] == '|')
+			// {
+			// 	int	pipe_fd2[2];
+			// 	if (pipe(pipe_fd) == -1)
+			// 		error_exit("(piperino) Pipe creation failed\n");
+			//	close(pipe_fd2[0]); // ???
+			// 	dup2(pipe_fd2[1], STDOUT_FILENO);
+			//	execve(path2, cmd2, NULL);
+			//	error_exit("(piperino) Exec2 failed");
+			//	piperino2(&INstruct[1], pipe_fd2[0]); // der liesst aus der pipe und fuehrt cmd aus.. dann schaut er ob
+			// noch eine ppe folgt.. wenn ja, fuehrt er wieder das gleiche spiel wie hier aus, ansonsten wird einfach in die stdausgabe geprintet... bzw.. in den output geschrieben...
+			// }
+			//else{....
 			execve(path2, cmd2, NULL);
 			error_exit("(piperino) Exec2 failed");
 		}
@@ -190,7 +205,7 @@ int	piperino(t_words **INstruct)
 	}
 	free_piperino(cmd1, cmd2, path1, path2);
 	// printf("Jo4\n");
-	return 0;
+	return (0);
 }
 
 void	routine(t_words **INstruct)
