@@ -134,12 +134,11 @@ static void	free_piperino2(char **cmd1, char *path1)
 	free(path1);
 }
 
-
-
 int	piperino3(t_words **INstruct, int pipe_read)
 {
 	char	**cmd1 = ft_split(INstruct[0]->word_clean, ' ');
 	char	*path1 = ft_strjoin("/bin/", cmd1[0]);
+	// printf("INstruct[0]->word_clean[0]=%c\n", INstruct[0]->word_clean[0]);
 
 	pid_t	pid = fork();
 	if (pid == -1)
@@ -170,46 +169,92 @@ int	piperino2(t_words **INstruct, int pipe_read)
 {
 	char	**cmd1 = ft_split(INstruct[0]->word_clean, ' ');
 	char	*path1 = ft_strjoin("/bin/", cmd1[0]);
+	int		pipe_fd[2];
 
-		printf("INstruct[1]->token_after_word[0]:%s\n", INstruct[0]->token_after_word);
+	// Erzeuge die Pipe
+	if (pipe(pipe_fd) == -1)
+		error_exit("(piperino2) Pipe creation failed\n");
+
+		// printf("INstruct[1]->token_after_word[0]:%s\n", INstruct[0]->token_after_word);
 	pid_t	pid = fork();
 	if (pid == -1)
 		error_exit("(piperino2) Fork failed\n");
 	if (pid == 0)
 	{
+		// printf("INstruct[1]->token_after_word[0]=%c\n", INstruct[0]->token_after_word[0]);
 		if (dup2(pipe_read, STDIN_FILENO) == -1)
 		{
 			perror("dup2 for stdin failed");
 			fprintf(stderr, "Error details: %s\n", strerror(errno));
 			exit(EXIT_FAILURE);
 		}
-		close(pipe_read);
-		if (INstruct[1]->token_after_word != NULL);
-			if (INstruct[1]->token_after_word[0] == '|');
-			{
-				int	pipe_fd[2];
-				if (pipe(pipe_fd) == -1)
-					error_exit("(piperino2) Pipe creation failed\n");
-				close(pipe_fd[0]);
-				if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-				{
-					perror("dup2 for stdin failed");
-					fprintf(stderr, "Error details: %s\n", strerror(errno));
-					exit(EXIT_FAILURE);
-				}
-				piperino3(&INstruct[1], pipe_fd[0]);
+		
+		// if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+		// {
+		// 	perror("dup2 for stdout failed");
+		// 	fprintf(stderr, "Error details: %s\n", strerror(errno));
+		// 	exit(EXIT_FAILURE);
+		// }
 
-			}
+		// if (INstruct[1]->token_after_word != NULL);
+		// 	if (INstruct[1]->token_after_word[0] == '|');
 		execve(path1, cmd1, NULL);
 		error_exit("(piperino2) Exec1 failed");
 	}
 	else
 	{
-		close(pipe_read);
+		// piperino3(&INstruct[0], pipe_fd[0]);
+		// close(pipe_fd[0]);
+		// close(pipe_fd[1]); 
+		// waitpid(pid, NULL, 0); //soll er ueberhaupt warten?
 		free_piperino2(cmd1, path1);
 	}
 	return (0);
 }
+// int	piperino2(t_words **INstruct, int pipe_read)
+// {
+// 	char	**cmd1 = ft_split(INstruct[0]->word_clean, ' ');
+// 	char	*path1 = ft_strjoin("/bin/", cmd1[0]);
+
+// 		printf("INstruct[1]->token_after_word[0]:%s\n", INstruct[0]->token_after_word);
+// 	pid_t	pid = fork();
+// 	if (pid == -1)
+// 		error_exit("(piperino2) Fork failed\n");
+// 	if (pid == 0)
+// 	{
+// 		if (dup2(pipe_read, STDIN_FILENO) == -1)
+// 		{
+// 			perror("dup2 for stdin failed");
+// 			fprintf(stderr, "Error details: %s\n", strerror(errno));
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		// close(pipe_read);
+// 		if (INstruct[1]->token_after_word != NULL);
+// 			if (INstruct[1]->token_after_word[0] == '|');
+// 			{
+// 				int	pipe_fd[2];
+// 				if (pipe(pipe_fd) == -1)
+// 					error_exit("(piperino2) Pipe creation failed\n");
+// 				// close(pipe_fd[0]);
+// 				if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+// 				{
+// 					perror("dup2 for stdin failed");
+// 					fprintf(stderr, "Error details: %s\n", strerror(errno));
+// 					exit(EXIT_FAILURE);
+// 				}
+// 				piperino3(&INstruct[1], pipe_fd[0]);
+
+// 			}
+// 		execve(path1, cmd1, NULL);
+// 		error_exit("(piperino2) Exec1 failed");
+// 	}
+// 	else
+// 	{
+// 		close(pipe_read);
+// 		free_piperino2(cmd1, path1);
+// 	}
+// 	return (0);
+// }
 
 int	piperino1(t_words **INstruct)
 {
@@ -220,7 +265,6 @@ int	piperino1(t_words **INstruct)
 	// Erzeuge die Pipe
 	if (pipe(pipe_fd) == -1)
 		error_exit("(piperino1) Pipe creation failed\n");
-
 	pid_t	pid = fork();
 	if (pid == -1)
 		error_exit("(piperino1) Fork failed\n");
@@ -239,15 +283,18 @@ int	piperino1(t_words **INstruct)
 	}
 	else
 	{
-		// piperino2(t_words **INstruct, int pipe_read);
-		piperino2(&INstruct[0], pipe_fd[0]);
-		// piperino3(&INstruct[1], pipe_fd[0]);
-		close(pipe_fd[0]); 
-		// close(pipe_fd[1]); 
+		if (INstruct[1]->token_after_word != NULL)
+		{
+			if (INstruct[1]->token_after_word[0] == '|')
+				piperino2(&INstruct[1], pipe_fd[0]);
+		}
+		else
+			piperino3(&INstruct[1], pipe_fd[0]); // 3
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
 		waitpid(pid, NULL, 0); //soll er ueberhaupt warten?
 		free_piperino2(cmd1, path1);
-		printf("ALARM1!\n");
-
+		// printf("ALARM1!\n");
 	}
 	return (0);
 }
@@ -471,7 +518,7 @@ void	routine(t_words **INstruct)
 			if (INstruct[i]->token_after_word[0] == '|')
 			{
 				piperino1(&INstruct[i]);
-				printf("ALARM!\n");
+				// printf("ALARM!\n");
 				// piperino(&INstruct[i]);
 			}
 			i++;

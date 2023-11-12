@@ -54,6 +54,8 @@ int	main(int argc, char **argv, char **envp)
 		// }
 		if (*words != NULL)
 			routine(words);
+		printf("After routine (in main)!\n");
+
 	}
 }
 
