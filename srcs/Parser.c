@@ -155,11 +155,50 @@ int piperino3(t_words **INstruct, int pipe_read) {
 	return 0;
 }
 
-int piperino2(t_words **INstruct, int pipe_read)
+int piperino4(t_words **INstruct, int pipe_read)
 {
 	char **cmd1 = ft_split(INstruct[0]->word_clean, ' ');
 	char *path1 = ft_strjoin("/bin/", cmd1[0]);
+
 	int pipe_fd[2];
+	if (pipe(pipe_fd) == -1)
+		error_exit("(piperino1) Pipe creation failed\n");
+	pid_t pid = fork();
+	if (pid == -1)
+		error_exit("(piperino3) Fork failed\n");
+
+	if (pid == 0)
+	{
+		if (pipe_read != -1)
+			if (dup2(pipe_read, STDIN_FILENO) == -1)
+				error_exit("dup2 for stdin failed");
+		if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
+			error_exit("dup2 for stdout failed");
+		execve(path1, cmd1, NULL);
+		perror("(piperino3) Exec1 failed");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		close(pipe_read);
+		waitpid(pid, NULL, 0);
+
+		if (INstruct[1]->token_after_word != NULL && INstruct[1]->token_after_word[0] == '|')
+			piperino4(&INstruct[1], pipe_fd[0]);
+		else
+			piperino3(&INstruct[1], pipe_fd[0]);
+		free_piperino2(cmd1, path1);
+	}
+	return 0;
+}
+
+
+
+int piperino2(t_words **INstruct, int pipe_read)
+{
+	char	**cmd1 = ft_split(INstruct[0]->word_clean, ' ');
+	char	*path1 = ft_strjoin("/bin/", cmd1[0]);
+	int 	pipe_fd[2];
 
 	if (pipe(pipe_fd) == -1)
 		error_exit("(piperino2) Pipe creation failed\n");
@@ -187,10 +226,12 @@ int piperino2(t_words **INstruct, int pipe_read)
 	}
 	else
 	{
-		close(pipe_read);
-		close(pipe_fd[1]);
+		// close(pipe_read);
+		// close(pipe_fd[1]);
 		// close(pipe_fd[0]);
-		// waitpid(pid, NULL, 0);
+		printf("kommt bis hier\n");
+		waitpid(pid, NULL, 0);
+		printf("kommt nciht bis hier\n");
 		// piperino3(&INstruct[1], pipe_fd[0]);
 		free_piperino2(cmd1, path1);
 	}
@@ -227,7 +268,9 @@ int piperino1(t_words **INstruct) {
 
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
+		printf("kommt bis hier\n");
 		waitpid(pid, NULL, 0);
+		printf("kommt nciht bis hier\n");
 		free_piperino2(cmd1, path1);
 	}
 	return 0;
@@ -546,7 +589,7 @@ void	routine(t_words **INstruct)
 		{
 			if (INstruct[i]->token_after_word[0] == '|')
 			{
-				piperino1(&INstruct[i]);
+				piperino4(&INstruct[i], -1);
 				// printf("ALARM!\n");
 				// piperino(&INstruct[i]);
 			}
