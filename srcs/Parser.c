@@ -134,6 +134,59 @@ static void	free_piperino2(char **cmd1, char *path1)
 	free(path1);
 }
 
+int piperino5(t_words **INstruct)
+{
+	char	**cmd1 = ft_split(INstruct[0]->word_clean, ' ');
+	char	*path1 = ft_strjoin("/bin/", cmd1[0]);
+	int		pipe_fd[2];
+	pid_t	pid;
+
+	int	i = 0;
+	while (INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
+	{
+		if (pipe(pipe_fd) == -1)
+			error_exit("(piperino5) Pipe creation failed\n");
+		pid = fork();
+
+		if (pid == 0)
+		{
+			if (i == 0)
+				close(pipe_fd[0]);
+			else
+				dup2(pipe_fd[0], STDIN_FILENO);
+			dup2(pipe_fd[1], STDOUT_FILENO);
+			// close(pipe_fd[1]);
+			execve(path1, cmd1, NULL);
+			perror("(piperino5) Exec1 failed");
+		}
+		else
+		{
+			close(pipe_fd[0]);
+			close(pipe_fd[1]);
+			printf("Angekommen1\n");
+			waitpid(-1, NULL, WUNTRACED);
+			printf("Angekommen2\n");
+		}
+		i++;
+		cmd1 = ft_split(INstruct[i]->word_clean, ' '); //free nicht vergessen
+		path1 = ft_strjoin("/bin/", cmd1[0]);
+	}
+
+	pid = fork();
+	if (pid == 0)
+	{
+		printf("AngekommeX\n");
+		dup2(pipe_fd[0], STDIN_FILENO);
+		execve(path1, cmd1, NULL);
+		perror("(piperino5) Exec1 failed");
+	}
+		printf("AngekommeY\n");
+	waitpid(-1, NULL, WUNTRACED);
+	// free_piperino2(cmd1, path1);
+
+	return (0);
+}
+
 int piperino3(t_words **INstruct, int pipe_read) {
 	char **cmd1 = ft_split(INstruct[0]->word_clean, ' ');
 	char *path1 = ft_strjoin("/bin/", cmd1[0]);
@@ -589,7 +642,7 @@ void	routine(t_words **INstruct)
 		{
 			if (INstruct[i]->token_after_word[0] == '|')
 			{
-				piperino4(&INstruct[i], -1);
+				piperino5(&INstruct[i]);
 				// printf("ALARM!\n");
 				// piperino(&INstruct[i]);
 			}
