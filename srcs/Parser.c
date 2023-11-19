@@ -132,56 +132,46 @@ int piperino5(t_words **INstruct)
 	pid_t	pid;
 
 	int	i = 0;
-	while (INstruct[i] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
+	while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
 	{
 		if (pipe(pipe_fd) == -1)
 			error_exit("(piperino5) Pipe creation failed\n");
-		if (i == 0)
-			tmp_read_fd = pipe_fd[0];
 		pid = fork();
-
 		if (pid == 0)
 		{
-			if (i == 0)
-				close(pipe_fd[0]);
-			else
+			close(pipe_fd[0]);
+			if (i != 0)
+			{
 				dup2(tmp_read_fd, STDIN_FILENO);
+				close(tmp_read_fd);
+			}
 			dup2(pipe_fd[1], STDOUT_FILENO);
 			close(pipe_fd[1]);
 			execve(path1, cmd1, NULL);
 			perror("(piperino5) Exec1 failed");
 		}
-		close(pipe_fd[1]);
-		printf("Angekommen1\n");
-		// waitpid(-1, NULL, WUNTRACED);
 		waitpid(pid, NULL, 0);
-		printf("Angekommen2[%d]\n", i);
-		i++;
+		close(pipe_fd[1]);
 		free_piperino(cmd1, path1);
-		cmd1 = ft_split(INstruct[i]->word_clean, ' '); //free nicht vergessen
+		i++;
+		cmd1 = ft_split(INstruct[i]->word_clean, ' ');
 		path1 = ft_strjoin("/bin/", cmd1[0]);
-		// close(tmp_read_fd); // wenn man hier schliesst gibts probleme.. warum? .. er wartet dann... glaub wegen spaeteren fork..der nimmt dann die geschlossene pipe mit
 		tmp_read_fd = pipe_fd[0];
 	}
 	pid = fork();
 	if (pid == 0)
 	{
-		printf("AngekommeX\n");
 		dup2(tmp_read_fd, STDIN_FILENO);
 		close(tmp_read_fd);
-		printf("AngekommeY\n");
 		execve(path1, cmd1, NULL);
 		perror("(piperino5) Exec1 failed");
 	}
 	close(tmp_read_fd);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-		// printf("AngekommeY\n");
-	// waitpid(-1, NULL, WUNTRACED);
-	// waitpid(pid, NULL, 0);
-		// printf("AngekommeZ\n");
+	waitpid(-1, NULL, 0);
 	free_piperino(cmd1, path1);
-	return (0);
+	return (i);
 }
 
 void	routine(t_words **INstruct)
@@ -192,14 +182,9 @@ void	routine(t_words **INstruct)
 	i = 0;
 	while (i < INstruct[0]->num_of_elements)
 	{
-		if (INstruct[i]->token_after_word != NULL)
-		{
-			if (INstruct[i]->token_after_word[0] == '|')
-			{
-				piperino5(&INstruct[i]);
-			}
-			i++;
-		}
+		if (INstruct[i]->token_after_word != NULL && \
+				INstruct[i]->token_after_word[0] == '|')
+			i += piperino5(&INstruct[i]);
 		else
 			parser(INstruct[i]);
 		i++;
