@@ -150,7 +150,7 @@ int piperino5(t_words **INstruct)
 			execve(path1, cmd1, NULL);
 			perror("(piperino5) Exec1 failed");
 		}
-		waitpid(pid, NULL, 0);
+		// waitpid(pid, NULL, 0);
 		close(pipe_fd[1]);
 		free_piperino(cmd1, path1);
 		i++;
@@ -158,6 +158,8 @@ int piperino5(t_words **INstruct)
 		path1 = ft_strjoin("/bin/", cmd1[0]);
 		tmp_read_fd = pipe_fd[0];
 	}
+	for (int i; i < 2; i++)
+		waitpid(-1, NULL, 0);
 	pid = fork();
 	if (pid == 0)
 	{
