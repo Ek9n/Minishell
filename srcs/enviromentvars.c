@@ -42,6 +42,20 @@ char	**arrdup(char **enviroment)
 	return (dup);
 }
 
+int	emptyvar(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '=')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	printenv(char **env)
 {
 	int	i;
@@ -49,8 +63,11 @@ void	printenv(char **env)
 	i = 0;
 	while (env[i] != NULL)
 	{
-		ft_putstr_fd(env[i], 1);
-		printf("\n");
+		if (!emptyvar(env[i]))
+		{
+			ft_putstr_fd(env[i], 1);
+			printf("\n");
+		}
 		i++;
 	}
 }
@@ -78,33 +95,95 @@ void	freeenv(char **env)
 	free(env);
 }
 
-char	**delete_env_var(char *name, char **env)
+// char	**delete_env_var(char *name, char **env)
+// {
+// 	int	size = cntenv(env);
+
+// 	char	**new_env = 0;
+
+// 	new_env = ft_calloc(size, sizeof(char *));
+// 	int	i;
+// 	int	j;
+
+// 	i = 0;
+// 	j = 0;
+// 	while (env[i] != NULL)
+// 	{
+// 		if (ft_strcmp(name, env[i]) != 0)
+// 		{
+// 			new_env[j] = env[i];
+// 			j++;
+// 		}
+// 		else
+// 			free(env[i]);
+// 		i++;
+// 	}
+// 	free(env);
+// 	return (new_env);
+// }
+
+void	delete_env_var(char *name, char ***env)
 {
-	int	size = cntenv(env);
-
+	int	size = cntenv(*env);
 	char	**new_env = 0;
-
-	new_env = ft_calloc(size, sizeof(char *));
 	int	i;
 	int	j;
 
+	new_env = ft_calloc(size, sizeof(char *));
+
 	i = 0;
 	j = 0;
-	while (env[i] != NULL)
+	while (env[0][i] != NULL)
 	{
-		if (ft_strcmp(name, env[i]) != 0)
+		if (ft_strcmp(name, env[0][i]) != 0)
 		{
-			new_env[j] = env[i];
+			new_env[j] = env[0][i];
 			j++;
 		}
 		else
-			free(env[i]);
+			free(env[0][i]);
 		i++;
 	}
-	free(env);
-	return (new_env);
+	free(*env);
+	*env = new_env;
+}
+void	add_env_var(char *name, char ***env)
+{
+	int		size = cntenv(*env) + 1; //phne +1 segfault... why?
+	int		i;
+	char	**new_env;
+
+	new_env = ft_calloc(size + 1, sizeof(char *));
+	i = 0;
+	while (env[0][i] != NULL)
+	{
+		new_env[i] = env[0][i];
+		i++;
+	}
+	new_env[i] = name;
+	free(*env);
+	*env = new_env;
 }
 
+
+void	unset(char *str, char ***env)
+{
+	// char	**env_new;
+	char	**cmds;
+	int		i;
+	// check input here
+	cmds = ft_split(str, ' ');
+	i = 0;
+	if (cmds[1] == NULL)
+		printf("something!\n");
+	while (cmds[i])
+	{
+		delete_env_var(cmds[i], env);
+		i++;
+	}
+
+
+}
 // char	**add_env_var(char *name, char **env)
 // {
 // 	int		size = cntenv(env);
@@ -122,68 +201,66 @@ char	**delete_env_var(char *name, char **env)
 // 	free(env);
 // 	return (new_env);
 // }
-void	add_env_var(char *name, char ***env)
-{
-	int		size = cntenv(*env);
-	int		i;
-	char	**new_env;
-
-	new_env = ft_calloc(size + 1, sizeof(char *));
-	i = 0;
-	while (env[0][i] != NULL)
-	{
-		new_env[i] = env[0][i];
-		i++;
-	}
-	new_env[i] = name;
-	free(*env);
-	*env = new_env;
-}
-	// else if (cmp_keyword("export", INstruct->word_clean))
-	// {
-	// 	export(INstruct->word_clean);
-	// }
 
 void	export(char *str, char ***env)
 {
-	// char	**env_new;
 	char	**cmds;
-	int	i;
-
+	int		i;
+	// check input here
 	cmds = ft_split(str, ' ');
-	i = 0;
-	if (cmds[i + 1] == NULL)
-		printf("print envs here in exportstyle!\n");
-	while (cmds[i])
+	if (cmds[1] == NULL)
 	{
-		
-		add_env_var(cmds[i], env);
-		i++;
+		i = 0;
+		while (env[0][i] != NULL)
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd(env[0][i], 1);
+			printf("\n");
+			i++;
+		}
 	}
-
-
+	else
+	{
+		i = 1;
+		while (cmds[i])
+		{
+			add_env_var(cmds[i], env);
+			i++;
+		}
+	}
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	char	**env_lst = arrdup(env);
 	// ft_putstr_fd(env_lst[0], 1);
-	printf("CNT:%d\n", cntenv(env_lst));
+	// printf("CNT:%d\n", cntenv(env_lst));
 	// printenv(env_lst);
 	// env_lst = delete_env_var("OLDPWD", env_lst);
 	// char str[] = "HELLOWORLD";
 	char *str;
 	str = malloc(50);
-	str = ft_strdup("H=55");
+	// str = ft_strdup("H=55 VIKA=COOL");
+	str = ft_strdup("export VIKA=10 HANNES");
 
 	// env_lst = add_env_var(str, env_lst);
-	add_env_var(str, &env_lst);
-	// export(str, &env_lst);
-	// delete_env_var("OLDPWD", &env_lst);
-	printf("CNT:%d\n", cntenv(env_lst));
+	// add_env_var(str, &env_lst);
+	export(str, &env_lst);
+	export("export", &env_lst);
+	// unset("H VIKA USER", &env_lst);
+	// delete_env_var("VIKA H", &env_lst);
+	// printf("CNT:%d\n", cntenv(env_lst));
 
 	printenv(env_lst);
 
 	freeenv(env_lst);
 	return (0);
 }
+
+/*
+...
+we need two env lists, one clean one with also vars like A=23 and one with also the empty vars like from export like just B
+or we just dont show them all with env...when they have no value
+....task done with second option...
+input checker für export und unset
+*/
