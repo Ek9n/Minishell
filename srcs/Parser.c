@@ -454,7 +454,7 @@ void	routine(t_words **INstruct)
 	{
 		if (INstruct[i]->token_after_word != NULL && \
 				INstruct[i]->token_after_word[0] == '|')
-			i += piperino5(&INstruct[i]);
+			i += piperino6(&INstruct[i]);
 		else
 			parser(INstruct[i]);
 		i++;

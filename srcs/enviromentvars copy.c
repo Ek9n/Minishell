@@ -1,4 +1,21 @@
-#include "minishell.h"
+// #include "minishell.h"
+#include "../libft/libft.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+	size_t	n;
+	
+	n = ft_strlen(s1);
+	i = 0;
+	while ((s1[i] != '\0' || s2[i] != '\0') && i < n)
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (0);
+}
 
 char	**arrdup(char **enviroment)
 {
@@ -246,3 +263,38 @@ void	export(char *str, char ***env)
 	}
 	free(cmds);
 }
+
+int	main(int argc, char **argv, char **env)
+{
+	char	**env_lst = arrdup(env);
+	// ft_putstr_fd(env_lst[0], 1);
+	// printf("CNT:%d\n", cntenv(env_lst));
+	// printenv(env_lst);
+	// env_lst = delete_env_var("OLDPWD", env_lst);
+	// char str[] = "HELLOWORLD";
+	char *str;
+	str = malloc(50);
+	// str = ft_strdup("H=55 JAN=COOL");
+	str = ft_strdup("export V1==3=10 HANNES");
+
+	// env_lst = add_env_var(str, env_lst);
+	// add_env_var(str, &env_lst);
+	export(str, &env_lst);
+	export("export", &env_lst);
+	// unset("H fafA USER", &env_lst);
+	// delete_env_var("VIl H", &env_lst);
+	// printf("CNT:%d\n", cntenv(env_lst));
+
+	printenv(env_lst);
+	free(str);
+	freeenv(env_lst);
+	return (0);
+}
+
+/*
+...
+we need two env lists, one clean one with also vars like A=23 and one with also the empty vars like from export like just B
+or we just dont show them all with env...when they have no value
+....task done with second option...
+input checker für export und unset
+*/
