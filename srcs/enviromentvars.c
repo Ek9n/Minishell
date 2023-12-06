@@ -181,8 +181,6 @@ void	unset(char *str, char ***env)
 		delete_env_var(cmds[i], env);
 		i++;
 	}
-
-
 }
 // char	**add_env_var(char *name, char **env)
 // {
@@ -202,12 +200,47 @@ void	unset(char *str, char ***env)
 // 	return (new_env);
 // }
 
+int	correct_input(char **cmds)
+{
+	int	i;
+	int	j;
+	int	flag;
+
+	flag = 0;
+	i = 1;
+	while (cmds[i])
+	{
+		j = 0;
+		while (cmds[i][j])
+		{
+			if ((cmds[i][0] >= '0' && cmds[i][0] <= '9') || !((cmds[i][j] >= 'a' && cmds[i][j] <= 'z') || \
+				(cmds[i][j] >= 'A' && cmds[i][j] <= 'Z') || \
+				cmds[i][j] == '_' || (cmds[i][j] >= '0' && cmds[i][j] <= '9')) && !flag)
+			{
+				printf("%c\n", cmds[i][j]);
+				printf("minishell: export: `%s': not a valid identifier\n" ,cmds[i]);
+				return (0);
+			}
+			j++;
+			if (cmds[i][j] == '=')
+				flag = 1;
+		}
+		i++;
+	}
+	return (1);
+}
+
 void	export(char *str, char ***env)
 {
 	char	**cmds;
 	int		i;
-	// check input here
+
 	cmds = ft_split(str, ' ');
+	if (!correct_input(cmds))
+	{
+		free(cmds);
+		return ;
+	}
 	if (cmds[1] == NULL)
 	{
 		i = 0;
@@ -228,6 +261,7 @@ void	export(char *str, char ***env)
 			i++;
 		}
 	}
+	free(cmds);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -240,19 +274,19 @@ int	main(int argc, char **argv, char **env)
 	// char str[] = "HELLOWORLD";
 	char *str;
 	str = malloc(50);
-	// str = ft_strdup("H=55 VIKA=COOL");
-	str = ft_strdup("export VIKA=10 HANNES");
+	// str = ft_strdup("H=55 JAN=COOL");
+	str = ft_strdup("export V1==3=10 HANNES");
 
 	// env_lst = add_env_var(str, env_lst);
 	// add_env_var(str, &env_lst);
 	export(str, &env_lst);
 	export("export", &env_lst);
-	// unset("H VIKA USER", &env_lst);
-	// delete_env_var("VIKA H", &env_lst);
+	// unset("H fafA USER", &env_lst);
+	// delete_env_var("VIl H", &env_lst);
 	// printf("CNT:%d\n", cntenv(env_lst));
 
-	printenv(env_lst);
-
+	// printenv(env_lst);
+	free(str);
 	freeenv(env_lst);
 	return (0);
 }
