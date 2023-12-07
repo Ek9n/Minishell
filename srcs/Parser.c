@@ -221,7 +221,6 @@ int	cnt_pipes(t_words **INstruct)
 	return (i);
 }
 
-
 int piperino7(t_words **INstruct)
 {
 	char	**cmd1;
@@ -314,16 +313,18 @@ int piperino6(t_words **INstruct)
 	int		**pipe_fd;
 	int		pids[100];
 	pid_t	pid;
+	int	i = 0;
 
 	pipe_fd = malloc(200 * sizeof(int*));
-	for (int j = 0; j < 3; j++)
+	while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
 	{
-		pipe_fd[j] = malloc(2 * sizeof(int));
-		if (pipe(pipe_fd[j]) == -1)
+		pipe_fd[i] = malloc(2 * sizeof(int));
+		if (pipe(pipe_fd[i]) == -1)
 			error_exit("(piperino5) Pipe creation failed\n");
-		printf("pipe[%d]:read=%d, write=%d\n", j, pipe_fd[j][0], pipe_fd[j][1]);
+		printf("pipe[%d]:read=%d, write=%d\n", i, pipe_fd[i][0], pipe_fd[i][1]);
+		i++;
 	}
-	int	i = 0;
+	i = 0;
 	// while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
 	while (INstruct[i] != NULL)
 	{
@@ -359,35 +360,29 @@ int piperino6(t_words **INstruct)
 			execve(path1, cmd1, NULL);
 			perror("(piperino5) Exec1 failed");
 		}
-		// printf("hi[%d\n", i);
-
-		// if (INstruct[i+1] != NULL) // wenn man das nicht macht, kann man am ende mit str+d nicht beenden..
-			// close(pipe_fd[i][1]);
-		
-		// if (i != 0)
-		// 	close(pipe_fd[i-1][0]);
+		else
+		{
+			if (i > 0 && INstruct[i-1]->token_after_word != NULL && INstruct[i-1]->token_after_word[0] == '|')
+			{
+				close(pipe_fd[i-1][0]);
+				close(pipe_fd[i-1][1]);
+			}
+		}
 		free_piperino2(INstruct[i], cmd1, path1);
 		i++;
 	}
-	i = 0;
-	while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
-	{
-		close(pipe_fd[i][0]);
-		close(pipe_fd[i][1]);
-		printf("closeread=%d\n", pipe_fd[i][0]);
-		printf("closewrite=%d\n", pipe_fd[i][1]);
-		i++;
-		// free(pipe_fd[j]);
-	}
-	close(pipe_fd[i][0]);
-	close(pipe_fd[i][1]);
-	printf("closeread=%d\n", pipe_fd[i][0]);
-	printf("closewrite=%d\n", pipe_fd[i][1]);
-	// free(pipe_fd);
-	// kill(pid_to_kill, SIGTERM);
+	// i = 0;
+	// while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
+	// {
+	// 	close(pipe_fd[i][0]);
+	// 	close(pipe_fd[i][1]);
+	// 	printf("closeread=%d\n", pipe_fd[i][0]);
+	// 	printf("closewrite=%d\n", pipe_fd[i][1]);
+	// 	i++;
+	// 	// free(pipe_fd[j]);
+	// }
 	for (int i = 0; i < 4; i++)
 		waitpid(-1, NULL, 0);
-	// printf("shieet\n");
 	return (i);
 }
 
