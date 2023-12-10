@@ -305,6 +305,12 @@ int piperino7(t_words **INstruct)
 	return (i);
 }
 
+static int	is_pipe(t_words **INstruct, int i)
+{
+	if (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
+		return (1);
+	return (0);
+}
 
 int piperino6(t_words **INstruct)
 {
@@ -316,11 +322,11 @@ int piperino6(t_words **INstruct)
 	int	i = 0;
 
 	pipe_fd = malloc(200 * sizeof(int*));
-	while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
+	while (is_pipe(INstruct, i))
 	{
 		pipe_fd[i] = malloc(2 * sizeof(int));
 		if (pipe(pipe_fd[i]) == -1)
-			error_exit("(piperino5) Pipe creation failed\n");
+			error_exit("(piperino6) Pipe creation failed\n");
 		printf("pipe[%d]:read=%d, write=%d\n", i, pipe_fd[i][0], pipe_fd[i][1]);
 		i++;
 	}
@@ -330,9 +336,11 @@ int piperino6(t_words **INstruct)
 	{
 		cmd1 = ft_split(INstruct[i]->word_clean, ' ');
 		path1 = ft_strjoin("/bin/", cmd1[0]);
-		pid = fork();
-		if (pid == 0)
+		pids[i] = fork();
+		if (pids[i] == 0)
 		{
+			char	buffer[1];
+
 			if (i == 0)
 			{
 				printf("Start:\n");
@@ -340,7 +348,7 @@ int piperino6(t_words **INstruct)
 				close(pipe_fd[i][0]);
 				close(pipe_fd[i][1]);
 			}
-			else if (INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
+			else if (is_pipe(INstruct, i))
 			{
 				printf("Mid:\n");
 				dup2(pipe_fd[i-1][0], STDIN_FILENO);
@@ -358,11 +366,11 @@ int piperino6(t_words **INstruct)
 				close(pipe_fd[i-1][1]);
 			}
 			execve(path1, cmd1, NULL);
-			perror("(piperino5) Exec1 failed");
+			perror("(piperino6) Exec1 failed");
 		}
 		else
 		{
-			if (i > 0 && INstruct[i-1]->token_after_word != NULL && INstruct[i-1]->token_after_word[0] == '|')
+			if (i > 0 && is_pipe(INstruct, i - 1))
 			{
 				close(pipe_fd[i-1][0]);
 				close(pipe_fd[i-1][1]);
@@ -381,7 +389,15 @@ int piperino6(t_words **INstruct)
 	// 	i++;
 	// 	// free(pipe_fd[j]);
 	// }
-	for (int i = 0; i < 4; i++)
+	// while (i > 0)
+	// {
+	// 	// kill(pids[i], SIGQUIT);
+	// 	waitpid(-1, NULL, 0);
+	// 	i--;
+	// }
+	// printf("ANZAHL PROZESSE:%d\n", i);
+	int cnt = i;
+	while (cnt-- >= 0)
 		waitpid(-1, NULL, 0);
 	return (i);
 }
