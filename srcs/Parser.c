@@ -162,9 +162,7 @@ static int	is_redirection(t_words **INstruct, int i)
 {
 	if (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && \
 			(INstruct[i]->token_after_word[0] == '>' || \
-			INstruct[i]->token_after_word[0] == '<' || \
-			INstruct[i]->token_after_word[0] == '>>' || \
-			INstruct[i]->token_after_word[0] == '<<'))
+			INstruct[i]->token_after_word[0] == '<'))
 		return (1);
 	return (0);
 }
@@ -389,7 +387,7 @@ void	routine(t_words **INstruct)
 	{
 		if (INstruct[i]->token_after_word != NULL && \
 				INstruct[i]->token_after_word[0] == '|')
-			i += piperino6(&INstruct[i]);
+			i += Executor(&INstruct[i]);
 		else
 			parser(INstruct[i]);
 		i++;
