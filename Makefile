@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+         #
+#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2023/11/07 16:16:24 by hstein           ###   ########.fr        #
+#    Updated: 2023/12/15 17:22:21 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SRCS =	Main.c				\
 		Parser.c			\
 		parser_utils_1.c	\
 		executor.c			\
-		enviromentvars.c
+		enviromentvars.c	\
+		redirections.c
 
 OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))
 

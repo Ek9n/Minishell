@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/10 21:27:51 by hstein           ###   ########.fr       */
+/*   Updated: 2023/12/15 17:23:23 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ struct t_words; // Vorwärtsdeklaration für t_words
 # include "../libft/libft.h"
 # include <stdbool.h>
 # include <errno.h>
+# include <fcntl.h>
 
 // # include "lexer.h"
 # include "parser.h"
@@ -41,6 +42,8 @@ typedef struct t_words
 	int		quotes_case;
 	char	*token_after_word; //julius Lexer
  	char 	*output; // Hannes Parser
+	int		fd_out;
+	int		fd_in;
 	char 	**enviroment;
 	int		redirection;
 }	t_words;
