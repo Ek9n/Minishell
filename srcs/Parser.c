@@ -158,6 +158,103 @@ static int	is_pipe(t_words **INstruct, int i)
 	return (0);
 }
 
+static int	is_redirection(t_words **INstruct, int i)
+{
+	if (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && \
+			(INstruct[i]->token_after_word[0] == '>' || \
+			INstruct[i]->token_after_word[0] == '<' || \
+			INstruct[i]->token_after_word[0] == '>>' || \
+			INstruct[i]->token_after_word[0] == '<<'))
+		return (1);
+	return (0);
+}
+
+/*
+executor {
+	while(words)
+	{
+		if just word
+	}
+}
+
+cat < file1 > file2 | wc -l | grep \n
+cat file1 > file2 | wc file 2 | grep \n  
+cat file2 | wc file 2 | grep \n  
+cat wc file 2 | grep \n  
+
+*/
+
+int Executor(t_words **INstruct)
+{
+	char	**cmd1;
+	char	*path1;
+	int		**pipe_fd;
+	pid_t	pids[100];
+	int		i = 0;
+
+	pipe_fd = malloc(200 * sizeof(int*));
+	while (is_pipe(INstruct, i))
+	{
+		pipe_fd[i] = malloc(2 * sizeof(int));
+		if (pipe(pipe_fd[i]) == -1)
+			error_exit("(piperino6) Pipe creation failed\n");
+		// printf("pipe[%d]:read=%d, write=%d\n", i, pipe_fd[i][0], pipe_fd[i][1]);
+		i++;
+	}
+	i = 0;
+	// while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
+	while (INstruct[i] != NULL)
+	{
+		cmd1 = ft_split(INstruct[i]->word_clean, ' ');
+		path1 = ft_strjoin("/bin/", cmd1[0]);
+		pids[i] = fork();
+		if (pids[i] == 0)
+		{
+			if (i == 0)
+			{
+				// printf("Start:\n");
+				dup2(pipe_fd[i][1], STDOUT_FILENO);
+				close(pipe_fd[i][0]);
+				close(pipe_fd[i][1]);
+			}
+			else if (is_pipe(INstruct, i))
+			{
+				// printf("Mid:\n");
+				dup2(pipe_fd[i-1][0], STDIN_FILENO);
+				close(pipe_fd[i-1][0]);
+				close(pipe_fd[i-1][1]);
+				dup2(pipe_fd[i][1], STDOUT_FILENO);
+				close(pipe_fd[i][0]); //
+				close(pipe_fd[i][1]);
+			}
+			else
+			{
+				// printf("End:\n");
+				dup2(pipe_fd[i-1][0], STDIN_FILENO);
+				close(pipe_fd[i-1][0]);
+				close(pipe_fd[i-1][1]);
+			}
+			execve(path1, cmd1, NULL);
+			perror("(piperino6) Exec1 failed");
+		}
+		if (is_pipe(INstruct, i))
+		{
+			close(pipe_fd[i][0]);
+			close(pipe_fd[i][1]);
+		}
+		free_piperino2(INstruct[i], cmd1, path1);
+		i++;
+	}
+	// printf("ANZAHL PROZESSE:%d\n", i);
+	int cnt = i;
+	while (cnt-- >= 0)
+	{
+		waitpid(-1, NULL, 0);
+		// waitpid(-1, NULL, WNOHANG);
+	}
+	return (i);
+}
+
 int piperino6(t_words **INstruct)
 {
 	char	**cmd1;
