@@ -46,7 +46,6 @@ void	clean_word(t_words *INstruct)
 	char	*tmp_clean;
 	int		quotes; 	// 0 no, 1 single, 2 double quotes
 	int		i, j;
-
 	tmp_clean = malloc(ft_strlen(INstruct->word));
 	quotes = 0;
 	i = 0;
@@ -253,77 +252,75 @@ int Executor(t_words **INstruct)
 	return (i);
 }
 
-int piperino6(t_words **INstruct)
+int	piperino6(t_words **INstruct)
 {
-	char	**cmd1;
-	char	*path1;
-	int		**pipe_fd;
-	pid_t	pids[100];
-	int		i = 0;
+    char	**cmd1;
+    char	*path1;
+    int		**pipe_fd;
+    pid_t	pids[100];
+    int		i;
 
-	pipe_fd = malloc(200 * sizeof(int*));
-	while (is_pipe(INstruct, i))
-	{
-		pipe_fd[i] = malloc(2 * sizeof(int));
-		if (pipe(pipe_fd[i]) == -1)
-			error_exit("(piperino6) Pipe creation failed\n");
-		// printf("pipe[%d]:read=%d, write=%d\n", i, pipe_fd[i][0], pipe_fd[i][1]);
-		i++;
-	}
-	i = 0;
-	// while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
-	while (INstruct[i] != NULL)
-	{
-		cmd1 = ft_split(INstruct[i]->word_clean, ' ');
-		path1 = ft_strjoin("/bin/", cmd1[0]);
-		pids[i] = fork();
-		if (pids[i] == 0)
-		{
-			if (i == 0)
-			{
-				// printf("Start:\n");
-				dup2(pipe_fd[i][1], STDOUT_FILENO);
-				close(pipe_fd[i][0]);
-				close(pipe_fd[i][1]);
-			}
-			else if (is_pipe(INstruct, i))
-			{
-				// printf("Mid:\n");
-				dup2(pipe_fd[i-1][0], STDIN_FILENO);
-				close(pipe_fd[i-1][0]);
-				close(pipe_fd[i-1][1]);
-				dup2(pipe_fd[i][1], STDOUT_FILENO);
-				close(pipe_fd[i][0]); //
-				close(pipe_fd[i][1]);
-			}
-			else
-			{
-				// printf("End:\n");
-				dup2(pipe_fd[i-1][0], STDIN_FILENO);
-				close(pipe_fd[i-1][0]);
-				close(pipe_fd[i-1][1]);
-			}
-			execve(path1, cmd1, NULL);
-			perror("(piperino6) Exec1 failed");
-		}
-		if (is_pipe(INstruct, i))
-		{
-			close(pipe_fd[i][0]);
-			close(pipe_fd[i][1]);
-		}
-		free_piperino2(INstruct[i], cmd1, path1);
-		i++;
-	}
-	// printf("ANZAHL PROZESSE:%d\n", i);
-	int cnt = i;
-	while (cnt-- >= 0)
-	{
-		waitpid(-1, NULL, 0);
-		// waitpid(-1, NULL, WNOHANG);
-	}
-	return (i);
+    i = 0;
+    pipe_fd = malloc(200 * sizeof(int *));
+    while (is_pipe(INstruct, i))
+    {
+        pipe_fd[i] = malloc(2 * sizeof(int));
+        if (pipe(pipe_fd[i]) == -1)
+            error_exit("(piperino6) Pipe creation failed\n");
+        i++;
+    }
+    i = 0;
+    while (INstruct[i] != NULL)
+    {
+        cmd1 = ft_split(INstruct[i]->word_clean, ' ');
+        path1 = ft_strjoin("/bin/", cmd1[0]);
+        pids[i] = fork();
+        if (pids[i] == 0)
+        {
+            if (i != 0)
+            {
+                dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+                close(pipe_fd[i - 1][0]);
+                close(pipe_fd[i - 1][1]);
+            }
+            if (is_pipe(INstruct, i))
+            {
+                dup2(pipe_fd[i][1], STDOUT_FILENO);
+                close(pipe_fd[i][0]);
+                close(pipe_fd[i][1]);
+            }
+            execve(path1, cmd1, NULL);
+            perror("(piperino6) Exec1 failed");
+        }
+        else
+        {
+            if (i != 0)
+            {
+                close(pipe_fd[i - 1][0]);
+                close(pipe_fd[i - 1][1]);
+            }
+        }
+        free_piperino2(INstruct[i], cmd1, path1);
+        i++;
+    }
+
+    // Close the write ends of the pipes in the parent process after all child processes have been forked
+    for (int j = 0; j < i; j++)
+    {
+        if (is_pipe(INstruct, j))
+        {
+            close(pipe_fd[j][1]);
+        }
+    }
+
+    // Wait for all child processes to finish
+    for (int j = 0; j < i; j++)
+    {
+        waitpid(pids[j], NULL, 0);
+    }
+
+    return (i);
 }
-
 int piperino5(t_words **INstruct)
 {
 	char	**cmd1 = ft_split(INstruct[0]->word_clean, ' ');
@@ -377,40 +374,39 @@ int piperino5(t_words **INstruct)
 	return (i);
 }
 
-void	routine(t_words **INstruct)
+void	routine(t_data	*data)
 {
 	int	i;
 	// printf("elements:%d\n", INstruct[0]->num_of_elements);
-	clean_words(INstruct);
 	i = 0;
-	while (i < INstruct[0]->num_of_elements)
+	while (i < data->INstruct[0]->num_of_elements)
 	{
-		if (INstruct[i]->token_after_word != NULL && \
-				INstruct[i]->token_after_word[0] == '|')
-			i += Executor(&INstruct[i]);
+		if (data->INstruct[i]->token_after_word != NULL && \
+				data->INstruct[i]->token_after_word[0] == '|')
+			i += piperino6(&data->INstruct[i]);
 		else
-			parser(INstruct[i]);
+			parser(data,i);
 		i++;
 	}
 }
 
-int	parser(t_words *INstruct)
+int	parser(t_data *data,int i)
 {
-	if (cmp_keyword("echo", INstruct->word_clean))
+	if (cmp_keyword("echo", data->INstruct[i]->word_clean))
 	{
-		INstruct->output = echo(INstruct->word_clean);
-		printf("%s", INstruct->output);
+		data->INstruct[i]->output = echo(data->INstruct[i]->word_clean);
+		printf("%s", data->INstruct[i]->output);
 	}
-	else if (cmp_keyword("pwd", INstruct->word_clean))
+	else if (cmp_keyword("pwd",data->INstruct[i]->word_clean))
 	{
-		INstruct->output = getpwd();
-		printf("%s\n", INstruct->output);
+		data->INstruct[i]->output = getpwd();
+		printf("%s\n", data->INstruct[i]->output);
 	}
-	else if (cmp_keyword("cd", INstruct->word_clean))
+	else if (cmp_keyword("cd", data->INstruct[i]->word_clean))
 	{
-		cd(INstruct->word_clean);
+		cd(data->INstruct[i]->word_clean);
 	}
 	else
-		executor(INstruct->word_clean, INstruct->enviroment);
+		executor(data->INstruct[i]->word_clean, data->envp);
 	return (0);
 }

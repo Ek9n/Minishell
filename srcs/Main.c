@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/11 01:21:38 by hstein           ###   ########.fr       */
+/*   Updated: 2023/12/16 18:35:48 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "lexer.h"
+#include "../includes/minishell.h"
 
 void	signal_handler(int sig, siginfo_t *info, void *context)
 {
@@ -23,18 +22,24 @@ void	signal_handler(int sig, siginfo_t *info, void *context)
 		printf("slash");
 	fflush(0);
 }
+t_data	*init_data(t_data *data, char **envp)
+{
+	data = malloc(sizeof(t_data));
+	data->envp = arrdup(envp);
+	return (data);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
 	struct sigaction	act;
-	t_words				**words;
+	t_data				*data;
 	char				*input;
 	int					b;
 
 	(void)argc;
-	(void)argv; // We should duplicate argc argv and envp to our struct,./Md
+	(void)argv;
 	b = 0;
-	words = NULL;
+	data = init_data(data, envp); // Allocate memory for data
 	sigemptyset(&act.sa_mask);
 	act.sa_sigaction = &signal_handler;
 	act.sa_flags = SA_SIGINFO;
@@ -45,17 +50,10 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("Minishell>>: ");
 		if (input)
 			add_history(input); // history works
-		words = init_word_stack(input, words,envp);
-		// while (words[b] != NULL)
-		// {
-		// 	printf("word: %s at index: %d\n", words[b]->word, b);
-		// 	printf("Token: %s at index: %d\n", words[b]->token_after_word, b);
-		// 	b++;
-		// }
-		if (*words != NULL)
-			routine(words);
+		data->INstruct = init_word_stack(input, data->INstruct);
+		if (data->INstruct != NULL)
+			routine(data);
 		// printf("After routine (in main)!\n");
-
 	}
 }
 

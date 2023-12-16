@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/10 17:24:04 by hstein           ###   ########.fr       */
+/*   Updated: 2023/12/16 18:34:53 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,14 @@ char *tokenizer(char **line)
 	return(buffer);
 }
 
-t_words	**init_word_stack(char *line,t_words **words,char **envp)
+t_words	**init_word_stack(char *line,t_words **words)
 {
 	int	i;
 	int	b;
 	
 	b = 0;
 	i = 0;
-	words = ft_calloc(1, sizeof(t_words));
+	words = ft_calloc(1, sizeof(t_words *));
 	while (line[i])
 	{
 		words[b] = ft_calloc(1, sizeof(t_words));
@@ -119,7 +119,6 @@ t_words	**init_word_stack(char *line,t_words **words,char **envp)
 		}
 		words[b]->word = ft_substr(line,0,i);
 		// words[b]->num_of_elements++;
-		words[b]->enviroment = arrdup(envp);
 		line = trimstr(line,i);
 		if (line[0] != '\0')
 		{
@@ -132,5 +131,7 @@ t_words	**init_word_stack(char *line,t_words **words,char **envp)
 	words[b] = NULL;
 	while (words[i] != NULL)
 		words[i++]->num_of_elements = b;
+	clean_words(words);
+	free_dirty_words(words);
 	return(words);
 }
