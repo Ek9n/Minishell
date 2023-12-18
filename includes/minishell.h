@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/16 18:31:09 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/18 12:13:42 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,19 @@ void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
 // ENVIROMENT
 char	**arrdup(char **enviroment);
-void	printenv(char **env);
 int		cntenv(char **env);
 void	freeenv(char **env);
 void	delete_env_var(char *name, char ***env);
 void	add_env_var(char *name, char ***env);
-
+// BUILTINS
+void	printenv(char **env);
+void	unset(char *str, char ***env);
+void	export(char *str, char ***env);
+char	*echo(char *word);
+int		cd(char *dir);
+int		ls(char *dir);
+char	*getpwd(void);
+		//make exit
 // LEXER 
 int		is_in_quotes(char * line);
 int		check_token_syntax(char *str);
@@ -72,10 +79,6 @@ void free_dirty_words(t_words **words);
 // PARSER
 int		parser(t_data *data, int i);
 void	routine(t_data	*data);
-char	*echo(char *word);
-char	*getpwd(void);
-int		cd(char *dir);
-int		ls(char *dir);
 // EXECUTOR 
 void	executor(char *clean_word, char **envp);
 #endif

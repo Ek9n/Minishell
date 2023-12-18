@@ -55,10 +55,8 @@ char	*getpwd(void)
 
 int	cd(char *dir)
 {
-	printf("try:%s\n", dir);
 	if (dir[2] == ' ')
 		dir += 3;
-	printf("try:%s\n", dir);
 	// if (dir[])
     if (chdir(dir) != 0) 
     {

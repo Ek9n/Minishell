@@ -393,18 +393,36 @@ void	routine(t_data	*data)
 int	parser(t_data *data,int i)
 {
 	if (cmp_keyword("echo", data->INstruct[i]->word_clean))
-	{
+	{ //works
 		data->INstruct[i]->output = echo(data->INstruct[i]->word_clean);
 		printf("%s", data->INstruct[i]->output);
 	}
 	else if (cmp_keyword("pwd",data->INstruct[i]->word_clean))
-	{
+	{//works
 		data->INstruct[i]->output = getpwd();
 		printf("%s\n", data->INstruct[i]->output);
 	}
 	else if (cmp_keyword("cd", data->INstruct[i]->word_clean))
-	{
+	{//works add envp alteration
 		cd(data->INstruct[i]->word_clean);
+	}
+	else if (cmp_keyword("export", data->INstruct[i]->word_clean))
+	{//works but also if variable is present,
+	//update the value, either by rewrite or deleting,with unset?
+		//unset(data->INstruct[i]->word_clean, &data->envp);
+		export(data->INstruct[i]->word_clean, &data->envp);
+	}
+	else if (cmp_keyword("unset", data->INstruct[i]->word_clean))
+	{//works
+		unset(data->INstruct[i]->word_clean, &data->envp);
+	}
+	else if (cmp_keyword("env", data->INstruct[i]->word_clean))
+	{//works
+		printenv(data->envp);
+	}
+	else if (cmp_keyword("exit", data->INstruct[i]->word_clean))
+	{
+		exit(EXIT_SUCCESS);// bad exit
 	}
 	else
 		executor(data->INstruct[i]->word_clean, data->envp);

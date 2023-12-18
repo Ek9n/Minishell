@@ -127,6 +127,7 @@ void	delete_env_var(char *name, char ***env)
 			free(env[0][i]);
 		i++;
 	}
+	//new_env[j] = NULL;	
 	free(*env);
 	*env = new_env;
 }
@@ -240,6 +241,7 @@ void	export(char *str, char ***env)
 		i = 1;
 		while (cmds[i])
 		{
+			//delete_env_var(cmds[i], env);
 			add_env_var(cmds[i], env);
 			i++;
 		}
