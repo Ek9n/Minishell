@@ -55,16 +55,24 @@ char	*getpwd(void)
 
 int	cd(char *dir, char ***env)
 {
+	char 	*pwd;
+
 	if (dir[2] == ' ')
 		dir += 3;
-	// if (dir[])
-    if (chdir(dir) != 0) 
+	pwd = ft_strjoin("export OLDPWD=", getpwd());
+	if (ft_strcmp(dir, "~") == 0 || ft_strcmp(dir, "cd") == 0)
+		dir = ft_strdup(getenv("HOME"));
+	if (chdir(dir) != 0) 
     {
         perror("(cd) No valid pathname!");
-        return (EXIT_FAILURE);
+		free(pwd);
+		return (EXIT_FAILURE);
     }
-	export(ft_strjoin("OLDPWD=", getpwd()),env);
-	export(ft_strjoin("PWD=", dir),env);
+	export(pwd,env);
+	free(pwd);
+	pwd = ft_strjoin("export PWD=", getpwd());
+	export(pwd,env);
+	free(pwd);
 	return (EXIT_SUCCESS);
 }
 

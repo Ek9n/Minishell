@@ -236,7 +236,6 @@ void	export(char *str, char ***env)
 
 	int		i;
 
-	ft_putstr_fd(str,1);
 	cmds = ft_split(str, ' ');
 	if (!correct_input(cmds))
 	{

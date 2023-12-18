@@ -403,7 +403,7 @@ int	parser(t_data *data,int i)
 		printf("%s\n", data->INstruct[i]->output);
 	}
 	else if (cmp_keyword("cd", data->INstruct[i]->word_clean))
-	{//works add envp alteration
+	{//works 
 		cd(data->INstruct[i]->word_clean, &data->envp);
 	}
 	else if (cmp_keyword("export", data->INstruct[i]->word_clean))
@@ -420,8 +420,8 @@ int	parser(t_data *data,int i)
 		printenv(data->envp);
 	}
 	else if (cmp_keyword("exit", data->INstruct[i]->word_clean))
-	{
-		exit(EXIT_SUCCESS);// bad exit
+	{//still have to handle
+		exit(EXIT_SUCCESS);
 	}
 	else
 		executor(data->INstruct[i]->word_clean, data->envp);
