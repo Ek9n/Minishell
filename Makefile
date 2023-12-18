@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2023/10/13 14:25:03 by marvin           ###   ########.fr        #
+#    Updated: 2023/12/15 17:22:21 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	Minishell
-CFLAGS			=	-g -Wall -Wextra -Werror
+CFLAGS			=	-g# -Wall -Wextra -Werror
 LDFLAGS			=	-lreadline -lhistory
 RM				=	rm -rf
 LIBFT_FOLDER	=	./libft/
@@ -26,8 +26,13 @@ VPATH			=	$(SRC_FOLDER)
 
 SRCS =	Main.c				\
 		Error.c				\
+		utils_1.c			\
+		lexer.c				\
 		Parser.c			\
-		parser_utils_1.c
+		parser_utils_1.c	\
+		executor.c			\
+		enviromentvars.c	\
+		redirections.c
 
 OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))
 
