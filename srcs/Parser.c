@@ -214,6 +214,7 @@ int Executor(t_words **INstruct)
 		{
 			if (i == 0)
 			{
+				redirection
 				// printf("Start:\n");
 				dup2(pipe_fd[i][1], STDOUT_FILENO);
 				close(pipe_fd[i][0]);
@@ -221,6 +222,8 @@ int Executor(t_words **INstruct)
 			}
 			else if (is_pipe(INstruct, i))
 			{
+				redirection
+
 				// printf("Mid:\n");
 				dup2(pipe_fd[i-1][0], STDIN_FILENO);
 				close(pipe_fd[i-1][0]);
@@ -232,7 +235,8 @@ int Executor(t_words **INstruct)
 			else
 			{
 				// printf("End:\n");
-				
+				redirection
+
 				dup2(pipe_fd[i-1][0], STDIN_FILENO);
 				close(pipe_fd[i-1][0]);
 				close(pipe_fd[i-1][1]);
