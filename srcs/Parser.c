@@ -404,12 +404,11 @@ int	parser(t_data *data,int i)
 	}
 	else if (cmp_keyword("cd", data->INstruct[i]->word_clean))
 	{//works add envp alteration
-		cd(data->INstruct[i]->word_clean);
+		cd(data->INstruct[i]->word_clean, &data->envp);
 	}
 	else if (cmp_keyword("export", data->INstruct[i]->word_clean))
-	{//works but also if variable is present,
-	//update the value, either by rewrite or deleting,with unset?
-		//unset(data->INstruct[i]->word_clean, &data->envp);
+	{//works
+		unset(data->INstruct[i]->word_clean, &data->envp);
 		export(data->INstruct[i]->word_clean, &data->envp);
 	}
 	else if (cmp_keyword("unset", data->INstruct[i]->word_clean))

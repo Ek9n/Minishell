@@ -53,7 +53,7 @@ char	*getpwd(void)
 	return (buf);
 }
 
-int	cd(char *dir)
+int	cd(char *dir, char ***env)
 {
 	if (dir[2] == ' ')
 		dir += 3;
@@ -63,6 +63,8 @@ int	cd(char *dir)
         perror("(cd) No valid pathname!");
         return (EXIT_FAILURE);
     }
+	export(ft_strjoin("OLDPWD=", getpwd()),env);
+	export(ft_strjoin("PWD=", dir),env);
 	return (EXIT_SUCCESS);
 }
 

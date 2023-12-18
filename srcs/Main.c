@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/18 13:07:46 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/18 13:53:46 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ int	main(int argc, char **argv, char **envp)
 	struct sigaction	act;
 	t_data				*data;
 	char				*input;
-	int					b;
 
 	(void)argc;
 	(void)argv;
-	b = 0;
 	data = init_data(data, envp); // Allocate memory for data
 	sigemptyset(&act.sa_mask);
 	act.sa_sigaction = &signal_handler;

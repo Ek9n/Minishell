@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/18 12:13:42 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/18 14:21:06 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	printenv(char **env);
 void	unset(char *str, char ***env);
 void	export(char *str, char ***env);
 char	*echo(char *word);
-int		cd(char *dir);
+int		cd(char *dir, char ***env);
 int		ls(char *dir);
 char	*getpwd(void);
 		//make exit
