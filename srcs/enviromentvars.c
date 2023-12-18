@@ -107,31 +107,26 @@ void	freeenv(char **env)
 
 void    delete_env_var(char *name, char ***env)
 {
-    int size = cntenv(*env);
-    char    **new_env = 0;
-    int i;
-    int j;
-    new_env = ft_calloc(size + 1, sizeof(char *));
-    i = 0;
-    j = 0;
-    while (env[0][i] != NULL)
-    {
-        if (ft_strcmp(name, env[0][i]) == 0 && (env[0][i][ft_strlen(name)] == '\0' || env[0][i][ft_strlen(name)] == '='))
-        {
-            // printf("HLLO:::%c\n", env[0][i][ft_strlen(env[0][i])]);
-            // printf("LEN:::%zu\n", ft_strlen(env[0][i]));
-            // printf("STR:::%s\n", env[0][i]);
-            free(env[0][i]);
-        }
-        else
-        {
-            new_env[j] = env[0][i];
-            j++;
-        }
-        i++;
-    }
-    free(*env);
-    *env = new_env;
+	int size = cntenv(*env);
+	char    **new_env = 0;
+	int i;
+	int j;
+	new_env = ft_calloc(size + 1, sizeof(char *));
+	i = 0;
+	j = 0;
+	while (env[0][i] != NULL)
+	{
+		if (ft_strcmp(name, env[0][i]) == 0 && (env[0][i][ft_strlen(name)] == '\0' || env[0][i][ft_strlen(name)] == '='))
+			free(env[0][i]);
+		else
+		{
+			new_env[j] = env[0][i];
+			j++;
+		}
+		i++;
+	}
+	free(*env);
+	*env = new_env;
 }
 
 void	add_env_var(char *name, char ***env)
@@ -215,21 +210,23 @@ int	correct_input(char **cmds)
 	}
 	return (1);
 }
-void	purge_arr(char *cmds,char ***env)
+
+static void	purge_arr(char *cmds,char ***env)
 {
 	char **temp;
 	int a;
-	a = 0;
 
-			temp = ft_split(cmds, '=');
-			delete_env_var(temp[0], env);
-			while(temp[a])
-			{
-				free(temp[a]);
-				a++;
-			}
-			free(temp);
+	a = 0;
+	temp = ft_split(cmds, '=');
+	delete_env_var(temp[0], env);
+	while(temp[a])
+	{
+		free(temp[a]);
+		a++;
+	}
+	free(temp);
 }
+
 void	export(char *str, char ***env)
 {
 	char	**cmds;
