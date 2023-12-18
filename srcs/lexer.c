@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/16 18:34:53 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/18 17:02:10 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ t_words	**init_word_stack(char *line,t_words **words)
 			words[b]->token_after_word = tokenizer(&line);
 			words[b] -> redirection = check_token_syntax(words[b]->token_after_word);
 		}
+		words[b]->fd_in = 0;
+		words[b]->fd_out = 1;
 		b++;
 		i = 0;
 	}

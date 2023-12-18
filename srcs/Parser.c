@@ -167,7 +167,12 @@ static int	is_redirection(t_words **INstruct, int i)
 }
 
 /*
-executor {
+executor 
+commands pipes redirections.
+
+
+
+{
 	while(words)
 	{
 		if just word
@@ -177,8 +182,8 @@ executor {
 cat < file1 > file2 | wc -l | grep \n
 cat file1 > file2 | wc file 2 | grep \n  
 cat file2 | wc file 2 | grep \n  
-cat wc file 2 | grep \n  
-
+cat wc file 2  grep \n  
+| dkfdfhjkdhgfgjgb  | <><><>< | sjdfbkjdgbgd |
 */
 
 int Executor(t_words **INstruct)
@@ -227,6 +232,7 @@ int Executor(t_words **INstruct)
 			else
 			{
 				// printf("End:\n");
+				
 				dup2(pipe_fd[i-1][0], STDIN_FILENO);
 				close(pipe_fd[i-1][0]);
 				close(pipe_fd[i-1][1]);

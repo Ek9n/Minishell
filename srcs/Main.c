@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/18 15:32:29 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/18 16:23:30 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	main(int argc, char **argv, char **envp)
 		// printf("After routine (in main)!\n");
 	}
 }
-
+// for builtins make a function to trigger executor, if command matches
+//a builtin, execute that one.
 // int	main(int argc, char **argv, char **envp)
 // {
 // 	struct sigaction	act;
