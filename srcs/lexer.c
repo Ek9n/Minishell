@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/18 17:02:10 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/19 22:13:52 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,25 @@ char *tokenizer(char **line)
 		puterr(SYNERR);	
 	return(buffer);
 }
+void 	print_words(t_words **words)
+{
+	int i;
+	int b;
 
+	i = 0;
+	b = 0;
+	while (words[i] != NULL)
+	{
+		printf("word: %s\n",words[i]->word_clean);
+		printf("token: %s\n",words[i]->token_after_word);
+		printf("num_of_elements: %d\n",words[i]->num_of_elements);
+		printf("redirection: %d\n",words[i]->redirection);
+		printf("fd_in: %d\n",words[i]->fd_in);
+		printf("fd_out: %d\n",words[i]->fd_out);
+		printf("quotes_case: %d\n",words[i]->quotes_case);
+		i++;
+	}
+}
 t_words	**init_word_stack(char *line,t_words **words)
 {
 	int	i;
@@ -110,7 +128,7 @@ t_words	**init_word_stack(char *line,t_words **words)
 			puterr(ALLOCERR);// exit with failure
 		i = 0;
 		if (!is_in_quotes(line))
-			while (line[i] && (line[i] != '>' && line[i] != '&' && line[i] != '|' && line[i] != '<'))
+			while (line[i] && line[i] != '|')
 				i++;
 		else
 		{
@@ -135,5 +153,6 @@ t_words	**init_word_stack(char *line,t_words **words)
 		words[i++]->num_of_elements = b;
 	clean_words(words);
 	free_dirty_words(words);
+	print_words(words);
 	return(words);
 }
