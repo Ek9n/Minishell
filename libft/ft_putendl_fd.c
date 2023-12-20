@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
+/*   ft_putend_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 16:51:47 by sung-hle          #+#    #+#             */
-/*   Updated: 2022/12/09 20:52:46 by sung-hle         ###   ########.de       */
+/*   Created: 2022/12/22 15:05:03 by jfoltan           #+#    #+#             */
+/*   Updated: 2022/12/22 15:05:04 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
+#include <unistd.h>
 
 void	ft_putendl_fd(char *s, int fd)
 {
-	ft_putstr_fd(s, fd);
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+	{
+		write((unsigned int)fd, &s[i], 1);
+		i++;
+	}
 	write(fd, "\n", 1);
 }
-
-/*int main()
-{
-    ft_putendl_fd("hello world", 1);
-}*/

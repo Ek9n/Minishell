@@ -3,45 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/13 20:51:40 by sung-hle          #+#    #+#             */
-/*   Updated: 2022/12/13 20:57:21 by sung-hle         ###   ########.de       */
+/*   Created: 2023/01/03 09:42:57 by jfoltan           #+#    #+#             */
+/*   Updated: 2023/01/03 09:42:58 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "libft.h"
 
 int	ft_lstsize(t_list *lst)
 {
-	int	i;
+	int	n;
 
-	i = 0;
-	while (lst != NULL)
+	n = 0;
+	while (lst)
 	{
-		i++;
 		lst = lst->next;
+		n++;
 	}
-	return (i);
+	return (n);
 }
-/*
-int main()
-{
-	t_list	*a, *b, *c, *d;
-	char aa[] = "aaa";
-	char bb[] = "bbb";
-	char cc[] = "ccc";
-	char dd[] = "ddd";
-	int	size;
-
-	a = ft_lstnew(aa);
-	b = ft_lstnew(bb);
-	c = ft_lstnew(cc);
-	d = ft_lstnew(dd);
-	ft_lstadd_back(&a, ft_lstnew(b));
-	ft_lstadd_back(&a, ft_lstnew(c));
-	ft_lstadd_back(&a, ft_lstnew(d));
-	
-	printf("%d\n", ft_lstsize(a));
-	return (0);
-}*/

@@ -3,34 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/12 16:37:45 by sung-hle          #+#    #+#             */
-/*   Updated: 2022/12/13 14:27:14 by sung-hle         ###   ########.de       */
+/*   Created: 2022/12/21 16:51:00 by jfoltan           #+#    #+#             */
+/*   Updated: 2023/07/14 20:54:21 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	unsigned int	i;
-	char			*res;
+	size_t	i;
+	char	*ptr;
 
 	i = 0;
-	res = (char *) malloc((ft_strlen(s) + 1) * sizeof(char));
-	if (!s || !f || res == NULL)
-		return (0);
-	while (s[i] != '\0')
+	if (!s || !f)
+		return (NULL);
+	ptr = malloc(sizeof(char) * (ft_strlen(s) + 1));
+	if (!ptr)
+		return (NULL);
+	while (s[i])
 	{
-		res[i] = f(i, ((char *)s)[i]);
+		ptr[i] = f(i, s[i]);
 		i++;
 	}
-	res[i] = '\0';
-	return (res);
+	ptr[i] = '\0';
+	return (ptr);
 }
-
-/*if (!f)
-		return ((char *) s);
-		rausgenommen, weil successive application.
-		 kein f, keine successive app*/

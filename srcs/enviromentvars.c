@@ -78,32 +78,6 @@ void	freeenv(char **env)
 	free(env);
 }
 
-// char	**delete_env_var(char *name, char **env)
-// {
-// 	int	size = cntenv(env);
-
-// 	char	**new_env = 0;
-
-// 	new_env = ft_calloc(size, sizeof(char *));
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (env[i] != NULL)
-// 	{
-// 		if (ft_strcmp(name, env[i]) != 0)
-// 		{
-// 			new_env[j] = env[i];
-// 			j++;
-// 		}
-// 		else
-// 			free(env[i]);
-// 		i++;
-// 	}
-// 	free(env);
-// 	return (new_env);
-// }
 
 void    delete_env_var(char *name, char ***env)
 {
@@ -168,23 +142,7 @@ void	unset(char *str, char ***env)
 		i++;
 	}
 }
-// char	**add_env_var(char *name, char **env)
-// {
-// 	int		size = cntenv(env);
-// 	int		i;
-// 	char	**new_env;
 
-// 	new_env = ft_calloc(size + 1, sizeof(char *));
-// 	i = 0;
-// 	while (env[i] != NULL)
-// 	{
-// 		new_env[i] = env[i];
-// 		i++;
-// 	}
-// 	new_env[i] = name;
-// 	free(env);
-// 	return (new_env);
-// }
 
 int	correct_input(char **cmds)
 {

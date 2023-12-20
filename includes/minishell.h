@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/18 17:55:02 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/20 16:10:37 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,14 @@
 # include <errno.h>
 # include <fcntl.h>
 
-typedef struct t_words
+typedef struct redirection
+{
+	char  *whole_command;
+	int		fd_out;
+	int		fd_in;
+} 	t_redirection;
+
+typedef struct s_words
 {
 	char	*word; //julius Lexer
 	char	*word_clean; //Hannes Parser
@@ -36,9 +43,7 @@ typedef struct t_words
 	int		quotes_case;
 	char	*token_after_word; //julius Lexer
  	char 	*output; // Hannes Parser
-	int		redirection;
-	int		fd_out;
-	int		fd_in;
+	t_redirection	*redirection;
 }	t_words;
 typedef struct s_data
 {
@@ -72,6 +77,7 @@ char	*getpwd(void);
 void	init_redirection(t_words **words, int i);
 int		check_for_redirection(t_words **words);
 // LEXER 
+void	clean_word(t_words *INstruct);
 int		is_in_quotes(char * line);
 int		check_token_syntax(char *str);
 char	*trimstr(char *str,int i);

@@ -15,9 +15,15 @@ int	ft_strcmp(const char *s1, const char *s2)
 	}
 	return (0);
 }
-void free_dirty_words(t_words **words) {
-    while (*words) {
-        free((*words)->word);
+void free_dirty_words(t_words **words) 
+{
+	int i;
+
+	i = 0;
+    while (words[i])
+	{
+		words[i]-> word_clean = ft_strdup(words[i]->word);
+        free((words[i])->word);
         (*words)->word = NULL;
         words++;
     }

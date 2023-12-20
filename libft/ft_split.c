@@ -3,118 +3,84 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 16:18:57 by sung-hle          #+#    #+#             */
-/*   Updated: 2023/02/17 17:36:54 by sung-hle         ###   ########.fr       */
+/*   Created: 2022/12/19 18:44:02 by jfoltan           #+#    #+#             */
+/*   Updated: 2023/09/27 13:03:12 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	**ft_free(char **str)
+static int	ft_delicount(char const *s, char c)
 {
-	int	i;
+	int	switcharoony;
+	int	a;
 
-	i = 0;
-	while (str[i])
+	switcharoony = 0;
+	a = 0;
+	while (*s)
 	{
-		free (str[i]);
-		i++;
-	}
-	free (str);
-	return (NULL);
-}
-
-static size_t	countwords(char const *s, char c)
-{
-	size_t	i;
-	size_t	count;
-
-	count = 0;
-	i = 0;
-	if (c == '\0')
-		return (1);
-	while (s[i] != '\0')
-	{
-		if (s[i] != c)
+		if (*s != c && switcharoony == 0)
 		{
-			count++;
-			while (s[i] != c && s[i] != '\0')
-				i++;
+			switcharoony = 1;
+			a++;
 		}
-		while (s[i] == c)
-			i++;
+		else if (*s == c)
+			switcharoony = 0;
+		s++;
 	}
-	return (count);
+	return (a);
 }
 
-static size_t	wordlen(char const *s, char c, int i)
+static int	ft_sizecount(char const *s, char c, int i)
 {
-	size_t	len;
+	int	d;
 
-	len = 0;
-	while (s[i] != c && s[i] != '\0')
+	d = 0;
+	while (s[i] != c && s[i])
 	{
-		len++;
 		i++;
+		d++;
 	}
-	return (len);
+	return (d);
 }
 
-static char	**sub(char const *s, char c, size_t count)
+static void	ft_freemebaby(char **ptr, int f)
 {
-	size_t	i;
-	size_t	j;
-	char	**res;
-	size_t	len;
-
-	i = 0;
-	j = 0;
-	res = (char **)malloc(sizeof(char *) * (count + 1));
-	if (res == NULL)
-		return (0);
-	while (j < count && (size_t)i < ft_strlen(s))
+	while (f > -1)
 	{
-		if (s[i] == c)
-			i++;
-		else
-		{
-			len = wordlen(s, c, i);
-			res[j] = ft_substr(s, (unsigned int) i, len);
-			if (!res[j++])
-				return (ft_free(res));
-			i += len;
-		}
+		free(ptr[f]);
+		f--;
 	}
-	res[j] = NULL;
-	return (res);
+	free(ptr);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**res;
-	size_t	count;
+	int		i;
+	int		a;
+	int		f;
+	char	**ptr;
 
-	if (s == NULL)
-		return (0);
-	count = countwords(s, c);
-	res = sub(s, c, count);
-	if (!res)
-		return (0);
-	return (res);
+	i = 0;
+	f = -1;
+	a = ft_delicount(s, c);
+	ptr = (char **)malloc((a + 1) * sizeof(char *));
+	if (!ptr)
+		return (NULL);
+	while (++f < a)
+	{
+		while (s[i] == c)
+			i++;
+		ptr[f] = ft_substr(s, i, ft_sizecount(s, c, i));
+		if (!ptr[f])
+		{
+			ft_freemebaby(ptr, f);
+			return (NULL);
+		}
+		i = ft_sizecount(s, c, i) + i;
+	}
+	ptr[f] = NULL;
+	return (ptr);
 }
-/*
-int main()
-{
-    char    test[] = "0000000abcde000000blagiu00";
-    char    del = '\0';
-    char    **res;
-    int     i = 0;
-
-	res = ft_split(test, del);
-	while (i < 1)
-		printf("%s\n", res[i++]);
-    
-    free(res);
-}*/

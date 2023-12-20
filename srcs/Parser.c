@@ -13,21 +13,16 @@ int	cmp_keyword(char *keyword, char *str)
 
 void	skip_prespaces(char **str)
 {
-	// while (**str == ' ')
 	while (*(str[0]) == ' ')
-		(*str)++; // Inkrementiere den Zeiger auf die Zeichenkette, um Leerzeichen zu überspringen
+		(*str)++; 
 }
 
 char	*clean_spaces(char *word)
 {
 	char	*tmp_word;
 
-	// tmp_word = word;
-	printf("|%s|\n", word);
 	skip_prespaces(&word); /// macht das sinn?... 
-	word = ft_strdup(word); //FREE
-
-	printf("|%s|\n", word);
+	word = ft_strdup(word); //FREE // WTF
 	return (word);
 }
 
@@ -170,20 +165,6 @@ static int	is_redirection(t_words **INstruct, int i)
 executor 
 commands pipes redirections.
 
-
-
-{
-	while(words)
-	{
-		if just word
-	}
-}
-
-cat < file1 > file2 | wc -l | grep \n
-cat file1 > file2 | wc file 2 | grep \n  
-cat file2 | wc file 2 | grep \n  
-cat wc file 2  grep \n  
-| dkfdfhjkdhgfgjgb  | <><><>< | sjdfbkjdgbgd |
 */
 
 int Executor(t_words **INstruct)
@@ -200,11 +181,9 @@ int Executor(t_words **INstruct)
 		pipe_fd[i] = malloc(2 * sizeof(int));
 		if (pipe(pipe_fd[i]) == -1)
 			error_exit("(piperino6) Pipe creation failed\n");
-		// printf("pipe[%d]:read=%d, write=%d\n", i, pipe_fd[i][0], pipe_fd[i][1]);
 		i++;
 	}
 	i = 0;
-	// while (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && INstruct[i]->token_after_word[0] == '|')
 	while (INstruct[i] != NULL)
 	{
 		cmd1 = ft_split(INstruct[i]->word_clean, ' ');
@@ -221,21 +200,15 @@ int Executor(t_words **INstruct)
 			}
 			else if (is_pipe(INstruct, i))
 			{
-	
-
-				// printf("Mid:\n");
 				dup2(pipe_fd[i-1][0], STDIN_FILENO);
 				close(pipe_fd[i-1][0]);
 				close(pipe_fd[i-1][1]);
 				dup2(pipe_fd[i][1], STDOUT_FILENO);
-				close(pipe_fd[i][0]); //
+				close(pipe_fd[i][0]);
 				close(pipe_fd[i][1]);
 			}
 			else
 			{
-				// printf("End:\n");
-	
-
 				dup2(pipe_fd[i-1][0], STDIN_FILENO);
 				close(pipe_fd[i-1][0]);
 				close(pipe_fd[i-1][1]);
@@ -251,7 +224,7 @@ int Executor(t_words **INstruct)
 		free_piperino2(INstruct[i], cmd1, path1);
 		i++;
 	}
-	// printf("ANZAHL PROZESSE:%d\n", i);
+
 	int cnt = i;
 	while (cnt-- >= 0)
 	{
@@ -312,8 +285,6 @@ int	piperino6(t_words **INstruct)
         free_piperino2(INstruct[i], cmd1, path1);
         i++;
     }
-
-    // Close the write ends of the pipes in the parent process after all child processes have been forked
     for (int j = 0; j < i; j++)
     {
         if (is_pipe(INstruct, j))
@@ -322,11 +293,10 @@ int	piperino6(t_words **INstruct)
         }
     }
 
-    // Wait for all child processes to finish
     for (int j = 0; j < i; j++)
     {
         waitpid(pids[j], NULL, 0);
-    }
+	}
 
     return (i);
 }
@@ -386,7 +356,7 @@ int piperino5(t_words **INstruct)
 void	routine(t_data	*data)
 {
 	int	i;
-	// printf("elements:%d\n", INstruct[0]->num_of_elements);
+
 	i = 0;
 	while (i < data->INstruct[0]->num_of_elements)
 	{
@@ -402,36 +372,29 @@ void	routine(t_data	*data)
 int	parser(t_data *data,int i)
 {
 	if (cmp_keyword("echo", data->INstruct[i]->word_clean))
-	{ //works
+	{
 		data->INstruct[i]->output = echo(data->INstruct[i]->word_clean);
 		printf("%s", data->INstruct[i]->output);
 	}
 	else if (cmp_keyword("pwd",data->INstruct[i]->word_clean))
-	{//works
+	{
 		data->INstruct[i]->output = getpwd();
 		printf("%s\n", data->INstruct[i]->output);
 	}
 	else if (cmp_keyword("cd", data->INstruct[i]->word_clean))
-	{//works 
 		cd(data->INstruct[i]->word_clean, &data->envp);
-	}
 	else if (cmp_keyword("export", data->INstruct[i]->word_clean))
-	{//works
+	{
 		unset(data->INstruct[i]->word_clean, &data->envp);
 		export(data->INstruct[i]->word_clean, &data->envp);
 	}
 	else if (cmp_keyword("unset", data->INstruct[i]->word_clean))
-	{//works
 		unset(data->INstruct[i]->word_clean, &data->envp);
-	}
 	else if (cmp_keyword("env", data->INstruct[i]->word_clean))
-	{//works
 		printenv(data->envp);
-	}
 	else if (cmp_keyword("exit", data->INstruct[i]->word_clean))
-	{//still have to handle
+	//still have to handle
 		exit(EXIT_SUCCESS);
-	}
 	else
 		executor(data->INstruct[i]->word_clean, data->envp);
 	return (0);

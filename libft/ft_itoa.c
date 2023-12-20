@@ -3,81 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/12 16:33:39 by sung-hle          #+#    #+#             */
-/*   Updated: 2022/12/13 14:28:19 by sung-hle         ###   ########.de       */
+/*   Created: 2022/12/20 18:22:47 by jfoltan           #+#    #+#             */
+/*   Updated: 2023/07/14 21:01:24 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	nlen(int n)
+static int	ft_isneg(long f)
 {
-	size_t	counter;
-
-	counter = 1;
-	if (n < 0)
-	{
-		n *= -1;
-		counter++;
-	}
-	while (n >= 10)
-	{
-		n /= 10;
-		counter++;
-	}
-	return (counter);
+	if (f < 0)
+		return (1);
+	return (0);
 }
 
-static char	*fillres(char *res, int n, size_t counter, size_t i)
+static	int	ft_len(long l)
 {
-	if (n < 0)
+	int	i;
+
+	i = 0;
+	if (ft_isneg(l))
 	{
-		res[i] = '-';
-		n *= -1;
+		i++;
+		l = l * -1;
+	}
+	while (l >= 10)
+	{
+		l = l / 10;
 		i++;
 	}
-	res[counter] = '\0';
-	while (i < counter)
-	{
-		res[counter - 1] = n % 10 + '0';
-		n /= 10;
-		counter--;
-	}
-	return (res);
+	return (i);
 }
 
 char	*ft_itoa(int n)
 {
-	size_t		i;
-	size_t		counter;
-	char		*res;
+	char	*ptr;
+	int		i;
+	long	f;
 
-	counter = nlen(n);
-	if (n == -2147483648)
-		counter = 11;
-	i = 0;
-	res = (char *)malloc((counter + 1) * sizeof(char));
-	if (res == NULL)
-		return (0);
-	if (n == -2147483648)
+	f = n;
+	i = ft_len(f);
+	if (f < 0)
+		f = f * -1;
+	ptr = (char *)malloc(sizeof(char) * i + 2);
+	if (!ptr)
+		return (NULL);
+	ptr[i + 1] = 0;
+	while (i >= 0)
 	{
-		res[0] = '-';
-		res[1] = '2';
-		res = fillres(res, 147483648, 11, 2);
+		ptr[i--] = f % 10 + '0';
+		f = f / 10;
 	}
-	else
-		res = fillres(res, n, counter, i);
-	return (res);
+	if (n < 0)
+		ptr[0] = '-';
+	return (ptr);
 }
-/*
-int main(int a, char **b)
-{
-	char	*test;
-       
-	(void) a;
-	test = ft_itoa(ft_atoi(b[1]));
-	printf("%s\n", test);
-	free(test);
-}*/

@@ -3,22 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/04 12:48:36 by sung-hle          #+#    #+#             */
-/*   Updated: 2022/12/09 16:07:45 by sung-hle         ###   ########.de       */
+/*   Created: 2022/11/29 11:05:30 by jfoltan           #+#    #+#             */
+/*   Updated: 2022/11/29 11:05:31 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <stdio.h>
-#include <ctype.h>
+#include "libft.h"
 
 int	ft_isascii(int c)
 {
-	return (0 <= c && c <= 127);
+	return ((c >= 0) && (c <= 127));
 }
-/*
-int main()
-{
-	
-}*/

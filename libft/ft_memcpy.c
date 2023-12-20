@@ -3,42 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/04 14:20:00 by sung-hle          #+#    #+#             */
-/*   Updated: 2022/12/23 16:58:47 by sung-hle         ###   ########.fr       */
+/*   Created: 2022/12/07 15:58:01 by jfoltan           #+#    #+#             */
+/*   Updated: 2022/12/07 15:58:01 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <string.h>
-#include <stdio.h>
+#include "libft.h"
+#include <stddef.h>
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t	i;
+	char		*dst;
+	const char	*source;
+	size_t		i;
 
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	source = (const char *)src;
+	dst = (char *)dest;
 	i = 0;
-	if (!dest && !src)
-		return (0);
 	while (i < n)
 	{
-		((unsigned char *) dest)[i] = ((unsigned char *) src)[i];
+		dst[i] = source[i];
 		i++;
 	}
 	return (dest);
 }
-
-/*
-if (!src)
-		return (dest);
-	if (!dest)
-		return (0);
-
-int main()
-{
-	char	target[] = "abcdef";
-	char	source[] = "ghijkl";
-	size_t	n = 5;
-
-	printf("%s\n", ((char *)ft_memcpy(target, source, n)));
-}*/

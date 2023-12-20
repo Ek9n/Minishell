@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/11/10 13:42:52 by hstein           ###   ########.fr       */
+/*   Updated: 2023/12/18 18:24:15 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	executor(char *clean_word, char **envp)
 {
-	// int	i;
+
 	int pid;
 	(void)envp;
-	// i = 0;
+
 	char	**args = ft_split(clean_word, ' ');
-	// printf("->%s\n", clean_word);
+
 	if ((pid = fork()) == -1)
 	perror("fork error");
 	else if (pid == 0) 
@@ -31,10 +31,5 @@ void	executor(char *clean_word, char **envp)
 	{
 		waitpid(0, NULL, 0);
 	}
-	/*while (envp[i])
-	{
-		printf("value: %s\n",envp[i]);
-		fflush(0);
-		i++;
-	}*/
+
 }

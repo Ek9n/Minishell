@@ -3,136 +3,111 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/28 05:48:25 by sung-hle          #+#    #+#             */
-/*   Updated: 2023/01/25 13:56:15 by sung-hle         ###   ########.fr       */
+/*   Created: 2023/04/26 14:57:20 by jfoltan           #+#    #+#             */
+/*   Updated: 2023/11/18 12:26:52 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*justline(char **buf, size_t *i, size_t *len)
+char	*ft_nextline(char *buff)
 {
-	char	*line;
-
-	*len = ft_gnllen(*buf);
-	while ((*buf)[++(*i)])
-	{
-		if ((*buf)[*i] == '\n')
-			break ;
-	}
-	line = (char *)ft_calloc_gnl((*i) + 2);
-	if (line == NULL)
-		return (line);
-	ft_gnllcpy(line, *buf, (*i) + 2);
-	if (*len == (*i))
-	{
-		free(*buf);
-		*buf = NULL;
-		return (line);
-	}
-	return (line);
-}
-
-static char	*nline_andbuf(char **buf)
-{
-	char		*line;
-	char		*newbuf;
-	size_t		len;
-	size_t		i;
-	size_t		j;
-
-	i = -1;
-	j = 0;
-	line = justline(buf, &i, &len);
-	if (*buf == NULL)
-		return (line);
-	if (line == NULL)
-		return (line);
-	len = len - i;
-	newbuf = *buf;
-	*buf = (char *)ft_calloc_gnl(len);
-	if (*buf == NULL)
-		return (*buf);
-	while (i < ft_gnllen(newbuf))
-		(*buf)[j++] = newbuf[1 + i++];
-	free(newbuf);
-	return (line);
-}
-
-static char	*gnl_join(char *a, char *b)
-{
-	char	*joined;
-	size_t	len;
-	size_t	jsize;
-	size_t	i;
+	char	*next;
+	int		i;
+	int		a;
 
 	i = 0;
-	len = ft_gnllen(a) + ft_gnllen(b);
-	joined = (char *)ft_calloc_gnl(len + 1);
-	if (joined == NULL)
-		return (joined);
-	ft_gnllcpy(joined, a, ft_gnllen(a) + 1);
-	jsize = ft_gnllen(joined);
-	while (jsize + i < len && b[i] != '\0')
-	{
-		joined[jsize + i] = b[i];
+	a = 0;
+	while (buff[i] && buff[i] != '\n')
 		i++;
+	if (!buff[i])
+	{
+		free(buff);
+		return (NULL);
 	}
-	joined[jsize + i] = '\0';
-	free(a);
-	free(b);
-	return (joined);
+	next = ft_calloc(((ft_strlen(buff)) - i + 1), sizeof(char));
+	i++;
+	while (buff[i])
+	{
+		next[a] = buff[i];
+		i++;
+		a++;
+	}
+	free (buff);
+	return (next);
 }
 
-static char	*get_line_with_n(int fd, char **buf)
+char	*ft_get_line(char *buff)
 {
-	int			go;
-	char		*tmp;
-	char		*joined;
-	ssize_t		r;
+	char	*line;
+	int		i;
 
-	go = 1;
-	while (go)
+	i = 0;
+	if (!buff[i])
+		return (NULL);
+	while (buff[i] && buff[i] != '\n')
+		i++;
+	line = ft_calloc(i + 2, sizeof(char));
+	i = 0;
+	while (buff[i] && buff[i] != '\n')
 	{
-		tmp = (char *)ft_calloc_gnl(BUFFER_SIZE + 1);
-		if (tmp == NULL)
-			return (tmp);
-		r = read(fd, tmp, BUFFER_SIZE);
-		if (ft_strchr(tmp, '\n'))
-			go = 0;
-		joined = gnl_join(*buf, tmp);
-		if (joined == NULL)
-			return (joined);
-		*buf = joined;
-		if ((r > 0 && r < BUFFER_SIZE) || (r == 0 && ft_gnllen(*buf) > 0))
-			return (*buf);
-		if (r <= 0)
-			return (0);
+		line[i] = buff[i];
+		i++;
 	}
-	return (*buf);
+	if (buff[i] && buff[i] == '\n')
+		line[i++] = '\n';
+	return (line);
+}
+
+char	*ft_freemebaby(char *result, char *buff)
+{
+	char	*temp;
+
+	temp = ft_strjoin (result, buff);
+	free (result);
+	return (temp);
+}
+
+char	*ft_read_file(int fd, char *result)
+{
+	int		bytes_read;
+	char	*buff;
+
+	bytes_read = 1;
+	if (!result)
+		result = ft_calloc(1, 1);
+	buff = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	while (bytes_read > 0)
+	{
+		bytes_read = read(fd, buff, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free (buff);
+			free (result);
+			return (NULL);
+		}
+		buff[bytes_read] = 0;
+		result = ft_freemebaby(result, buff);
+		if (ft_strchr(result, '\n'))
+			break ;
+	}
+	free (buff);
+	return (result);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buf;
-	char		*line;
+	static char		*buff;
+	char			*line;
 
-	if (!buf)
-		buf = (char *)ft_calloc_gnl(1);
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (ft_freebuf(&buf));
-	if (ft_strchr(buf, '\n'))
-		line = nline_andbuf(&buf);
-	else
-	{
-		line = get_line_with_n(fd, &buf);
-		if (line == NULL)
-			return (ft_freebuf(&buf));
-		line = nline_andbuf(&buf);
-	}
-	if (line == NULL)
-		return (0);
+		return (NULL);
+	buff = ft_read_file(fd, buff);
+	if (!buff)
+		return (NULL);
+	line = ft_get_line(buff);
+	buff = ft_nextline(buff);
 	return (line);
 }

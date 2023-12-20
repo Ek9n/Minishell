@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   bzero.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/04 13:58:04 by sung-hle          #+#    #+#             */
-/*   Updated: 2022/12/04 14:05:53 by sung-hle         ###   ########.de       */
+/*   Created: 2022/12/07 10:56:39 by jfoltan           #+#    #+#             */
+/*   Updated: 2022/12/07 10:56:39 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include <string.h>
-#include <stdio.h>
+#include "libft.h"
+#include <stddef.h>
 
 void	ft_bzero(void *s, size_t n)
 {
-	size_t	i;
+	size_t			i;
+	unsigned char	*se;
 
 	i = 0;
+	se = (unsigned char *)s;
 	while (i < n)
 	{
-		((char *) s)[i] = '\0';
+		se[i] = 0;
 		i++;
 	}
+	s = se;
 }
-
-/*int main()
-{
-	char	test[] = "qwerty";
-	size_t	n = 3;
-
-	ft_bzero(test, n);
-	printf("%s\n", test);
-	printf("%c\n", test[5]);
-}*/

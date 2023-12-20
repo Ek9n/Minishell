@@ -3,47 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sung-hle <sung-hle@42student.berlin.de>    +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/09 16:33:35 by sung-hle          #+#    #+#             */
-/*   Updated: 2022/12/13 16:03:01 by sung-hle         ###   ########.de       */
+/*   Created: 2022/12/19 10:51:01 by jfoltan           #+#    #+#             */
+/*   Updated: 2022/12/19 10:51:02 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-// #include <bsd/string.h>
-// #include <stdio.h>
 #include "libft.h"
+#include <stddef.h>
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	size_t	len;
 	size_t	i;
+	size_t	j;
+	size_t	dstlen;
+	size_t	srclen;
 
-	len = ft_strlen(dst);
+	dstlen = ft_strlen(dst);
+	srclen = ft_strlen(src);
+	j = dstlen;
 	i = 0;
-	if (len > size)
-		return (ft_strlen(src) + size);
-	else
+	if (dstlen < size -1 && size > 0)
 	{
-		while (len + i + 1 < size && src[i] != '\0')
+		while (src[i] && dstlen + i < (size -1))
 		{
-			dst[len + i] = src[i];
+			dst[j] = src[i];
 			i++;
+			j++;
 		}
-		dst[len + i] = '\0';
-		return (len + ft_strlen(src));
+		dst[j] = 0;
 	}
+	if (dstlen >= size)
+		dstlen = size;
+	return (dstlen + srclen);
 }
-/*
-int main()
-{
-    char    target1[] = "abcde";
-	char	target2[] = "abcde";
-    char    source[] = "fghij";
-    size_t  n = 3;
-
-    printf("ft_: %lu\n", ft_strlcat(target1, source, n));
-	printf("org: %lu\n", strlcat(target2, source, n));
-    printf("t1: %s\n", target1);
-	printf("t2: %s\n", target2);
-}*/
