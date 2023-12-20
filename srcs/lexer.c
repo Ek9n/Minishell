@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/20 16:11:20 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/20 16:38:55 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int check_token_syntax(char *str)
 	}
 	return(0);
 }
+
 
 char	*trimstr(char *str,int i)
 {
@@ -111,14 +112,13 @@ void 	print_words(t_words **words)
 		printf("fd_out: %d\n",words[i]->redirection->fd_out);
 		printf("quotes_case: %d\n",words[i]->quotes_case);
 		printf("\n");
+		printf("\n");
+
 		
 		i++;
 	}
 }
-void	occupy_redirection(t_words	**words)
-{
-	return;	
-}
+
 int get_num_of_pipes(char * str)
 {
 	int i;
@@ -134,6 +134,7 @@ int get_num_of_pipes(char * str)
 	}	
 	return(i);
 }
+
 t_words	**init_word_stack(char *line, t_words **words)
 {
 	int	i;
@@ -164,9 +165,15 @@ t_words	**init_word_stack(char *line, t_words **words)
 		line = trimstr(line,i);
 		if (line[0] != '\0')
 			words[b]->token_after_word = tokenizer(&line);
-		words[b]->redirection = ft_calloc(1, sizeof(t_redirection ));
-		words[b]->redirection->fd_in = 0;
-		words[b]->redirection->fd_out = 1;
+			words[b]->redirection = ft_calloc(1, sizeof(t_redirection ));
+		if (ft_strchr(words[b]->word, '>') || ft_strchr(words[b]->word, '<'))
+		{
+			words[b]->redirection->whole_command = ft_strdup(words[b]->word);
+			words[b]->redirection->fd_in = 0;
+			words[b]->redirection->fd_out = 1;
+		}
+		else
+			words[b]->redirection->whole_command = NULL;
 		b++;
 		i = 0;
 	}
@@ -174,7 +181,6 @@ t_words	**init_word_stack(char *line, t_words **words)
 	while (words[i] != NULL)
 		words[i++]->num_of_elements = b;
 	clean_words(words);
-	occupy_redirection(words);
 	free_dirty_words(words);
 	print_words(words);
 	return(words);
