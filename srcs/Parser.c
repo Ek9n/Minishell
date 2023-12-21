@@ -216,6 +216,159 @@ int Executor(t_words **words)
 			if more tokens then RESEARCH BEHAVIOR OF BASH.
 
 */
+
+int	piperino8(t_words **INstruct, int i)
+{
+    char	**cmd1;
+    char	*path1;
+    int		**pipe_fd;
+    pid_t	pids[100];
+	int		j;
+
+    j = i;
+    pipe_fd = malloc(200 * sizeof(int *));
+    while (is_pipe(INstruct, j))
+    {
+        pipe_fd[j] = malloc(2 * sizeof(int));
+        if (pipe(pipe_fd[j]) == -1)
+            error_exit("(piperino6) Pipe creation failed\n");
+        j++;
+    }
+    while (INstruct[i] != NULL)
+    {
+        cmd1 = ft_split(INstruct[i]->word_clean, ' ');
+        path1 = ft_strjoin("/bin/", cmd1[0]);
+        pids[i] = fork();
+        if (pids[i] == 0)
+        {
+            if (i != 0)
+            {
+                dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+                close(pipe_fd[i - 1][0]);
+                close(pipe_fd[i - 1][1]);
+            }
+            if (is_pipe(INstruct, i))
+            {
+                dup2(pipe_fd[i][1], STDOUT_FILENO);
+                close(pipe_fd[i][0]);
+                close(pipe_fd[i][1]);
+            }
+			j = i;
+			while (is_pipe(INstruct, j))
+			{
+                close(pipe_fd[j][0]);
+                close(pipe_fd[j][1]);	
+				j++;		
+			}
+            execve(path1, cmd1, NULL);
+            perror("(piperino6) Exec1 failed");
+        }
+        else
+        {
+            if (i != 0)
+            {
+                close(pipe_fd[i - 1][0]);
+                close(pipe_fd[i - 1][1]);
+            }
+        }
+        free_piperino2(INstruct[i], cmd1, path1);
+        i++;
+    }
+    for (int j = 0; j < i; j++)
+    {
+        if (is_pipe(INstruct, j))
+        {
+            close(pipe_fd[j][0]);
+            close(pipe_fd[j][1]);
+        }
+    }
+    for (int j = 0; j < i; j++)
+    {
+        waitpid(pids[j], NULL, 0);
+    }
+    return (i);
+}
+/*
+Executor
+{
+    while (words)
+    {
+        if (is_redirection)
+        {
+            do(redirection function on all following words)
+        }
+        if (is_pipe)
+        {
+            do(pipes)
+            in pipes
+            {
+                -cnt pipes
+                -initialize pipes
+                -do the forking for each child
+                -if its the last word in the pipeproces:
+                    -if (is_redirection)
+            }
+        }
+    }
+}
+*/
+// void	init_redirection(t_words **words, int i)
+// {
+// 		if (words[i]->redirection == 2) // <
+// 		{
+// 			words[i]->fd_in = open(words[i + 1]->word, O_RDONLY);	
+// 			dup2(words[i]->fd_in, STDIN_FILENO);
+// 		}
+// 		if (words[i]->redirection == 3) // >
+// 		{
+// 			words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+// 			dup2(words[i]->fd_out, STDOUT_FILENO);
+// 		}
+// 	// while (words[i])
+// 	// {
+// 	// 	if (words[i]->redirection == 2)
+// 	// 	{
+// 	// 		words[i]->fd_in = open(words[i + 1]->word,O_RDONLY);	
+// 	// 		dup2(words[i]->fd_in, STDIN_FILENO);
+// 	// 	}
+// 	// 	if (words[i]->redirection == 3)
+// 	// 	{
+// 	// 		words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+// 	// 		dup2(words[i]->fd_out, STDOUT_FILENO);
+// 	// 	}
+// 	// 	if (words[i]-> redirection == 4)
+// 	// 		//ft_heredoc with readline
+// 	// 	if (words[i]-> redirection == 5)
+// 	// 		words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_APPEND, 0777);
+// 	// 	i++;
+// 	// }
+// }
+int Executor2(t_data *data)
+{
+	int	i = 0;
+
+	while (i < data->INstruct[0]->num_of_elements)
+	{
+		// if (is_redirection)
+		// {
+				// i += redirectionprog(INstruct, i)
+		// }
+		printf("rcmd:%s\n", data->INstruct[i]->redirection->whole_command);
+		if (data->INstruct[i]->redirection->whole_command[3] == '<') // <
+		{
+			data->INstruct[i]->redirection->fd_in = open("file", O_RDONLY);	
+			dup2(data->INstruct[i]->redirection->fd_in, STDIN_FILENO);
+		}
+		if (is_pipe(data->INstruct, i))
+		{
+			i += piperino8(data->INstruct, i);
+		}
+		else
+			single_command(data, i);
+		i++;
+	}
+	return (i);
+}
 int	piperino6(t_words **INstruct)
 {
     char	**cmd1;
@@ -253,6 +406,14 @@ int	piperino6(t_words **INstruct)
                 close(pipe_fd[i][0]);
                 close(pipe_fd[i][1]);
             }
+			int j = i;
+			while (is_pipe(INstruct, j))
+			{
+                close(pipe_fd[j][0]);
+                close(pipe_fd[j][1]);	
+				j++;		
+			}
+
             execve(path1, cmd1, NULL);
             perror("(piperino6) Exec1 failed");
         }
@@ -346,12 +507,12 @@ void	routine(t_data	*data)
 				data->INstruct[i]->token_after_word[0] == '|')
 			i += piperino6(&data->INstruct[i]);
 		else
-			parser(data,i);
+			single_command(data,i);
 		i++;
 	}
 }
 
-int	parser(t_data *data,int i)
+int	single_command(t_data *data,int i)
 {
 	if (cmp_keyword("echo", data->INstruct[i]->word_clean))
 	{

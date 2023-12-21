@@ -86,8 +86,10 @@ t_words	**init_word_stack(char *line, t_words **words);
 void	clean_words(t_words **INstruct);
 void free_dirty_words(t_words **words);
 // PARSER
-int		parser(t_data *data, int i);
+int		single_command(t_data *data, int i);
 void	routine(t_data	*data);
 // EXECUTOR 
 void	executor(char *clean_word, char **envp);
+int		Executor2(t_data *data);
+
 #endif

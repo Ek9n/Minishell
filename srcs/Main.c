@@ -49,8 +49,9 @@ int	main(int argc, char **argv, char **envp)
 		if (input)
 			add_history(input); // history works
 		data->INstruct = init_word_stack(input, data->INstruct);
-		//if (data->INstruct != NULL)
-			//routine(data);
+		if (data->INstruct != NULL)
+			Executor2(data);
+		
 		// printf("After routine (in main)!\n");
 	}
 }
