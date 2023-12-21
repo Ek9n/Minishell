@@ -166,74 +166,56 @@ executor
 commands pipes redirections.
 
 */
+/*
+int Executor(t_words **words)
 
-int Executor(t_words **INstruct)
-{
-	char	**cmd1;
-	char	*path1;
-	int		**pipe_fd;
-	pid_t	pids[100];
-	int		i = 0;
 
-	pipe_fd = malloc(200 * sizeof(int*));
-	while (is_pipe(INstruct, i))
-	{
-		pipe_fd[i] = malloc(2 * sizeof(int));
-		if (pipe(pipe_fd[i]) == -1)
-			error_exit("(piperino6) Pipe creation failed\n");
-		i++;
-	}
-	i = 0;
-	while (INstruct[i] != NULL)
-	{
-		cmd1 = ft_split(INstruct[i]->word_clean, ' ');
-		path1 = ft_strjoin("/bin/", cmd1[0]);
-		pids[i] = fork();
-		if (pids[i] == 0)
-		{
-			if (i == 0)
+		if simple command: (NO PIPE)
+			1. check for redirections
+				in case command has a < or << token, we have to go from right, until only tokens > or >> are left
+				afterwards we have to check if the command is a keyword
+				ONLY ONE COMMAND WITH ONE INPUT CAN BE LEFT BEFORE WE GET TO 2.
+			2. check if command is a keyword witch cat.
+			3.execve
+		if pipe:
+			get the output of the first command
+				1. check for redirections
+					in case command has a < or << token, we have to go from right, until only tokens > or >> are left
+					afterwards we have to check if the command is a keyword
+					ONLY ONE COMMAND WITH ONE INPUT CAN BE LEFT BEFORE WE GET TO 2.
+			2. check if command is a keyword
+				if it was redirected, putstr_fd with cat
+				if not dup2
+			3.
+			
+			while (words[i])
 			{
-				init_redirection(INstruct, i);
-				dup2(pipe_fd[i][1], STDOUT_FILENO);
-				close(pipe_fd[i][0]);
-				close(pipe_fd[i][1]);
+				if simple 
+				{
+					if check redirection
+						do redirection(it should rewrite contents of this words element) here we should consider that 
+						until fds are sorted evberything is waiting on that. 
+					if check keyword
+						do keyword on fd or on next word
+					else
+						execve with word
+				}
+				if pipe
+				sort out frist element with if simple
+					duplicate the output to the input of the next element
+						check keyword, if yes, do keyword on fd or on next word
+						else execve with word to dup2 stdout
+				i++;
 			}
-			else if (is_pipe(INstruct, i))
-			{
-				dup2(pipe_fd[i-1][0], STDIN_FILENO);
-				close(pipe_fd[i-1][0]);
-				close(pipe_fd[i-1][1]);
-				dup2(pipe_fd[i][1], STDOUT_FILENO);
-				close(pipe_fd[i][0]);
-				close(pipe_fd[i][1]);
-			}
-			else
-			{
-				dup2(pipe_fd[i-1][0], STDIN_FILENO);
-				close(pipe_fd[i-1][0]);
-				close(pipe_fd[i-1][1]);
-			}
-			execve(path1, cmd1, NULL);
-			perror("(piperino6) Exec1 failed");
-		}
-		if (is_pipe(INstruct, i))
-		{
-			close(pipe_fd[i][0]);
-			close(pipe_fd[i][1]);
-		}
-		free_piperino2(INstruct[i], cmd1, path1);
-		i++;
-	}
 
-	int cnt = i;
-	while (cnt-- >= 0)
-	{
-		waitpid(-1, NULL, 0);
-		// waitpid(-1, NULL, WNOHANG);
-	}
-	return (i);
-}
+		check redirection / do  redirection 
+			if strchr < or << 
+				get file to the right or token and cat? it to the fd of left file.
+				repeat until no strchr < or <<
+			else if only one token cat to fd of right file.
+			if more tokens then RESEARCH BEHAVIOR OF BASH.
 
+*/
 int	piperino6(t_words **INstruct)
 {
     char	**cmd1;
