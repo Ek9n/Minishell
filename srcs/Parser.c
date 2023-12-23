@@ -72,7 +72,6 @@ void	clean_word(t_words *INstruct)
 			tmp_clean[j] = INstruct->word[i];
 			j++;
 		}
-
 		i++;
 	}
 	while (tmp_clean[--j] == ' ');
@@ -349,22 +348,30 @@ int Executor2(t_data *data)
 
 	while (i < data->INstruct[0]->num_of_elements)
 	{
+		// printf("WORD%d:%s\n", i, data->INstruct[i]->word);
+		// printf("WORDc%d:%s\n", i, data->INstruct[i]->word_clean);
+		// printf("WORDc%d:%c\n", i, data->INstruct[i]->crazytoken);
 		// if (is_redirection)
 		// {
 				// i += redirectionprog(INstruct, i)
 		// }
-		printf("rcmd:%s\n", data->INstruct[i]->redirection->whole_command);
-		if (data->INstruct[i]->redirection->whole_command[3] == '<') // <
-		{
-			data->INstruct[i]->redirection->fd_in = open("file", O_RDONLY);	
-			dup2(data->INstruct[i]->redirection->fd_in, STDIN_FILENO);
-		}
+		// printf("---rcmd%i:%s\n", i, data->INstruct[i]->word_clean);
+		// printf("===rcmd%i:%s\n", i, data->INstruct[i]->token_after_word);
+		// if (data->INstruct[i]->redirection->whole_command[3] == '<') // <
+		// if (data->INstruct[i]->crazytoken == '<') // <
+		// {
+		// 	printf("REDIRECTION<\n");
+		// 	// data->INstruct[i]->redirection->fd_in = open("file", O_RDONLY);	
+		// 	// data->INstruct[i]->redirection->fd_in = open("file", O_RDONLY);	
+		// 	// dup2(data->INstruct[i]->redirection->fd_in, STDIN_FILENO);
+		// }
 		if (is_pipe(data->INstruct, i))
 		{
 			i += piperino8(data->INstruct, i);
 		}
 		else
-			single_command(data, i);
+			executor(data->INstruct[i]->word_clean, data->envp);
+			// single_command(data, i);
 		i++;
 	}
 	return (i);

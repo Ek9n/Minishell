@@ -41,6 +41,7 @@ typedef struct s_words
 	char	*word_clean; //Hannes Parser
 	int		num_of_elements; //julius Lexer
 	int		quotes_case;
+	char crazytoken;
 	char	*token_after_word; //julius Lexer
  	char 	*output; // Hannes Parser
 	t_redirection	*redirection;
