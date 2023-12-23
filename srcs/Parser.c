@@ -353,12 +353,12 @@ int Executor2(t_data *data)
 		// {
 				// i += redirectionprog(INstruct, i)
 		// }
-		printf("rcmd:%s\n", data->INstruct[i]->redirection->whole_command);
-		if (data->INstruct[i]->redirection->whole_command[3] == '<') // <
-		{
-			data->INstruct[i]->redirection->fd_in = open("file", O_RDONLY);	
-			dup2(data->INstruct[i]->redirection->fd_in, STDIN_FILENO);
-		}
+		// printf("rcmd:%s\n", data->INstruct[i]->redirection->whole_command);
+		// if (data->INstruct[i]->redirection->whole_command[3] == '<') // <
+		// {
+		// 	data->INstruct[i]->redirection->fd_in = open("file", O_RDONLY);	
+		// 	dup2(data->INstruct[i]->redirection->fd_in, STDIN_FILENO);
+		// }
 		if (is_pipe(data->INstruct, i))
 		{
 			i += piperino8(data->INstruct, i);
