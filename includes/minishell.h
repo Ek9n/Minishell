@@ -90,4 +90,6 @@ int		parser(t_data *data, int i);
 void	routine(t_data	*data);
 // EXECUTOR 
 void	executor(char *clean_word, char **envp);
+int Executor2(t_data *data);
+
 #endif
