@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/20 16:10:37 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/24 09:14:35 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 typedef struct redirection
 {
-	char  *whole_command;
+	char  **whole_command;
 	int		fd_out;
 	int		fd_in;
 } 	t_redirection;
