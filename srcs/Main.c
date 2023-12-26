@@ -52,7 +52,7 @@ int	main(int argc, char **argv, char **envp)
 		if (data->INstruct != NULL)
 			Executor2(data);
 		
-		// printf("After routine (in main)!\n");
+		printf("After routine (in main)!\n");
 	}
 }
 // for builtins make a function to trigger executor, if command matches

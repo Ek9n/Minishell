@@ -166,9 +166,10 @@ t_words	**init_word_stack(char *line, t_words **words)
 		if (line[0] != '\0')
 			words[b]->token_after_word = tokenizer(&line);
 			words[b]->redirection = ft_calloc(1, sizeof(t_redirection ));
-		if (ft_strchr(words[b]->word, '>') || ft_strchr(words[b]->word, '<'))
+		if (ft_strchr(words[b]->word, '>') || ft_strchr(words[b]->word, '<')) // add errorchecking: >>> >>23 ...
 		{
 			words[b]->redirection->whole_command = ft_strdup(words[b]->word);
+			words[b]->redirection->split_command = ft_split(words[b]->word, ' ');
 			words[b]->redirection->fd_in = 0;
 			words[b]->redirection->fd_out = 1;
 		}

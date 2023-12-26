@@ -191,6 +191,121 @@ int	single_command(t_data *data,int i)
 		executor(data->INstruct[i]->word_clean, data->envp);
 	return (0);
 }
+int	piperino8(t_words **INstruct)
+{
+    char	**cmd1;
+    char	*path1;
+    int		**pipe_fd;
+    pid_t	pids[100];
+	int		i;
+	int		j;
+
+	// printf("FD IS>%d\n\n", INstruct[0]->redirection->fd_in);
+    i = 0;
+    j = 0;
+    pipe_fd = malloc(200 * sizeof(int *));
+    while (is_pipe(INstruct, j))
+    {
+        pipe_fd[j] = malloc(2 * sizeof(int));
+        if (pipe(pipe_fd[j]) == -1)
+            error_exit("(piperino6) Pipe creation failed\n");
+        j++;
+    }
+    while (INstruct[i] != NULL)
+    {
+        cmd1 = ft_split(INstruct[i]->word_clean, ' ');
+        path1 = ft_strjoin("/bin/", cmd1[0]);
+        pids[i] = fork();
+        if (pids[i] == 0)
+        {
+            if (INstruct[0]->redirection->fd_in != 0)
+			{
+				dup2(INstruct[0]->redirection->fd_in, STDIN_FILENO); //may we have to undo the redirection later.. idk yet
+				close(INstruct[0]->redirection->fd_in);
+			}
+            if (i != 0)
+            {
+                dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+                close(pipe_fd[i - 1][0]);
+                close(pipe_fd[i - 1][1]);
+            }
+            if (is_pipe(INstruct, i))
+            {
+                dup2(pipe_fd[i][1], STDOUT_FILENO);
+                close(pipe_fd[i][0]);
+                close(pipe_fd[i][1]);
+            }
+			j = i;
+			while (is_pipe(INstruct, j))
+			{
+                close(pipe_fd[j][0]);
+                close(pipe_fd[j][1]);	
+				j++;		
+			}
+            execve(path1, cmd1, NULL);
+            perror("(piperino6) Exec1 failed");
+        }
+        else
+        {
+            if (i != 0)
+            {
+                close(pipe_fd[i - 1][0]);
+                close(pipe_fd[i - 1][1]);
+            }
+        }
+        free_piperino2(INstruct[i], cmd1, path1);
+        i++;
+    }
+    for (int j = 0; j < i; j++)
+    {
+        if (is_pipe(INstruct, j))
+        {
+            close(pipe_fd[j][0]);
+            close(pipe_fd[j][1]);
+        }
+    }
+    for (int j = 0; j < i; j++)
+    {
+        waitpid(pids[j], NULL, 0);
+    }
+    return (i);
+}
+
+int Executor2(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (data->INstruct[i]->redirection->whole_command)
+	{
+		if (ft_strcmp("<", data->INstruct[i]->redirection->split_command[1]) == 0)
+		{
+			printf("RED%s\n\n", data->INstruct[i]->redirection->split_command[1]);
+			data->INstruct[i+1]->redirection->fd_in = open("file", O_RDONLY);	
+			// int fd = open("file", O_RDONLY);	
+			printf("fd:%d\n", data->INstruct[i]->redirection->fd_in);
+			// dup2(data->INstruct[i]->redirection->fd_in, STDIN_FILENO);
+			// dup2(fd, STDIN_FILENO);
+			// close(fd);
+			printf("i:%d, elements:%d\n", i, data->INstruct[0]->num_of_elements);
+		}
+		i++;
+	}
+			// printf("word:%s\n", data->INstruct[i]->word_clean);
+
+	while (i < data->INstruct[0]->num_of_elements)
+	{
+		if (is_pipe(data->INstruct, i))
+		{
+			i += piperino8(data->INstruct + i);
+		}
+		else
+			single_command(data, i);
+		i++;
+	}
+	return (i);
+}
+/*
 int	piperino8(t_words **INstruct, int i)
 {
     char	**cmd1;
@@ -210,6 +325,9 @@ int	piperino8(t_words **INstruct, int i)
     }
     while (INstruct[i] != NULL)
     {
+printf("wordinpep[%i]:%s\n", i, INstruct[i]->word_clean);
+printf("wordinpep[%i]:%s\n", i + 1, INstruct[i + 1]->word_clean);
+
         cmd1 = ft_split(INstruct[i]->word_clean, ' ');
         path1 = ft_strjoin("/bin/", cmd1[0]);
         pids[i] = fork();
@@ -262,34 +380,7 @@ int	piperino8(t_words **INstruct, int i)
     }
     return (i);
 }
-
-int Executor2(t_data *data)
-{
-	int	i = 0;
-
-	while (i < data->INstruct[0]->num_of_elements)
-	{
-		// if (is_redirection)
-		// {
-				// i += redirectionprog(INstruct, i)
-		// }
-		// printf("rcmd:%s\n", data->INstruct[i]->redirection->whole_command);
-		// if (data->INstruct[i]->redirection->whole_command[3] == '<') // <
-		// {
-		// 	data->INstruct[i]->redirection->fd_in = open("file", O_RDONLY);	
-		// 	dup2(data->INstruct[i]->redirection->fd_in, STDIN_FILENO);
-		// }
-		if (is_pipe(data->INstruct, i))
-		{
-			i += piperino8(data->INstruct, i);
-		}
-		else
-			single_command(data, i);
-		i++;
-	}
-	return (i);
-}
-
+*/
 /*
 executor 
 commands pipes redirections.

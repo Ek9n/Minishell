@@ -30,7 +30,8 @@
 
 typedef struct redirection
 {
-	char  *whole_command;
+	char  	*whole_command;
+	char  	**split_command;
 	int		fd_out;
 	int		fd_in;
 } 	t_redirection;
@@ -90,6 +91,6 @@ int		parser(t_data *data, int i);
 void	routine(t_data	*data);
 // EXECUTOR 
 void	executor(char *clean_word, char **envp);
-int Executor2(t_data *data);
+int		Executor2(t_data *data);
 
 #endif

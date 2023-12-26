@@ -48,6 +48,7 @@ void	init_redirection(t_words **words, int i)
 		*/i++;
 	}
 }
+
 int		check_for_redirection(t_words **words)
 {/*
 	int	i;
