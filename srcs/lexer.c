@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/24 09:19:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/25 07:45:46 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,6 @@ t_words	**init_word_stack(char *line, t_words **words)
 	clean_words(words);
 	init_redirection_struct(words);
 	free_dirty_words(words);
-	print_words(words);
+	//print_words(words);
 	return(words);
 }

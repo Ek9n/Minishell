@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/24 09:23:11 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/25 07:52:32 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	main(int argc, char **argv, char **envp)
 			add_history(input); // history works
 			data->INstruct = init_word_stack(input, data->INstruct);
 		}
-		//if (data->INstruct != NULL)
-			//routine(data);
+		if (data->INstruct != NULL)
+			routine(data);
 		// printf("After routine (in main)!\n");
 	}
 }

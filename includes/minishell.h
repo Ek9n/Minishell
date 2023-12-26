@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/24 09:14:35 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/25 15:10:23 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ int		cntenv(char **env);
 void	freeenv(char **env);
 void	delete_env_var(char *name, char ***env);
 void	add_env_var(char *name, char ***env);
+char *expand_env(char *str, char **env);
+char *dollar_baby(char *str);
+int	find_char_from_index(char *str, char c, int index);
 // BUILTINS
 void	printenv(char **env);
 void	unset(char *str, char ***env);
@@ -85,6 +88,7 @@ char	*tokenizer(char **line);
 t_words	**init_word_stack(char *line, t_words **words);
 void	clean_words(t_words **INstruct);
 void free_dirty_words(t_words **words);
+void 	print_words(t_words **words);
 // PARSER
 int		parser(t_data *data, int i);
 void	routine(t_data	*data);
