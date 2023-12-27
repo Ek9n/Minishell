@@ -354,7 +354,8 @@ void	routine(t_data	*data)
 int	parser(t_data *data,int i)
 {
 
-		data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp);
+	while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
+		data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes
 	print_words(data->INstruct);
 	if (cmp_keyword("echo", data->INstruct[i]->word_clean))
 	{
