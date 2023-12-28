@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/20 13:58:18 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/28 13:41:23 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,15 @@ void	init_redirection(t_words **words, int i)
 		}
 		if (words[i]->redirection == 3)
 		{
-			words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+			words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			dup2(words[i]->fd_out, STDOUT_FILENO);
 		}
 		if (words[i]-> redirection == 4)
 			//ft_heredoc with readline
 		if (words[i]-> redirection == 5)
-			words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_APPEND, 0777);
-		*/i++;
+			words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		i++;
+		*/
 	}
 }
 

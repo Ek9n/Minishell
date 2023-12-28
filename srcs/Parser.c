@@ -278,7 +278,7 @@ int Executor2(t_data *data)
 	i = 0;
 	while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
 			data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes
-	print_words(data->INstruct);
+	//print_words(data->INstruct);
 	if (data->INstruct[i]->redirection->whole_command)
 	{
 		if (ft_strcmp("<", data->INstruct[i]->redirection->split_command[1]) == 0)
