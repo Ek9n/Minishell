@@ -218,7 +218,7 @@ int	piperino8(t_words **INstruct)
         pids[i] = fork();
         if (pids[i] == 0)
         {
-            if (INstruct[0]->redirection->fd_in != 0)
+            if (i == 0 && (INstruct[0]->redirection->fd_in != 0))
 			{
 				dup2(INstruct[0]->redirection->fd_in, STDIN_FILENO); //may we have to undo the redirection later.. idk yet
 				close(INstruct[0]->redirection->fd_in);
@@ -229,9 +229,11 @@ int	piperino8(t_words **INstruct)
                 close(pipe_fd[i - 1][0]);
                 close(pipe_fd[i - 1][1]);
             }
-            if (is_pipe(INstruct, i))
+            if (INstruct[i]->redirection->fd_out != 1)
+				dup2(INstruct[i]->redirection->fd_out, STDOUT_FILENO);
+			else if (is_pipe(INstruct, i))
             {
-                dup2(pipe_fd[i][1], STDOUT_FILENO);
+				dup2(pipe_fd[i][1], STDOUT_FILENO);
                 close(pipe_fd[i][0]);
                 close(pipe_fd[i][1]);
             }
@@ -270,6 +272,45 @@ int	piperino8(t_words **INstruct)
     }
     return (i);
 }
+void print_redirection(t_redirection *redirection)
+{
+	int	i;
+
+	i = 0;
+	printf("whole_command:%s\n", redirection->whole_command);
+	printf("fd_in:%d\n", redirection->fd_in);
+	printf("fd_out:%d\n", redirection->fd_out);
+	while (redirection->split_command[i] != NULL)
+	{
+		printf("split_command[%d]:%s\n", i, redirection->split_command[i]);
+		i++;
+	}
+	printf("\n");
+	printf("====================================");
+	printf("\n");
+
+}
+void get_fds(t_redirection	*redirection)
+{
+	int	i;
+
+	i = 0;
+	print_redirection(redirection);
+	while (redirection->split_command[i])
+	{
+		if (ft_strcmp(redirection->split_command[i],">"))
+		{
+			{
+				redirection->fd_out = open(redirection->split_command[i + 2], O_CREAT | O_WRONLY | O_APPEND, 0644);
+				redirection->split_command[i] = NULL;
+				redirection->split_command[i + 2] = NULL;
+				dup2(redirection->fd_out, STDOUT_FILENO);
+			}
+		}
+		i++;
+	}
+	
+}
 
 int Executor2(t_data *data)
 {
@@ -278,27 +319,12 @@ int Executor2(t_data *data)
 	i = 0;
 	while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
 			data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes USING clen_words, using @ isnt a bad idea
-				//but it has to be checked, if its in quotes or not.
+	if (data->INstruct[i]->redirection ->whole_command != NULL)
+		get_fds(data->INstruct[i]->redirection);
 	//print_words(data->INstruct);
-	if (data->INstruct[i]->redirection->whole_command)
-	{
-		if (ft_strcmp("<", data->INstruct[i]->redirection->split_command[1]) == 0)
-		{
-			printf("RED%s\n\n", data->INstruct[i]->redirection->split_command[1]);
-			data->INstruct[i+1]->redirection->fd_in = open("file", O_RDONLY);	
-			// int fd = open("file", O_RDONLY);	
-			printf("fd:%d\n", data->INstruct[i]->redirection->fd_in);
-			// dup2(data->INstruct[i]->redirection->fd_in, STDIN_FILENO);
-			// dup2(fd, STDIN_FILENO);
-			// close(fd);
-			printf("i:%d, elements:%d\n", i, data->INstruct[0]->num_of_elements);
-		}
-		i++;
-	}
-			// printf("word:%s\n", data->INstruct[i]->word_clean);
-
 	while (i < data->INstruct[0]->num_of_elements)
 	{
+
 		if (is_pipe(data->INstruct, i))
 		{
 			i += piperino8(data->INstruct + i);

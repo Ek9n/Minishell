@@ -1,0 +1,8 @@
+word: echo bla > bitch
+token: (null)
+num_of_elements: 1
+whole_command_redirection: echo
+whole_command_redirection: bla
+whole_command_redirection: >
+whole_command_redirection: bitch
+whole_command_redirection: (null)
