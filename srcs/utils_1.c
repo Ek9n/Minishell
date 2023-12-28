@@ -28,3 +28,29 @@ void free_dirty_words(t_words **words)
         words++;
     }
 }
+void 	print_words(t_words **words)
+{
+	int i;
+	int b;
+
+	i = 0;
+	b = 0;
+	while (words[i] != NULL)
+	{
+		printf("word: %s\n",words[i]->word_clean);
+		printf("token: %s\n",words[i]->token_after_word);
+		printf("num_of_elements: %d\n",words[i]->num_of_elements);
+		if(words[i]->redirection->whole_command != NULL)
+			 while (words[i]->redirection->whole_command[b])
+			{
+				printf("whole_command_redirection: %s\n",words[i]->redirection->split_command[b]);
+				b++;
+			}
+		printf("fd_in: %d\n",words[i]->redirection->fd_in);
+		printf("fd_out: %d\n",words[i]->redirection->fd_out);
+		printf("quotes_case: %d\n",words[i]->quotes_case);
+		printf("\n");
+		printf("\n");
+		i++;
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/20 16:38:55 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/28 11:36:12 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,29 +95,6 @@ char *tokenizer(char **line)
 		puterr(SYNERR);	
 	return(buffer);
 }
-void 	print_words(t_words **words)
-{
-	int i;
-	int b;
-
-	i = 0;
-	b = 0;
-	while (words[i] != NULL)
-	{
-		printf("word: %s\n",words[i]->word_clean);
-		printf("token: %s\n",words[i]->token_after_word);
-		printf("num_of_elements: %d\n",words[i]->num_of_elements);
-		printf("redirection: %s\n",words[i]->redirection->whole_command);
-		printf("fd_in: %d\n",words[i]->redirection->fd_in);
-		printf("fd_out: %d\n",words[i]->redirection->fd_out);
-		printf("quotes_case: %d\n",words[i]->quotes_case);
-		printf("\n");
-		printf("\n");
-
-		
-		i++;
-	}
-}
 
 int get_num_of_pipes(char * str)
 {
@@ -183,6 +160,5 @@ t_words	**init_word_stack(char *line, t_words **words)
 		words[i++]->num_of_elements = b;
 	clean_words(words);
 	free_dirty_words(words);
-	print_words(words);
 	return(words);
 }

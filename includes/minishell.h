@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/20 16:10:37 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/28 11:36:02 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ int		cntenv(char **env);
 void	freeenv(char **env);
 void	delete_env_var(char *name, char ***env);
 void	add_env_var(char *name, char ***env);
+int	find_char_from_index(char *str, char c, int index);
+char *expand_env(char *str, char **env);
+char *dollar_baby(char *str);
 // BUILTINS
 void	printenv(char **env);
 void	unset(char *str, char ***env);
@@ -92,5 +95,7 @@ void	routine(t_data	*data);
 // EXECUTOR 
 void	executor(char *clean_word, char **envp);
 int		Executor2(t_data *data);
+//DEBUG 
+void 	print_words(t_words **words);
 
 #endif
