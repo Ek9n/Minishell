@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/28 13:41:23 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/28 14:03:30 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,19 @@ void	init_redirection(t_words **words, int i)
 	while (words[i])
 	{
 		/*
-			if (words[i]->redirection == 2)
+			if (words[i]->redirection == <)
 		{
 			words[i]->fd_in = open(words[i + 1]->word,O_RDONLY);	
 			dup2(words[i]->fd_in, STDIN_FILENO);
 		}
-		if (words[i]->redirection == 3)
+		if (words[i]->redirection == >)
 		{
 			words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			dup2(words[i]->fd_out, STDOUT_FILENO);
 		}
-		if (words[i]-> redirection == 4)
+		if (words[i]-> redirection == <<)
 			//ft_heredoc with readline
-		if (words[i]-> redirection == 5)
+		if (words[i]-> redirection == >>)
 			words[i]->fd_out = open(words[i + 1]-> word, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		i++;
 		*/

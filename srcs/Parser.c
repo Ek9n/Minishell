@@ -277,7 +277,8 @@ int Executor2(t_data *data)
 
 	i = 0;
 	while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
-			data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes
+			data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes USING clen_words, using @ isnt a bad idea
+				//but it has to be checked, if its in quotes or not.
 	//print_words(data->INstruct);
 	if (data->INstruct[i]->redirection->whole_command)
 	{
