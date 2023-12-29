@@ -290,6 +290,24 @@ void print_redirection(t_redirection *redirection)
 	printf("\n");
 
 }
+
+int	ft_heredoc(char * delimiter)
+{
+	char	*line;
+	int		fd;
+	int		i;
+
+	i = 0;
+	fd = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	while (ft_strcmp(line, delimiter) != 0)
+	{
+		line = readline(">");
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
+	}
+	close(fd);
+	return (0);		
+}
 void get_fds(t_data *data,int index)
 {
 	int	i;
@@ -303,7 +321,8 @@ void get_fds(t_data *data,int index)
 	if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 3)
 		{
 			data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			//protect open
+			if (data->INstruct[index]->redirection->fd_out == -1)
+				ft_putstr_fd("open failed", 1);
 			data->INstruct[index]->redirection->split_command[i][0] = '\0';
 			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
 			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
@@ -312,12 +331,27 @@ void get_fds(t_data *data,int index)
 		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 5)
 		{
 			data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);				//protect open
-			//protect open
+			if (data->INstruct[index]->redirection->fd_out == -1)
+				ft_putstr_fd("open failed", 1);
 			data->INstruct[index]->redirection->split_command[i][0] = '\0';
 			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
 			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
 			dup2(data->INstruct[index]->redirection->fd_out, STDOUT_FILENO);
 		}
+		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 2) // <
+		{
+			data->INstruct[index]->redirection->fd_in = open(data->INstruct[index]->redirection->split_command[i + 1], O_RDONLY);
+			if (data->INstruct[index]->redirection->fd_in == -1)
+				ft_putstr_fd("open failed, file doesnt exist probably", 1);
+			data->INstruct[index]->redirection->split_command[i][0] = '\0';
+			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
+			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
+			dup2(data->INstruct[index]->redirection->fd_in, STDIN_FILENO);
+		}
+		/*if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 4)
+		{ 
+			data->INstruct[index]->redirection->fd_in = ft_heredoc(data->INstruct[index]->redirection->split_command[i + 1]);
+		}*/
 		i++;
 	}
 }
