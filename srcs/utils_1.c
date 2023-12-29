@@ -74,7 +74,7 @@ char *ft_join(char **arr)
     while (arr[i] != NULL)
     {
         current_length += ft_strlcat(str, arr[i], total_length + i + 1);
-        if (arr[i + 1] != NULL)
+        if (arr[i + 1] && arr[i + 1][0] != '\0')
             current_length += ft_strlcat(str, " ", total_length + i + 1);
         i++;
     }

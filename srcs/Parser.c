@@ -300,20 +300,26 @@ void get_fds(t_data *data,int index)
 	print_redirection(data->INstruct[index]->redirection);
 	while (data->INstruct[index]->redirection->split_command[i])
 	{
-		if (find_char_from_index(data->INstruct[index]->redirection->split_command[i],'>',0) != -1)
+	if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 3)
 		{
-			{
-				data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-				data->INstruct[index]->redirection->split_command[i][0] = '\0';
-				data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
-				data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
-				ft_putstr_fd(data->INstruct[index]->word_clean, 1);
-				dup2(data->INstruct[index]->redirection->fd_out, STDOUT_FILENO);
-			}
+			data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			//protect open
+			data->INstruct[index]->redirection->split_command[i][0] = '\0';
+			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
+			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
+			dup2(data->INstruct[index]->redirection->fd_out, STDOUT_FILENO);	
+		}
+		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 5)
+		{
+			data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);				//protect open
+			//protect open
+			data->INstruct[index]->redirection->split_command[i][0] = '\0';
+			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
+			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
+			dup2(data->INstruct[index]->redirection->fd_out, STDOUT_FILENO);
 		}
 		i++;
 	}
-	
 }
 
 int Executor2(t_data *data)
@@ -326,6 +332,7 @@ int Executor2(t_data *data)
 	if (data->INstruct[i]->redirection -> whole_command != NULL)
 		print_words(data->INstruct);
 		get_fds(data,i);
+	
 	while (i < data->INstruct[0]->num_of_elements)
 	{
 
