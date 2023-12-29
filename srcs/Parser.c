@@ -290,21 +290,25 @@ void print_redirection(t_redirection *redirection)
 	printf("\n");
 
 }
-void get_fds(t_redirection	*redirection)
+void get_fds(t_data *data,int index)
 {
 	int	i;
 
 	i = 0;
-	print_redirection(redirection);
-	while (redirection->split_command[i])
+	data -> original_fd_in = dup(STDIN_FILENO);
+	data -> original_fd_out = dup(STDOUT_FILENO);
+	print_redirection(data->INstruct[index]->redirection);
+	while (data->INstruct[index]->redirection->split_command[i])
 	{
-		if (ft_strcmp(redirection->split_command[i],">"))
+		if (find_char_from_index(data->INstruct[index]->redirection->split_command[i],'>',0) != -1)
 		{
 			{
-				redirection->fd_out = open(redirection->split_command[i + 2], O_CREAT | O_WRONLY | O_APPEND, 0644);
-				redirection->split_command[i] = NULL;
-				redirection->split_command[i + 2] = NULL;
-				dup2(redirection->fd_out, STDOUT_FILENO);
+				data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+				data->INstruct[index]->redirection->split_command[i][0] = '\0';
+				data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
+				data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
+				ft_putstr_fd(data->INstruct[index]->word_clean, 1);
+				dup2(data->INstruct[index]->redirection->fd_out, STDOUT_FILENO);
 			}
 		}
 		i++;
@@ -319,9 +323,9 @@ int Executor2(t_data *data)
 	i = 0;
 	while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
 			data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes USING clen_words, using @ isnt a bad idea
-	if (data->INstruct[i]->redirection ->whole_command != NULL)
-		get_fds(data->INstruct[i]->redirection);
-	//print_words(data->INstruct);
+	if (data->INstruct[i]->redirection -> whole_command != NULL)
+		print_words(data->INstruct);
+		get_fds(data,i);
 	while (i < data->INstruct[0]->num_of_elements)
 	{
 
@@ -332,6 +336,10 @@ int Executor2(t_data *data)
 		else
 			single_command(data, i);
 		i++;
+		dup2(data->original_fd_in, 0);
+		dup2(data->original_fd_out, 1);
+		close(data->original_fd_in);
+		close(data->original_fd_out);
 	}
 	return (i);
 }

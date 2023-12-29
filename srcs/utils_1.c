@@ -52,3 +52,32 @@ void 	print_words(t_words **words)
 		i++;
 	}
 }
+
+char *ft_join(char **arr)
+{
+    int i = 0;
+    int total_length = 0;
+    size_t current_length = 0;
+
+    while (arr[i] != NULL)
+    {
+        total_length += ft_strlen(arr[i]);
+        i++;
+    }
+
+    char *str = (char *)malloc((total_length + i + 1) * sizeof(char));
+    if (!str)
+        return NULL;
+
+    str[0] = '\0';
+    i = 0;
+    while (arr[i] != NULL)
+    {
+        current_length += ft_strlcat(str, arr[i], total_length + i + 1);
+        if (arr[i + 1] != NULL)
+            current_length += ft_strlcat(str, " ", total_length + i + 1);
+        i++;
+    }
+
+    return str;
+}
