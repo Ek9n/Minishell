@@ -36,7 +36,55 @@ int	skip_spaces(char *str)
 	return (i);
 }
 
-void	clean_word(t_words *INstruct)
+char	*get_var(char *name, char **env)
+{
+	char	*value;
+	int		i;
+	int		j;
+
+	value = NULL;
+	i = 0;
+	j = 0;
+	while (env[i] != NULL)
+	{
+        if (ft_strcmp(name, env[i]) == 0)
+        {
+            printf("HURRA die VAr is da:%s\n", env[i]);
+			while (env[i][j++] != '=');
+			value = &env[i][j];
+			break ;
+        }
+		i++;
+	}
+	return (value);
+}
+
+void	sub_var(char **str, int *pos, char **envp)
+{
+	char    *dup_str;
+	char    *dup2_str;
+	char    *tmp_str;
+	char    *new_str;
+
+
+// printf("\n\nHIEEEER:%s\n\n", get_var("A", envp));
+
+	dup_str = ft_strdup(*str);
+	dup_str[*pos] = '\0';
+	dup2_str = ft_strdup(*str + *pos + 1);
+	// tmp_str = ft_strjoin(dup_str, get_var("A", envp));
+	tmp_str = ft_strjoin(dup_str, "55");
+	new_str = ft_strjoin(tmp_str, dup2_str);
+	printf("STRING:%s\n", tmp_str);
+	printf("STRING2:%s\n", dup2_str);
+	free(*str);
+	*str = new_str;
+	free(dup_str);
+	free(dup2_str);
+	free(tmp_str);
+}
+
+void	clean_word(t_words *INstruct, char **envp)
 {
 	char	*tmp_clean;
 	int		quotes; 	// 0 no, 1 single, 2 double quotes
@@ -63,7 +111,8 @@ void	clean_word(t_words *INstruct)
 			quotes = 0;
 		if (INstruct->word[i] == '$' && quotes != 1)
 		{
-			// put_env_var(INstruct->word, position, var);
+			// sub_var(&tmp_clean[j], &j, envp);
+			// j++;
 			tmp_clean[j] = '@';
 			j++;
 		}
@@ -82,14 +131,14 @@ void	clean_word(t_words *INstruct)
 	free(tmp_clean);
 }
 
-void	clean_words(t_words **INstruct)
+void	clean_words(t_words **INstruct, char **envp)
 {
 	int	i;
 
 	i = 0;
 	while (i < INstruct[0]->num_of_elements)
 	{
-		clean_word(INstruct[i]);
+		clean_word(INstruct[i], envp);
 		i++;
 	}
 }

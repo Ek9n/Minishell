@@ -85,13 +85,13 @@ char	*getpwd(void);
 void	init_redirection(t_words **words, int i);
 int		check_for_redirection(t_words **words);
 // LEXER 
-void	clean_word(t_words *INstruct);
 int		is_in_quotes(char * line);
 int		check_token_syntax(char *str);
 char	*trimstr(char *str,int i);
 char	*tokenizer(char **line);
-t_words	**init_word_stack(char *line, t_words **words);
-void	clean_words(t_words **INstruct);
+t_words	**init_word_stack(char *line, t_words **words, char **envp);
+void	clean_word(t_words *INstruct, char **envp);
+void	clean_words(t_words **INstruct, char **envp);
 void free_dirty_words(t_words **words);
 // PARSER
 int		parser(t_data *data, int i);

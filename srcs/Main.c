@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(input); // history works
 		if (input[0] != '\0')
 		{
-		data->INstruct = init_word_stack(input, data->INstruct);
+		data->INstruct = init_word_stack(input, data->INstruct, data->envp);
 		if (data->INstruct != NULL)
 			Executor2(data);
 		}

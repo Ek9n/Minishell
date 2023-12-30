@@ -112,7 +112,7 @@ int get_num_of_pipes(char * str)
 	return(i);
 }
 
-t_words	**init_word_stack(char *line, t_words **words)
+t_words	**init_word_stack(char *line, t_words **words, char **envp)
 {
 	int	i;
 	int	b;
@@ -158,7 +158,7 @@ t_words	**init_word_stack(char *line, t_words **words)
 	words[b] = NULL;
 	while (words[i] != NULL)
 		words[i++]->num_of_elements = b;
-	clean_words(words);
+	clean_words(words, envp);
 	free_dirty_words(words);
 	return(words);
 }

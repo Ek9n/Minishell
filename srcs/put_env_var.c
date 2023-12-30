@@ -2,7 +2,7 @@
 #include "../libft/libft.h"
 
 
-void put_env_var(char **str, int *pos)
+void add_env_var(char **str, int *pos)
 {
 	char    *dup_str;
 	char    *dup2_str;
