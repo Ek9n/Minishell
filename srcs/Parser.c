@@ -313,8 +313,8 @@ void get_fds(t_data *data,int index)
 	int	i;
 
 	i = 0;
-	data -> original_fd_in = dup(STDIN_FILENO);
-	data -> original_fd_out = dup(STDOUT_FILENO);
+	//data -> original_fd_in = dup(STDIN_FILENO);
+	//data -> original_fd_out = dup(STDOUT_FILENO);
 	if (data->INstruct[index]->redirection->whole_command != NULL)
 		print_redirection(data->INstruct[index]->redirection);
 	while (data->INstruct[index]->redirection->split_command[i])

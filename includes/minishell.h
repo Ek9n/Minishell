@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/29 13:08:41 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/30 19:59:38 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ typedef struct s_words
 typedef struct s_data
 {
 	char	**envp;
-	int	    original_fd_in;
-	int	    original_fd_out;
+	//int	    original_fd_in;
+	//int	    original_fd_out;
 	t_words	**INstruct;
 }	t_data;
 
