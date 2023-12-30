@@ -315,7 +315,8 @@ void get_fds(t_data *data,int index)
 	i = 0;
 	data -> original_fd_in = dup(STDIN_FILENO);
 	data -> original_fd_out = dup(STDOUT_FILENO);
-	print_redirection(data->INstruct[index]->redirection);
+	if (data->INstruct[index]->redirection->whole_command != NULL)
+		print_redirection(data->INstruct[index]->redirection);
 	while (data->INstruct[index]->redirection->split_command[i])
 	{
 	if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 3)
@@ -364,9 +365,10 @@ int Executor2(t_data *data)
 	while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
 			data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes USING clen_words, using @ isnt a bad idea
 	if (data->INstruct[i]->redirection -> whole_command != NULL)
+	{
 		print_words(data->INstruct);
 		get_fds(data,i);
-	
+	}
 	while (i < data->INstruct[0]->num_of_elements)
 	{
 
