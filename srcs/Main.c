@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/30 19:49:37 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/30 19:52:59 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("Minishell>>: ");
 		if (input)
 			add_history(input); // history works
-		if (input && input[0] != '\0')
+		if (input[0] != '\0')
 		{
 		data->INstruct = init_word_stack(input, data->INstruct);
 		if (data->INstruct != NULL)
