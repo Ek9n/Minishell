@@ -362,13 +362,13 @@ int Executor2(t_data *data)
 	int	i;
 
 	i = 0;
-	while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
-			data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes USING clen_words, using @ isnt a bad idea
-	if (data->INstruct[i]->redirection -> whole_command != NULL)
-	{
-		print_words(data->INstruct);
-		get_fds(data,i);
-	}
+	//while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
+			//data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes USING clen_words, using @ isnt a bad idea
+	//if (data->INstruct[i]->redirection -> whole_command != NULL)
+	//{
+		//print_words(data->INstruct);
+		//get_fds(data,i);
+	//}
 	while (i < data->INstruct[0]->num_of_elements)
 	{
 
@@ -379,10 +379,10 @@ int Executor2(t_data *data)
 		else
 			single_command(data, i);
 		i++;
-		dup2(data->original_fd_in, 0);
-		dup2(data->original_fd_out, 1);
-		close(data->original_fd_in);
-		close(data->original_fd_out);
+		//dup2(data->original_fd_in, 0);
+		//dup2(data->original_fd_out, 1);
+		//close(data->original_fd_in);
+		//close(data->original_fd_out);
 	}
 	return (i);
 }
