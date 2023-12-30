@@ -63,6 +63,7 @@ void	clean_word(t_words *INstruct)
 			quotes = 0;
 		if (INstruct->word[i] == '$' && quotes != 1)
 		{
+			// put_env_var(INstruct->word, position, var);
 			tmp_clean[j] = '@';
 			j++;
 		}
