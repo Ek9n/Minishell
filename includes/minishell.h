@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/31 09:33:58 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/01 14:21:10 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ enum	errors {
 void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
 char *ft_join(char **arr);
+void free_and_close_data(t_data *data,int status);
 
 // ENVIROMENT
 char	**arrdup(char **enviroment);
@@ -97,7 +98,7 @@ void free_dirty_words(t_words **words);
 int		parser(t_data *data, int i);
 void	routine(t_data	*data);
 // EXECUTOR 
-void	executor(char *clean_word, char **envp);
+void	executor(char *clean_word,t_data *data);
 int		Executor2(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);

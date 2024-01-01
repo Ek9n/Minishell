@@ -185,10 +185,9 @@ int	single_command(t_data *data,int i)
 	else if (cmp_keyword("env", data->INstruct[i]->word_clean))
 		printenv(data->envp);
 	else if (cmp_keyword("exit", data->INstruct[i]->word_clean))
-	//still have to handle
-		exit(EXIT_SUCCESS);
+		free_and_close_data(data, 0);
 	else
-		executor(data->INstruct[i]->word_clean, data->envp);
+		executor(data->INstruct[i]->word_clean, data);
 	return (0);
 }
 int	piperino8(t_words **INstruct)
@@ -373,25 +372,29 @@ void get_fds(t_data *data,int index)
 int Executor2(t_data *data)
 {
 	int	i;
+	int redir;
 
+	redir = 0;
 	i = 0;
 	while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
 			data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes
-	if (data->INstruct[i]->redirection->whole_command != NULL)
-		get_fds(data, i);
 	while (i < data->INstruct[0]->num_of_elements)
 	{
+		if (data->INstruct[i]->redirection->whole_command != NULL)
+		{
+			get_fds(data, i);
+			redir = 1;
+		}
 		if (is_pipe(data->INstruct, i))
 		{
 			i += piperino8(data->INstruct + i);
 		}
 		else
 			single_command(data, i);
+			dup2(data->original_fd_in, 0);
+			dup2(data->original_fd_out, 1);
+
 		i++;
-		//dup2(data->original_fd_in, 0);
-		//dup2(data->original_fd_out, 1);
-		//close(data->original_fd_in);
-		//close(data->original_fd_out);
 	}
 	return (i);
 }
@@ -688,7 +691,7 @@ int	parser(t_data *data,int i)
 	//still have to handle
 		exit(EXIT_SUCCESS);
 	else
-		executor(data->INstruct[i]->word_clean, data->envp);
+		executor(data->INstruct[i]->word_clean, data);
 	return (0);
 }
 
