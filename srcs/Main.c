@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/25 07:52:32 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/31 09:49:47 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_data	*init_data(t_data *data, char **envp)
 {
 	data = malloc(sizeof(t_data));
 	data->envp = arrdup(envp);
+	data -> original_fd_in = dup(STDIN_FILENO);
+	data -> original_fd_out = dup(STDOUT_FILENO);
 	return (data);
 }
 
@@ -45,15 +47,18 @@ int	main(int argc, char **argv, char **envp)
 	sigaction(SIGINT, &act, NULL);
 	while (true)
 	{
+		dup2(data->original_fd_in, 0);
+		dup2(data->original_fd_out, 1);
 		input = readline("Minishell>>: ");
-		if (input != NULL && *input != '\0')
-		{
+		if (input)
 			add_history(input); // history works
-			data->INstruct = init_word_stack(input, data->INstruct);
-		}
+		if (input[0] != '\0')
+		{
+		data->INstruct = init_word_stack(input, data->INstruct);
 		if (data->INstruct != NULL)
-			routine(data);
-		// printf("After routine (in main)!\n");
+			Executor2(data);
+		}
+		printf("After routine (in main)!\n");
 	}
 }
 // for builtins make a function to trigger executor, if command matches

@@ -122,7 +122,6 @@ void	add_env_var(char *name, char ***env)
 		i++;
 	}
 	new_env[i] = name;
-	ft_putnbr_fd(i, 1);
 	free(*env);
 	*env = new_env;
 }

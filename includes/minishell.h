@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/27 13:33:52 by jfoltan          ###   ########.fr       */
+/*   Updated: 2023/12/31 09:33:58 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 
 typedef struct redirection
 {
-	char  **whole_command;
+	char  	*whole_command;
+	char  	**split_command;
 	int		fd_out;
 	int		fd_in;
 } 	t_redirection;
@@ -48,6 +49,8 @@ typedef struct s_words
 typedef struct s_data
 {
 	char	**envp;
+	int	    original_fd_in;
+	int	    original_fd_out;
 	t_words	**INstruct;
 }	t_data;
 
@@ -58,13 +61,15 @@ enum	errors {
 // MAIN_UTILS
 void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
+char *ft_join(char **arr);
+
 // ENVIROMENT
 char	**arrdup(char **enviroment);
 int		cntenv(char **env);
 void	freeenv(char **env);
 void	delete_env_var(char *name, char ***env);
-int	find_char_from_index(char *str, char c, int index);
 void	add_env_var(char *name, char ***env);
+int	find_char_from_index(char *str, char c, int index);
 char *expand_env(char *str, char **env);
 char *dollar_baby(char *str);
 // BUILTINS
@@ -88,10 +93,13 @@ char	*tokenizer(char **line);
 t_words	**init_word_stack(char *line, t_words **words);
 void	clean_words(t_words **INstruct);
 void free_dirty_words(t_words **words);
-void 	print_words(t_words **words);
 // PARSER
 int		parser(t_data *data, int i);
 void	routine(t_data	*data);
 // EXECUTOR 
 void	executor(char *clean_word, char **envp);
+int		Executor2(t_data *data);
+//DEBUG 
+void 	print_words(t_words **words);
+
 #endif
