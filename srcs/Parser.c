@@ -310,8 +310,8 @@ void get_fds(t_data *data,int index)
 	int	i;
 
 	i = 0;
-	if (data->INstruct[index]->redirection->whole_command != NULL)
-		print_redirection(data->INstruct[index]->redirection);
+	//if (data->INstruct[index]->redirection->whole_command != NULL)
+		//print_redirection(data->INstruct[index]->redirection);
 	while (data->INstruct[index]->redirection->split_command[i])
 	{
 	if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 3) // >
@@ -397,6 +397,10 @@ int Executor2(t_data *data)
 		i++;
 	}
 	return (i);
+	/* cat < file2 > test | wc writes to test, and not to stdout. 
+		because piperino makes i+= idk what/when etc, it makes closing fds and stuff hard.
+		freeing and execve failure too, im unsure whether its correct. 
+	 */
 }
 /*
 int	piperino8(t_words **INstruct, int i)
