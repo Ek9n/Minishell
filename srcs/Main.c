@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/31 09:49:47 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/02 15:38:11 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	main(int argc, char **argv, char **envp)
 	sigaction(SIGINT, &act, NULL);
 	while (true)
 	{
+		
 		dup2(data->original_fd_in, 0);
 		dup2(data->original_fd_out, 1);
 		input = readline("Minishell>>: ");
@@ -61,5 +62,14 @@ int	main(int argc, char **argv, char **envp)
 		printf("After routine (in main)!\n");
 	}
 }
-// for builtins make a function to trigger executor, if command matches
-//a builtin, execute that one.
+
+ /* 
+ TODO:
+ always put spaces between tokens //hannes
+ quotes and double quotes //hannes
+ EXIT SIGNALS //julius
+ << HERE //julius
+ $? exit code + executor and piperino waitpid // both 
+ piperino use our functions, if theres that (execve and inbuilt) /hannes
+ clear history in main when exit status is bad. //julius
+  */
