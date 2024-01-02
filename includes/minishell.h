@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/01 14:21:10 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/02 13:58:38 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ char	*getpwd(void);
 // REDIRECTIONS
 void	init_redirection(t_words **words, int i);
 int		check_for_redirection(t_words **words);
+void get_fds(t_data *data,int index);
+
 // LEXER 
 void	clean_word(t_words *INstruct);
 int		is_in_quotes(char * line);

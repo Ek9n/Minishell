@@ -215,12 +215,12 @@ int	piperino8(t_words **INstruct,t_data *data)
         pids[i] = fork();
         if (pids[i] == 0)
         {
-            if ( INstruct[i]->redirection->whole_command != NULL)
+            if (i == 0  && INstruct[0]->redirection->whole_command != NULL)
 			{
 				get_fds(data, i);
 				data->INstruct[i]->word_clean = ft_join(data->INstruct[i]->redirection->split_command);
-				dup2(INstruct[i]->redirection->fd_in, STDIN_FILENO); //may we have to undo the redirection later.. idk yet
-				close(INstruct[i]->redirection->fd_in);
+				dup2(INstruct[0]->redirection->fd_in, STDIN_FILENO); //may we have to undo the redirection later.. idk yet
+				close(INstruct[0]->redirection->fd_in);
 			}
             if (i != 0)
             {
