@@ -301,14 +301,16 @@ int	ft_heredoc(char * delimiter)
 
 	i = 0;
 	fd = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	while (ft_strcmp(line, delimiter) != 0)
+	line = ft_calloc(1, sizeof(char));
+	while (true)
 	{
-		line = readline(">");
+		line = readline("> ");
+		if (ft_strcmp(line, delimiter) == 0)
+			break ;
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}
-	close(fd);
-	return (0);		
+	return (fd);
 }
 void get_fds(t_data *data,int index)
 {
@@ -368,10 +370,24 @@ void get_fds(t_data *data,int index)
 			dup2(data->INstruct[index]->redirection->fd_in, STDIN_FILENO);
 			//close(data->INstruct[index]->redirection->fd_in);
 		}
-		/*if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 4) // <<
+		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 4) // <<
 		{ 
 			data->INstruct[index]->redirection->fd_in = ft_heredoc(data->INstruct[index]->redirection->split_command[i + 1]);
-		}*/
+			if (data->INstruct[index]->redirection->fd_out == -1)
+			{
+				dup2(data->original_fd_in, 0);
+				dup2(data->original_fd_out, 1);
+				close(data->original_fd_in);
+				close(data->original_fd_out);
+				ft_putstr_fd("Heredoc failed to create a temp file.", 1);
+			}
+			data->INstruct[index]->redirection->split_command[i][0] = '\0';
+			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
+			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
+			printf("fd:%d\n", data->INstruct[index]->redirection->fd_in);
+			printf("word_clean:%s\n", data->INstruct[index]->word_clean);
+			dup2(data->INstruct[index]->redirection->fd_in, STDIN_FILENO);
+		}
 		i++;
 	}
 		data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command); //free
