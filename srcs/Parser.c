@@ -313,18 +313,31 @@ int	ft_heredoc(char * delimiter)
 		write(fd, "\n", 1);
 	}
 	close(fd);
-	fd = open(".heredoc", O_RDONLY); //maybe name has to be different.
 	return (fd);
 }
 void get_fds(t_data *data,int index)
 {
 	int	i;
+	int here;
 
+	here = 0;
 	i = 0;
 	if (data->INstruct[index]->redirection->whole_command != NULL)
+	{
+		while (data->INstruct[index]->redirection->split_command[i])
+		{	
+			if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 4)
+				{
+					i = ft_heredoc(data->INstruct[index]->redirection->split_command[i + 1]);
+					break;
+				}
+				else
+					i++;
+		}
+	i = 0;
 	while (data->INstruct[index]->redirection->split_command[i])
 	{
-	if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 3) // >
+		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 3) // >
 		{
 			data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (data->INstruct[index]->redirection->fd_out == -1)
@@ -372,12 +385,11 @@ void get_fds(t_data *data,int index)
 			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
 			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
 			dup2(data->INstruct[index]->redirection->fd_in, STDIN_FILENO);
-			//close(data->INstruct[index]->redirection->fd_in);
 		}
 		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 4) // <<
 		{ 
-			data->INstruct[index]->redirection->fd_in = ft_heredoc(data->INstruct[index]->redirection->split_command[i + 1]);
-			if (data->INstruct[index]->redirection->fd_out == -1)
+			data->INstruct[index]->redirection->fd_in = open(".heredoc", O_RDONLY);
+			if (data->INstruct[index]->redirection->fd_in == -1)
 			{
 				dup2(data->original_fd_in, 0);
 				dup2(data->original_fd_out, 1);
@@ -388,13 +400,12 @@ void get_fds(t_data *data,int index)
 			data->INstruct[index]->redirection->split_command[i][0] = '\0';
 			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
 			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
-			printf("fd:%d\n", data->INstruct[index]->redirection->fd_in);
-			printf("word_clean:%s\n", data->INstruct[index]->word_clean);
 			dup2(data->INstruct[index]->redirection->fd_in, STDIN_FILENO);
 		}
 		i++;
 	}
 		data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command); //free
+	}
 }
 int Executor2(t_data *data)
 {
