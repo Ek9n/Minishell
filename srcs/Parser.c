@@ -301,15 +301,19 @@ int	ft_heredoc(char * delimiter)
 
 	i = 0;
 	fd = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
+		return (-1);
 	line = ft_calloc(1, sizeof(char));
 	while (true)
 	{
 		line = readline("> ");
 		if (ft_strcmp(line, delimiter) == 0)
-			break ;
+			break;	
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}
+	close(fd);
+	fd = open(".heredoc", O_RDONLY); //maybe name has to be different.
 	return (fd);
 }
 void get_fds(t_data *data,int index)
