@@ -308,7 +308,7 @@ int	ft_heredoc(char * delimiter)
 	{
 		line = readline("> ");
 		if (ft_strcmp(line, delimiter) == 0)
-			break;	
+			break;	//add variable expansion
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}

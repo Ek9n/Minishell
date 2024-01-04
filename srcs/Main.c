@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/02 15:38:11 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/04 17:36:26 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	main(int argc, char **argv, char **envp)
 		if (data->INstruct != NULL)
 			Executor2(data);
 		}
+		unlink(".heredoc");
 		printf("After routine (in main)!\n");
 	}
 }
@@ -68,7 +69,6 @@ int	main(int argc, char **argv, char **envp)
  always put spaces between tokens //hannes
  quotes and double quotes //hannes
  EXIT SIGNALS //julius
- << HERE //julius
  $? exit code + executor and piperino waitpid // both 
  piperino use our functions, if theres that (execve and inbuilt) /hannes
  clear history in main when exit status is bad. //julius
