@@ -23,7 +23,7 @@ void free_dirty_words(t_words **words)
 	i = 0;
     while (words[i])
 	{
-		words[i]-> word_clean = ft_strdup(words[i]->word);
+		// words[i]-> word_clean = ft_strdup(words[i]->word);
         free((words[i])->word);
         (*words)->word = NULL;
         words++;
