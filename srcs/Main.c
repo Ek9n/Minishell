@@ -48,8 +48,8 @@ int	main(int argc, char **argv, char **envp)
 	while (true)
 	{
 		
-		dup2(data->original_fd_in, 0);
-		dup2(data->original_fd_out, 1);
+		// dup2(data->original_fd_in, 0);
+		// dup2(data->original_fd_out, 1);
 		input = readline("Minishell>>: ");
 		if (input)
 			add_history(input); // history works
