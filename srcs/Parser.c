@@ -21,24 +21,75 @@ int	skip_spaces(char *str)
 	return (i);
 }
 
+char	*comb_extd_word(char **extd_words)
+{
+	char	*tmp_word;
+	char	*comb_word;
+	int	i;
+
+	tmp_word == NULL;
+	comb_word == NULL;
+	i = 0;
+	while (extd_words[i])
+	{
+		// if (comb_word == NULL)
+		if (i == 0)
+		{
+			comb_word = ft_strdup("");
+		}
+
+		tmp_word = ft_strjoin(comb_word, extd_words[i]);
+		free(comb_word);
+		comb_word = tmp_word;
+		// free(tmp_word)??? -> than we could implement strdup
+
+		i++;
+	}
+	return (comb_word);
+}
+
 void	redirection_space_extender(char **clean_word)
 {
 	printf("WORD_CLEAN|%s|\n", *clean_word);
-	// int	i;
 
-	// i = 0;
-	// while (*tmp_clean[i])
-	// {
-	// 	printf("")
-	// 	i++;
-	// }
-	// if (INstruct->word[i] == '>' && quotes == 0)
-	// {
-	// 	printf
-	// 	// tmp_clean = ft_strjoin(tmp_clean, ) // "hallo > welt hallo>welt" -> "[hallo ][ welt hallo][welt]"
-	// 	// i += skip_spaces(&INstruct->word[i]);
-	// 	// i--;
-	// }
+
+	char	**extd_words;
+	char	*tmp_word;
+	char	*extd_word;
+	int		i;
+
+	extd_words = ft_split(*clean_word, '<');
+	i = 0;
+	while (extd_words[i])
+	{
+		// printf("STRNG:|%s|\n", extd_words[i]);
+		if (i != 0 && extd_words[i][0] != ' ')
+		{
+			tmp_word = ft_strjoin(" ", extd_words[i]);
+			free(extd_words[i]);
+			extd_words[i] = tmp_word;
+			// free(tmp_word);
+		}
+		if (extd_words[i + 1] != NULL && extd_words[i][ft_strlen(extd_words[i]) - 1] != ' ')
+		{
+			tmp_word = ft_strjoin(extd_words[i], " <");
+			free(extd_words[i]);
+			extd_words[i] = tmp_word;
+		}
+		else if (extd_words[i + 1] != NULL)
+		{
+			tmp_word = ft_strjoin(extd_words[i], "<");
+			free(extd_words[i]);
+			extd_words[i] = tmp_word;		
+		}
+		i++;
+	}
+	extd_word = comb_extd_word(extd_words);
+	i = 0;
+	while (extd_words[i])
+		free(extd_words[i++]);
+	free(extd_words);
+	printf("WORD_CLEAN2|%s|\n", extd_word);
 }
 
 void	clean_word(t_words *INstruct)
