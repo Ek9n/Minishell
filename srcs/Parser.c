@@ -11,21 +11,6 @@ int	cmp_keyword(char *keyword, char *str)
 	return (0);
 }
 
-void	skip_prespaces(char **str)
-{
-	while (*(str[0]) == ' ')
-		(*str)++; 
-}
-
-char	*clean_spaces(char *word)
-{
-	char	*tmp_word;
-
-	skip_prespaces(&word); /// macht das sinn?... 
-	word = ft_strdup(word); //FREE // WTF
-	return (word);
-}
-
 int	skip_spaces(char *str)
 {
 	int	i;
@@ -34,6 +19,26 @@ int	skip_spaces(char *str)
 	while (str[i] == ' ')
 		i++;
 	return (i);
+}
+
+void	redirection_space_extender(char **clean_word)
+{
+	printf("WORD_CLEAN|%s|\n", *clean_word);
+	// int	i;
+
+	// i = 0;
+	// while (*tmp_clean[i])
+	// {
+	// 	printf("")
+	// 	i++;
+	// }
+	// if (INstruct->word[i] == '>' && quotes == 0)
+	// {
+	// 	printf
+	// 	// tmp_clean = ft_strjoin(tmp_clean, ) // "hallo > welt hallo>welt" -> "[hallo ][ welt hallo][welt]"
+	// 	// i += skip_spaces(&INstruct->word[i]);
+	// 	// i--;
+	// }
 }
 
 void	clean_word(t_words *INstruct)
@@ -77,6 +82,10 @@ void	clean_word(t_words *INstruct)
 	}
 	while (tmp_clean[--j] == ' ');
 	tmp_clean[j + 1] = '\0';
+
+	redirection_space_extender(&tmp_clean);
+
+
 	INstruct->word_clean = ft_strdup(tmp_clean);
 	free(tmp_clean);
 }
