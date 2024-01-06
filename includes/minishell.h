@@ -99,12 +99,16 @@ t_words	**init_word_stack(char *line, t_words **words,t_data *data);
 void	clean_words(t_words **INstruct);
 void free_dirty_words(t_words **words);
 // PARSER
-int		parser(t_data *data, int i);
-void	routine(t_data	*data);
+
+
 // EXECUTOR 
-void	executor(char *clean_word,t_data *data);
-int		Executor2(t_data *data);
+void	execute_single_command(char *clean_word,t_data *data);
+int		Executor(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);
+
+//utils_1.c
+void	redirection_space_extender(char **dirty_word);
+
 
 #endif

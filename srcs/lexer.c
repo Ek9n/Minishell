@@ -146,6 +146,7 @@ t_words	**init_word_stack(char *line, t_words **words,t_data *data)
 			words[b]->quotes_case = 1;
 		}
 		words[b]->word = ft_substr(line,0,i);
+		redirection_space_extender(&words[b]->word);
 		line = trimstr(line,i);
 		if (line[0] != '\0')
 			words[b]->token_after_word = tokenizer(&line,data);

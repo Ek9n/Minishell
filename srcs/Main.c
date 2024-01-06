@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 		data->INstruct = init_word_stack(input, data->INstruct,data);
 		if (data->INstruct != NULL)
-			Executor2(data);
+			Executor(data);
 		}
 		ft_putnbr_fd(g_exit_status, 1);
 		write(1, "\n", 1);
@@ -95,4 +95,11 @@ int	main(int argc, char **argv, char **envp)
   echo '$USER' prints '$USER' / echo is completely bad..
   relative path ? 
   unsetting path doesnt prevent command from working. 
+  
+  ///////////////////////////////////////////////////
+	cat < file
+  		Program received signal SIGSEGV, Segmentation fault.
+		0x00007ffff7dc13fe in __GI___libc_free (mem=0x21) at ./malloc/malloc.c:3368
+		3368	./malloc/malloc.c: No such file or directory.
+
   */

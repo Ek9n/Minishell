@@ -132,3 +132,79 @@ void free_and_close_data(t_data *data)
 		if (g_exit_status >= 129)
 			exit(EXIT_FAILURE);
 }
+
+
+static int	redir_case(char *c)
+{
+	if ((*c == '<' && *(c + 1) == '<') || (*c == '>' && *(c + 1) == '>'))
+		return (2);
+	else if (*c == '<' || *c == '>')
+		return (1);
+	return (0);
+}
+
+void	redirection_space_extender(char **dirty_word)
+{
+	// printf("DIRTY1|%s|\n", *dirty_word);
+	int		i;
+	int		j;
+	char	*tmp_word;
+	bool	quotes;
+	int		last_quote;
+
+	tmp_word = malloc(ft_strlen(*dirty_word) * 2);
+	quotes = false;
+	last_quote = 0; // 1 = single, 2 = double quotes
+	i = 0;
+	j = 0;
+	// printf("START\n");
+	while (dirty_word[0][i])
+	{
+		// printf("%c", dirty_word[0][i]);
+		if (quotes == false && (dirty_word[0][i] == '\'' || dirty_word[0][i] == '\"'))
+		{
+			quotes = true;
+			if (dirty_word[0][i] == '\'')
+				last_quote = 1;
+			else if (dirty_word[0][i] == '\"')
+				last_quote = 2;
+
+		}
+		else if (quotes == true && last_quote == 1 && dirty_word[0][i] == '\'')
+		{
+			quotes = false;
+			last_quote = 0;
+		}
+		else if (quotes == true && last_quote == 2 && dirty_word[0][i] == '\"')
+		{
+			quotes = false;
+			last_quote = 0;
+		}
+
+
+
+		if (!quotes && redir_case(&dirty_word[0][i]) == 1)
+		{
+			tmp_word[j++] =  ' ';
+			tmp_word[j++] = dirty_word[0][i++];
+			tmp_word[j++] =  ' ';
+		}
+		else if (!quotes && redir_case(&dirty_word[0][i]) == 2)
+		{
+			tmp_word[j++] =  ' ';
+			tmp_word[j++] = dirty_word[0][i++];
+			tmp_word[j++] = dirty_word[0][i++];
+			tmp_word[j++] =  ' ';
+		}
+		tmp_word[j] = dirty_word[0][i];
+
+		j++;
+		i++;
+	}
+	tmp_word[j] = '\0';
+	// printf("\nEND\n");
+	// printf("DIRTY2|%s|\n", tmp_word);
+	free(dirty_word[0]);
+	dirty_word[0] = ft_strdup(tmp_word);
+	free(tmp_word);
+}
