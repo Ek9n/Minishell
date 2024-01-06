@@ -27,8 +27,8 @@ char	*comb_extd_word(char **extd_words)
 	char	*comb_word;
 	int	i;
 
-	tmp_word == NULL;
-	comb_word == NULL;
+	tmp_word = NULL;
+	comb_word = NULL;
 	i = 0;
 	while (extd_words[i])
 	{
@@ -48,21 +48,89 @@ char	*comb_extd_word(char **extd_words)
 	return (comb_word);
 }
 
-void	redirection_space_extender(char **clean_word)
+void	redirection_space_extender2(char **dirty_word)
 {
-	printf("WORD_CLEAN|%s|\n", *clean_word);
+	printf("DIRTY1|%s|\n", *dirty_word);
 
+	int		i;
+	int		j;
+	char	*tmp_word2;
+	bool	quotes;
+	int		last_quote;
+
+	tmp_word2 = malloc(ft_strlen(*dirty_word) * 2);
+	quotes = false;
+	last_quote = 0; // 1 = single, 2 = double quotes
+	i = 0;
+	j = 0;
+	printf("START\n");
+	while (dirty_word[0][i])
+	{
+		printf("%c", dirty_word[0][i]);
+		if (quotes == false && (dirty_word[0][i] == '\'' || dirty_word[0][i] == '\"'))
+		{
+			quotes = true;
+			if (dirty_word[0][i] == '\'')
+				last_quote = 1;
+			else if (dirty_word[0][i] == '\"')
+				last_quote = 2;
+
+		}
+		else if (quotes == true && last_quote == 1 && dirty_word[0][i] == '\'')
+		{
+			quotes = false;
+			last_quote = 0;
+		}
+		else if (quotes == true && last_quote == 2 && dirty_word[0][i] == '\"')
+		{
+			quotes = false;
+			last_quote = 0;
+		}
+		// else if (quotes == true && (dirty_word[0][i] == '\'' || dirty_word[0][i] == '\"'))
+		// 	quotes = false;
+
+		// if (i > 0 && !quotes && dirty_word[0][i - 1] != '<')
+		// {
+		// 	tmp_word2[j++] =  ' ';
+		// }
+
+		if (!quotes && dirty_word[0][i] == '<')
+		// if (dirty_word[0][i] == '<')
+		{
+			tmp_word2[j++] =  ' ';
+		}
+		tmp_word2[j] = dirty_word[0][i];
+
+		j++;
+		i++;
+	}
+	tmp_word2[j] = '\0';
+	printf("\nEND\n");
+
+
+	printf("DIRTY2|%s|\n", tmp_word2);
+}
+
+void	redirection_space_extender(char **dirty_word)
+{
+	printf("WORD_CLEAN|%s|\n", *dirty_word);
+
+	char	*q_start;
+	char	*q_end;
 
 	char	**extd_words;
 	char	*tmp_word;
 	char	*extd_word;
+	bool	quotes;
 	int		i;
 
-	extd_words = ft_split(*clean_word, '<');
+	extd_words = ft_split(*dirty_word, '<');
+	quotes = false;
 	i = 0;
 	while (extd_words[i])
 	{
 		// printf("STRNG:|%s|\n", extd_words[i]);
+		// if (extd_words[i][0] != '\'' || extd_words[i][0] != '\'')
 		if (i != 0 && extd_words[i][0] != ' ')
 		{
 			tmp_word = ft_strjoin(" ", extd_words[i]);
@@ -98,6 +166,7 @@ void	clean_word(t_words *INstruct)
 	int		quotes; 	// 0 no, 1 single, 2 double quotes
 	int		i, j;
 	tmp_clean = malloc(ft_strlen(INstruct->word));
+	// redirection_space_extender2(&INstruct->word);
 	quotes = 0;
 	i = 0;
 	j = 0;
@@ -134,8 +203,52 @@ void	clean_word(t_words *INstruct)
 	while (tmp_clean[--j] == ' ');
 	tmp_clean[j + 1] = '\0';
 
-	redirection_space_extender(&tmp_clean);
+	INstruct->word_clean = ft_strdup(tmp_clean);
+	free(tmp_clean);
+}
 
+void	clean_word2(t_words *INstruct)
+{
+	char	*tmp_clean;
+	int		quotes; 	// 0 no, 1 single, 2 double quotes
+	int		i, j;
+	tmp_clean = malloc(ft_strlen(INstruct->word));
+	// redirection_space_extender2(&INstruct->word);
+	quotes = 0;
+	i = 0;
+	j = 0;
+	i += skip_spaces(&INstruct->word[i]);
+	while (INstruct->word[i] != '\0')
+	{
+		if (INstruct->word[i] == ' ' && quotes == 0)
+		{
+			i += skip_spaces(&INstruct->word[i]);
+			i--;
+		}
+		if (INstruct->word[i] == '\'' && quotes == 0)
+			quotes = 1;
+		else if (INstruct->word[i] == '\'' && quotes == 1)
+			quotes = 0;
+		if (INstruct->word[i] == '\"' && quotes == 0)
+			quotes = 2;
+		else if (INstruct->word[i] == '\"' && quotes == 2)
+			quotes = 0;
+		if (INstruct->word[i] == '$' && quotes != 1)
+		{
+			tmp_clean[j] = '@';
+			j++;
+		}
+		else if (!((INstruct->word[i] == '\'' && quotes != 2) || 
+				(INstruct->word[i] == '\"' && quotes != 1)))
+		{
+			tmp_clean[j] = INstruct->word[i];
+			j++;
+		}
+
+		i++;
+	}
+	while (tmp_clean[--j] == ' ');
+	tmp_clean[j + 1] = '\0';
 
 	INstruct->word_clean = ft_strdup(tmp_clean);
 	free(tmp_clean);

@@ -112,6 +112,53 @@ int get_num_of_pipes(char * str)
 	return(i);
 }
 
+// void	clean_word2(char **line)
+// {
+// 	char	*tmp_clean;
+// 	int		quotes; 	// 0 no, 1 single, 2 double quotes
+// 	int		i, j;
+// 	tmp_clean = malloc(ft_strlen(line));
+// 	redirection_space_extender2(&INstruct->word);
+// 	quotes = 0;
+// 	i = 0;
+// 	j = 0;
+// 	i += skip_spaces(&INstruct->word[i]);
+// 	while (INstruct->word[i] != '\0')
+// 	{
+// 		if (INstruct->word[i] == ' ' && quotes == 0)
+// 		{
+// 			i += skip_spaces(&INstruct->word[i]);
+// 			i--;
+// 		}
+// 		if (INstruct->word[i] == '\'' && quotes == 0)
+// 			quotes = 1;
+// 		else if (INstruct->word[i] == '\'' && quotes == 1)
+// 			quotes = 0;
+// 		if (INstruct->word[i] == '\"' && quotes == 0)
+// 			quotes = 2;
+// 		else if (INstruct->word[i] == '\"' && quotes == 2)
+// 			quotes = 0;
+// 		if (INstruct->word[i] == '$' && quotes != 1)
+// 		{
+// 			tmp_clean[j] = '@';
+// 			j++;
+// 		}
+// 		else if (!((INstruct->word[i] == '\'' && quotes != 2) || 
+// 				(INstruct->word[i] == '\"' && quotes != 1)))
+// 		{
+// 			tmp_clean[j] = INstruct->word[i];
+// 			j++;
+// 		}
+
+// 		i++;
+// 	}
+// 	while (tmp_clean[--j] == ' ');
+// 	tmp_clean[j + 1] = '\0';
+
+// 	INstruct->word_clean = ft_strdup(tmp_clean);
+// 	free(tmp_clean);
+// }
+
 t_words	**init_word_stack(char *line, t_words **words)
 {
 	int	i;
@@ -123,6 +170,10 @@ t_words	**init_word_stack(char *line, t_words **words)
 	/*
 	Still have to check for BS input 
 	*/
+
+
+	// clean_word2(&line);
+
 	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
 	while (line[i])
 	{
