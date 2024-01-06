@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/06 09:56:12 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/06 18:31:58 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,8 @@ void	clean_word(t_words *INstruct);
 int		is_in_quotes(char * line);
 int		check_token_syntax(char *str);
 char	*trimstr(char *str,int i);
-char	*tokenizer(char **line);
-t_words	**init_word_stack(char *line, t_words **words);
+char	*tokenizer(char **line,t_data *data);
+t_words	**init_word_stack(char *line, t_words **words,t_data *data);
 void	clean_words(t_words **INstruct);
 void free_dirty_words(t_words **words);
 // PARSER

@@ -90,29 +90,29 @@ void free_and_close_data(t_data *data)
 
 	i = 0;
 	b = 0;
-	while (data->INstruct[i] != NULL)
-	{
-		free(data->INstruct[i]->word);
-		free(data->INstruct[i]->word_clean);
-		free(data->INstruct[i]->token_after_word);
-		free(data->INstruct[i]->output);
-		if(data->INstruct[i]->redirection->whole_command != NULL)
+	if (data->INstruct != NULL)
+		while (data->INstruct[i] != NULL)
 		{
-			while (data->INstruct[i]->redirection->whole_command[b])
+			free(data->INstruct[i]->word);
+			free(data->INstruct[i]->word_clean);
+			free(data->INstruct[i]->token_after_word);
+			free(data->INstruct[i]->output);
+			if(data->INstruct[i]->redirection->whole_command != NULL)
 			{
-				free(data->INstruct[i]->redirection->split_command[b]);
-				b++;
+				while (data->INstruct[i]->redirection->whole_command[b])
+				{
+					free(data->INstruct[i]->redirection->split_command[b]);
+					b++;
+				}
+			free(data->INstruct[i]->redirection->whole_command);
+			free(data->INstruct[i]->redirection->split_command);
+			close(data->INstruct[i]->redirection->fd_in);
+			close(data->INstruct[i]->redirection->fd_out);
 			}
-		free(data->INstruct[i]->redirection->whole_command);
-		free(data->INstruct[i]->redirection->split_command);
-		close(data->INstruct[i]->redirection->fd_in);
-		close(data->INstruct[i]->redirection->fd_out);
+			free(data->INstruct[i]->redirection);
+			free(data->INstruct[i]);
+			i++;
 		}
-		free(data->INstruct[i]->redirection);
-		free(data->INstruct[i]);
-		i++;
-	}
-	ft_putnbr_fd(g_exit_status, 1);
 	if (g_exit_status == 69)
 	{
 		close(data->original_fd_in);

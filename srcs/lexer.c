@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/01 14:12:53 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/06 18:32:10 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ int check_token_syntax(char *str)
 	}
 	else if (ft_strlen(str) == 2)
 	{
+	if (str[0] == '|' && str[1] == '|')
+		g_exit_status = 1;
+	if (str[0] == '&' && str[1] == '&')
+		g_exit_status = 1;
 	if (str[0] == '<' && str[1] == '<')
 		return (4);
 	if (str[0] == '>' && str[1] == '>')
@@ -79,7 +83,7 @@ char	*trimstr(char *str,int i)
 	return(returnstr);
 }
 
-char *tokenizer(char **line)
+char *tokenizer(char **line,t_data *data)
 {
 	int		i;
 	char *buffer;
@@ -87,12 +91,15 @@ char *tokenizer(char **line)
 	i = 0;
 	if(*line[i] == 0)
 		return(NULL);
-	while ((*line)[i] == '>' || (*line)[i] == '|' || (*line)[i] == '<')
+	while ((*line)[i] == '>' || (*line)[i] == '|' || (*line)[i] == '<' || (*line)[i] == '&')
 		i++;
 	buffer = ft_substr(*line,0,i);
 	*line = trimstr(*line,i);
 	if (!check_token_syntax(buffer))
-		puterr(SYNERR);	
+		{
+			g_exit_status = 128;
+			free_and_close_data(data);
+		}
 	return(buffer);
 }
 
@@ -112,7 +119,7 @@ int get_num_of_pipes(char * str)
 	return(i);
 }
 
-t_words	**init_word_stack(char *line, t_words **words)
+t_words	**init_word_stack(char *line, t_words **words,t_data *data)
 {
 	int	i;
 	int	b;
@@ -141,7 +148,7 @@ t_words	**init_word_stack(char *line, t_words **words)
 		words[b]->word = ft_substr(line,0,i);
 		line = trimstr(line,i);
 		if (line[0] != '\0')
-			words[b]->token_after_word = tokenizer(&line);
+			words[b]->token_after_word = tokenizer(&line,data);
 			words[b]->redirection = ft_calloc(1, sizeof(t_redirection ));
 		if (ft_strchr(words[b]->word, '>') || ft_strchr(words[b]->word, '<')) // add errorchecking: >>> >>23 ...
 		{
@@ -158,6 +165,7 @@ t_words	**init_word_stack(char *line, t_words **words)
 	words[b] = NULL;
 	while (words[i] != NULL)
 		words[i++]->num_of_elements = b;
+	i = 0;
 	clean_words(words);
 	free_dirty_words(words);
 	return(words);

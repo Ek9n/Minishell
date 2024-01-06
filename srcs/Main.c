@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/06 10:33:23 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/06 18:33:25 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int	main(int argc, char **argv, char **envp)
 		input = readline("Minishell>>: ");
 		if (input)
 			add_history(input); // history works
-		if (input[0] != '\0')
+		if (input && input[0] != '\0')
 		{
-		data->INstruct = init_word_stack(input, data->INstruct);
+		data->INstruct = init_word_stack(input, data->INstruct,data);
 		if (data->INstruct != NULL)
 			Executor2(data);
 		}
@@ -76,16 +76,16 @@ int	main(int argc, char **argv, char **envp)
  piperino use our functions, if theres that (execve and inbuilt) /hannes
  clear history in main when exit status is bad. //julius
   ====
-  handle input of && and || -invalid input
+  handle input of && and || -invalid input //IN PROGRESS 
   edge case doc: 
   unset home and cd , cd doesnt care, it should fail and exit. 
   cd doesnt update exit code.. we need to pass the data strcut to cd.
   ====
   
   FROM EVAL SHEET: (https://42evals.com/Cursus/minishell) password for website is CVb3d2023
-  simple command with absolute path (ls /bin)
-  after execve failure child doesnt terminate.
-  only spaces in command line it exits lol tabs too
+  simple command with absolute path (ls /bin) - FIXED
+  after execve failure child doesnt terminate. - FIXED
+  only spaces in command line it exits lol tabs too // Hannes
   echo -n prints -n, and with input doesnt work correctly
   $? handle that, it should be 127 if command not found
   ctrl + c doesnt work
