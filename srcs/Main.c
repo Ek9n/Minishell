@@ -6,11 +6,12 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/04 17:36:26 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/06 10:33:23 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+int g_exit_status = 0;
 
 void	signal_handler(int sig, siginfo_t *info, void *context)
 {
@@ -25,7 +26,7 @@ void	signal_handler(int sig, siginfo_t *info, void *context)
 t_data	*init_data(t_data *data, char **envp)
 {
 	data = malloc(sizeof(t_data));
-	data->envp = arrdup(envp);
+	data -> envp = arrdup(envp);
 	data -> original_fd_in = dup(STDIN_FILENO);
 	data -> original_fd_out = dup(STDOUT_FILENO);
 	return (data);
@@ -59,7 +60,9 @@ int	main(int argc, char **argv, char **envp)
 		if (data->INstruct != NULL)
 			Executor2(data);
 		}
-		unlink(".heredoc");
+		ft_putnbr_fd(g_exit_status, 1);
+		write(1, "\n", 1);
+		unlink(".heredoc"); // have to move this  somewhere else,and protect it.
 		printf("After routine (in main)!\n");
 	}
 }
@@ -72,4 +75,24 @@ int	main(int argc, char **argv, char **envp)
  $? exit code + executor and piperino waitpid // both 
  piperino use our functions, if theres that (execve and inbuilt) /hannes
  clear history in main when exit status is bad. //julius
+  ====
+  handle input of && and || -invalid input
+  edge case doc: 
+  unset home and cd , cd doesnt care, it should fail and exit. 
+  cd doesnt update exit code.. we need to pass the data strcut to cd.
+  ====
+  
+  FROM EVAL SHEET: (https://42evals.com/Cursus/minishell) password for website is CVb3d2023
+  simple command with absolute path (ls /bin)
+  after execve failure child doesnt terminate.
+  only spaces in command line it exits lol tabs too
+  echo -n prints -n, and with input doesnt work correctly
+  $? handle that, it should be 127 if command not found
+  ctrl + c doesnt work
+  handle /
+  handle d
+  double quotes dont work... echo "cat lol.c | cat > lol.c"
+  echo '$USER' prints '$USER' / echo is completely bad..
+  relative path ? 
+  unsetting path doesnt prevent command from working. 
   */

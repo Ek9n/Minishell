@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/02 13:58:38 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/06 09:56:12 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <stdbool.h>
 # include <errno.h>
 # include <fcntl.h>
+
+extern int g_exit_status;
 
 typedef struct redirection
 {
@@ -62,7 +64,7 @@ enum	errors {
 void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
 char *ft_join(char **arr);
-void free_and_close_data(t_data *data,int status);
+void free_and_close_data(t_data *data);
 
 // ENVIROMENT
 char	**arrdup(char **enviroment);

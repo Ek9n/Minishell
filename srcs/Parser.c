@@ -185,7 +185,10 @@ int	single_command(t_data *data,int i)
 	else if (cmp_keyword("env", data->INstruct[i]->word_clean))
 		printenv(data->envp);
 	else if (cmp_keyword("exit", data->INstruct[i]->word_clean))
-		free_and_close_data(data, 0);
+		{
+			g_exit_status = 69;
+			free_and_close_data(data);
+		}
 	else
 		executor(data->INstruct[i]->word_clean, data);
 	return (0);
@@ -198,6 +201,7 @@ int	piperino8(t_words **INstruct,t_data *data)
     pid_t	pids[100];
 	int		i;
 	int		j;
+	int		status;
 
 	// printf("FD IS>%d\n\n", INstruct[0]->redirection->fd_in);
     i = 0;
@@ -270,8 +274,12 @@ int	piperino8(t_words **INstruct,t_data *data)
     }
     for (int j = 0; j < i; j++)
     {
-        waitpid(pids[j], NULL, 0);
-    }
+        waitpid(pids[j], &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_exit_status = 128 + WIFSIGNALED(status);
+	}
     return (i);
 }
 void print_redirection(t_redirection *redirection)

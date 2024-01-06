@@ -83,7 +83,7 @@ char *ft_join(char **arr)
 
     return str;
 }
-void free_and_close_data(t_data *data,int status)
+void free_and_close_data(t_data *data)
 {
 	int i;
 	int b;
@@ -112,7 +112,8 @@ void free_and_close_data(t_data *data,int status)
 		free(data->INstruct[i]);
 		i++;
 	}
-	if (status != 2)
+	ft_putnbr_fd(g_exit_status, 1);
+	if (g_exit_status == 69)
 	{
 		close(data->original_fd_in);
 		close(data->original_fd_out);
@@ -125,10 +126,9 @@ void free_and_close_data(t_data *data,int status)
 		}
 		free(data->envp);
 		free(data);
-		if (status == 1)
-			exit(EXIT_FAILURE);
-		else
-			exit(EXIT_SUCCESS);
+		g_exit_status = 0;
+		exit(EXIT_SUCCESS);
 	}
-
+		if (g_exit_status >= 129)
+			exit(EXIT_FAILURE);
 }

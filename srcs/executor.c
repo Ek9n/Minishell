@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/01 14:20:47 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/06 09:52:08 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,17 @@ void	executor(char *clean_word,t_data *data)
 		execve(command, args, data->envp);
 		free(command);
 		printf("Return not expected. Must be an execve error.\n");
-		free_and_close_data(data,1);
+		free_and_close_data(data);
 	}
 	else
 	{
 		free(command);
 		waitpid(pid, &status, 0);
-		status = (status & 0x7f00) >> 8;
-		if (status == 1)
-			free_and_close_data(data,2);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_exit_status = 128 + WIFSIGNALED(status);
+		free_and_close_data(data);
 	}
 
 }
