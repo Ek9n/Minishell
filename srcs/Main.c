@@ -55,9 +55,9 @@ int	main(int argc, char **argv, char **envp)
 			add_history(input); // history works
 		if (input[0] != '\0')
 		{
-		data->INstruct = init_word_stack(input, data->INstruct);
-		if (data->INstruct != NULL)
-			Executor2(data);
+			data->INstruct = init_word_stack(input, data->INstruct);
+			if (data->INstruct != NULL)
+				Executor2(data);
 		}
 		unlink(".heredoc");
 		printf("After routine (in main)!\n");

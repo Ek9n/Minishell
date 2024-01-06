@@ -171,7 +171,6 @@ t_words	**init_word_stack(char *line, t_words **words)
 	Still have to check for BS input 
 	*/
 
-
 	// clean_word2(&line);
 
 	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
@@ -190,6 +189,7 @@ t_words	**init_word_stack(char *line, t_words **words)
 			words[b]->quotes_case = 1;
 		}
 		words[b]->word = ft_substr(line,0,i);
+		redirection_space_extender2(&words[b]->word);
 		line = trimstr(line,i);
 		if (line[0] != '\0')
 			words[b]->token_after_word = tokenizer(&line);

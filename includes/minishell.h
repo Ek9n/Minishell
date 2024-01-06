@@ -70,9 +70,9 @@ int		cntenv(char **env);
 void	freeenv(char **env);
 void	delete_env_var(char *name, char ***env);
 void	add_env_var(char *name, char ***env);
-int	find_char_from_index(char *str, char c, int index);
-char *expand_env(char *str, char **env);
-char *dollar_baby(char *str);
+int		find_char_from_index(char *str, char c, int index);
+char	*expand_env(char *str, char **env);
+char 	*dollar_baby(char *str);
 // BUILTINS
 void	printenv(char **env);
 void	unset(char *str, char ***env);
@@ -104,5 +104,12 @@ void	executor(char *clean_word,t_data *data);
 int		Executor2(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);
+
+
+
+
+void	redirection_space_extender2(char **dirty_word);
+
+
 
 #endif

@@ -48,6 +48,15 @@ char	*comb_extd_word(char **extd_words)
 	return (comb_word);
 }
 
+int	redir_case(char *c)
+{
+	if ((*c == '<' && *(c + 1) == '<') || (*c == '>' && *(c + 1) == '>'))
+		return (2);
+	else if (*c == '<' || *c == '>')
+		return (1);
+	return (0);
+}
+
 void	redirection_space_extender2(char **dirty_word)
 {
 	printf("DIRTY1|%s|\n", *dirty_word);
@@ -86,17 +95,20 @@ void	redirection_space_extender2(char **dirty_word)
 			quotes = false;
 			last_quote = 0;
 		}
-		// else if (quotes == true && (dirty_word[0][i] == '\'' || dirty_word[0][i] == '\"'))
-		// 	quotes = false;
 
-		// if (i > 0 && !quotes && dirty_word[0][i - 1] != '<')
-		// {
-		// 	tmp_word2[j++] =  ' ';
-		// }
 
-		if (!quotes && dirty_word[0][i] == '<')
-		// if (dirty_word[0][i] == '<')
+
+		if (!quotes && redir_case(&dirty_word[0][i]) == 1)
 		{
+			tmp_word2[j++] =  ' ';
+			tmp_word2[j++] = dirty_word[0][i++];
+			tmp_word2[j++] =  ' ';
+		}
+		else if (!quotes && redir_case(&dirty_word[0][i]) == 2)
+		{
+			tmp_word2[j++] =  ' ';
+			tmp_word2[j++] = dirty_word[0][i++];
+			tmp_word2[j++] = dirty_word[0][i++];
 			tmp_word2[j++] =  ' ';
 		}
 		tmp_word2[j] = dirty_word[0][i];
@@ -106,9 +118,12 @@ void	redirection_space_extender2(char **dirty_word)
 	}
 	tmp_word2[j] = '\0';
 	printf("\nEND\n");
-
-
 	printf("DIRTY2|%s|\n", tmp_word2);
+	free(dirty_word[0]);
+	dirty_word[0] = ft_strdup(tmp_word2);
+	free(tmp_word2);
+
+
 }
 
 void	redirection_space_extender(char **dirty_word)
