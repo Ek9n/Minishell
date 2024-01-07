@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/06 18:32:10 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/07 11:35:58 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,13 +146,13 @@ t_words	**init_word_stack(char *line, t_words **words,t_data *data)
 			words[b]->quotes_case = 1;
 		}
 		words[b]->word = ft_substr(line,0,i);
-		redirection_space_extender(&words[b]->word);
 		line = trimstr(line,i);
 		if (line[0] != '\0')
 			words[b]->token_after_word = tokenizer(&line,data);
 			words[b]->redirection = ft_calloc(1, sizeof(t_redirection ));
 		if (ft_strchr(words[b]->word, '>') || ft_strchr(words[b]->word, '<')) // add errorchecking: >>> >>23 ...
 		{
+			redirection_space_extender(&words[b]->word);
 			words[b]->redirection->whole_command = ft_strdup(words[b]->word);
 			words[b]->redirection->split_command = ft_split(words[b]->word, ' ');
 			words[b]->redirection->fd_in = 0;
@@ -163,6 +163,7 @@ t_words	**init_word_stack(char *line, t_words **words,t_data *data)
 		b++;
 		i = 0;
 	}
+	free(line);
 	words[b] = NULL;
 	while (words[i] != NULL)
 		words[i++]->num_of_elements = b;

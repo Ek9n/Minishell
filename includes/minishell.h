@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/06 18:31:58 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/07 15:00:06 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,13 @@ void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
 char *ft_join(char **arr);
 void free_and_close_data(t_data *data);
+// SIGNALS
+void	sig_handler_c(int sig);
+void	assign_signals(void);
+void  assign_interactive_backslash(int sig);
+void assign_interactive_C(int sig);
+void assign_empty_line(int sig);
+void  assign_interactive_signals(void);
 
 // ENVIROMENT
 char	**arrdup(char **enviroment);

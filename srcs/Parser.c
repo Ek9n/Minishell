@@ -63,6 +63,7 @@ void	clean_word(t_words *INstruct)
 	while (tmp_clean[--j] == ' ');
 	tmp_clean[j + 1] = '\0';
 	INstruct->word_clean = ft_strdup(tmp_clean);
+	ft_putstr_fd(INstruct->word_clean, 1);
 	free(tmp_clean);
 }
 
@@ -357,6 +358,7 @@ void get_fds(t_data *data,int index)
 		}
 		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 2) // <
 		{
+			ft_putstr_fd(data->INstruct[index]->redirection->split_command[i+1], 1);
 			data->INstruct[index]->redirection->fd_in = open(data->INstruct[index]->redirection->split_command[i + 1], O_RDONLY);
 			if (data->INstruct[index]->redirection->fd_in == -1)
 			{

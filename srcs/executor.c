@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/06 18:07:51 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/07 15:30:46 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	execute_single_command(char *clean_word,t_data *data)
 			command = ft_strjoin("/bin/",args[0]);
 		i++;
 	}
-	
 	if ((pid = fork()) == -1)
 	perror("fork error");
 	else if (pid == 0) 
@@ -41,7 +40,7 @@ void	execute_single_command(char *clean_word,t_data *data)
 		execve(command, args, data->envp);
 		free(command);
 		printf("Return not expected. Must be an execve error.\n");
-		g_exit_status = 128 + 1;
+		g_exit_status = 130;
 		free_and_close_data(data);
 	}
 	else
