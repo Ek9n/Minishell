@@ -85,7 +85,7 @@ char	*getpwd(void);
 // REDIRECTIONS
 void	init_redirection(t_words **words, int i);
 int		check_for_redirection(t_words **words);
-void get_fds(t_data *data,int index);
+void 	get_fds(t_data *data,int index);
 
 // LEXER 
 void	clean_word(t_words *INstruct);
@@ -105,6 +105,8 @@ int		Executor2(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);
 
+//utils_1.c
+void	redirection_space_extender(char **dirty_word);
 
 
 

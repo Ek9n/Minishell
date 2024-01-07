@@ -117,8 +117,8 @@ void	redirection_space_extender2(char **dirty_word)
 		i++;
 	}
 	tmp_word2[j] = '\0';
-	printf("\nEND\n");
 	printf("DIRTY2|%s|\n", tmp_word2);
+	printf("\nEND\n");
 	free(dirty_word[0]);
 	dirty_word[0] = ft_strdup(tmp_word2);
 	free(tmp_word2);
