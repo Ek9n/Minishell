@@ -27,6 +27,8 @@ void	clean_word(t_words *INstruct)
 	int		quotes; 	// 0 no, 1 single, 2 double quotes
 	int		i, j;
 	tmp_clean = malloc(ft_strlen(INstruct->word));
+	if (!tmp_clean)
+		g_exit_status = 1;
 	quotes = 0;
 	i = 0;
 	j = 0;
@@ -140,6 +142,8 @@ static int	is_pipe(t_words **INstruct, int i)
 
 int	single_command(t_data *data,int i)
 {
+	if (g_exit_status != 0)
+		return (1);
 	if (cmp_keyword("echo", data->INstruct[i]->word_clean))
 	{
 		data->INstruct[i]->output = echo(data->INstruct[i]->word_clean);
@@ -166,7 +170,7 @@ int	single_command(t_data *data,int i)
 			g_exit_status = 69;
 			free_and_close_data(data);
 		}
-	else
+	else 
 		execute_single_command(data->INstruct[i]->word_clean, data);
 	return (0);
 }
@@ -185,14 +189,19 @@ int	piperino8(t_words **INstruct,t_data *data)
     i = 0;
     j = 0;
     pipe_fd = malloc(200 * sizeof(int *));
-    while (is_pipe(INstruct, j))
+		if (!pipe_fd)
+			g_exit_status = 1;
+	while (is_pipe(INstruct, j))
     {
         pipe_fd[j] = malloc(2 * sizeof(int));
         if (pipe(pipe_fd[j]) == -1)
-            error_exit("(piperino6) Pipe creation failed\n");
+			{
+				g_exit_status = 1;
+            	ft_putstr_fd("(piperino6) Pipe creation failed\n",1);
+			}
         j++;
     }
-    while (INstruct[i] != NULL)
+    while (INstruct[i] != NULL && g_exit_status == 0)
     {
         pids[i] = fork();
         if (pids[i] == 0)
@@ -228,7 +237,7 @@ int	piperino8(t_words **INstruct,t_data *data)
 			}
             cmd1 = ft_split(INstruct[i]->word_clean, ' ');
         	path1 = ft_strjoin("/bin/", cmd1[0]);
-			execve(path1, cmd1, NULL);
+			execve(path1, cmd1, NULL); //this has to first look for our builtins.
             perror("(piperino6) Exec1 failed");
         }
         else
@@ -242,6 +251,8 @@ int	piperino8(t_words **INstruct,t_data *data)
 		//free_piperino2(INstruct[i], cmd1, path1);
         i++;
     }
+	if (g_exit_status != 0)
+		return (i);
     for (int j = 0; j < i; j++)
     {
         if (is_pipe(INstruct, j))
@@ -287,10 +298,10 @@ int	ft_heredoc(char * delimiter)
 
 	i = 0;
 	fd = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd == -1)
-		return (-1);
 	line = ft_calloc(1, sizeof(char));
-	while (true)
+	if (fd == -1 || !line)
+		g_exit_status = 2;
+	while (true && g_exit_status == 0)
 	{
 		line = readline("> ");
 		if (ft_strcmp(line, delimiter) == 0)
@@ -332,6 +343,7 @@ void get_fds(t_data *data,int index)
 				dup2(data->original_fd_out, 1);
 				close(data->original_fd_in);
 				close(data->original_fd_out);
+				g_exit_status = 2;
 				ft_putstr_fd("open failed", 1);
 			}	
 			data->INstruct[index]->redirection->split_command[i][0] = '\0';
@@ -349,6 +361,7 @@ void get_fds(t_data *data,int index)
 				dup2(data->original_fd_out, 1);
 				close(data->original_fd_in);
 				close(data->original_fd_out);
+				g_exit_status = 2;
 				ft_putstr_fd("open failed", 1);
 			}	
 			data->INstruct[index]->redirection->split_command[i][0] = '\0';
@@ -366,6 +379,7 @@ void get_fds(t_data *data,int index)
 				dup2(data->original_fd_out, 1);
 				close(data->original_fd_in);
 				close(data->original_fd_out);
+				g_exit_status = 2;
 				ft_putstr_fd("open failed, file doesnt exist probably", 1);
 			}
 			data->INstruct[index]->redirection->split_command[i][0] = '\0';
@@ -382,6 +396,7 @@ void get_fds(t_data *data,int index)
 				dup2(data->original_fd_out, 1);
 				close(data->original_fd_in);
 				close(data->original_fd_out);
+				g_exit_status = 2;
 				ft_putstr_fd("Heredoc failed to create a temp file.", 1);
 			}
 			data->INstruct[index]->redirection->split_command[i][0] = '\0';
@@ -402,8 +417,9 @@ int Executor(t_data *data)
 
 	redir = 0;
 	i = 0;
-	while (i < data->INstruct[0]->num_of_elements)
+	while (i < data->INstruct[0]->num_of_elements && g_exit_status == 0)
 	{
+		free_and_close_data(data); // checks after each element if something fialed, if yes its starts to free and other things wont be executed
 		if (is_pipe(data->INstruct, i))
 		{
 			piperino8(data->INstruct + i,data);
@@ -423,8 +439,4 @@ int Executor(t_data *data)
 		i++;
 	}
 	return (i);
-	/* cat < file2 > test | wc writes to test, and not to stdout. 
-		because piperino makes i+= idk what/when etc, it makes closing fds and stuff hard.
-		freeing and execve failure too, im unsure whether its correct. 
-	 */
 }

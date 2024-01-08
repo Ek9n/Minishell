@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/07 15:41:37 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/08 10:16:45 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 			if (rl_end ==0)
 				exit(0);
 		if (input)
-			add_history(input); // history works
+			add_history(input);
 		if (input && input[0] != '\0')
 		{
 			assign_interactive_signals();

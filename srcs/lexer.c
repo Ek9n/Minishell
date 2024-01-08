@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/07 11:35:58 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/08 10:18:50 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*trimstr(char *str,int i)
 	}
 	returnstr = ft_calloc(a + 1,sizeof(char));
 	if (!returnstr)
-		puterr(ALLOCERR);// exit with failure
+		g_exit_status = 1;
 	i = 0;
 	while (str[start] != '\0')
 	{
@@ -97,7 +97,7 @@ char *tokenizer(char **line,t_data *data)
 	*line = trimstr(*line,i);
 	if (!check_token_syntax(buffer))
 		{
-			g_exit_status = 128;
+			g_exit_status = 2;
 			free_and_close_data(data);
 		}
 	return(buffer);
@@ -135,7 +135,7 @@ t_words	**init_word_stack(char *line, t_words **words,t_data *data)
 	{
 		words[b] = ft_calloc(1, sizeof(t_words));
 		if (!words[b])
-			puterr(ALLOCERR);// exit with failure
+			g_exit_status = 1;
 		i = 0;
 		if (!is_in_quotes(line))
 			while (line[i] && line[i] != '|')

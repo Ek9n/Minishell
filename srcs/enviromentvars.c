@@ -135,7 +135,11 @@ void	unset(char *str, char ***env)
 	cmds = ft_split(str, ' ');
 	i = 0;
 	if (cmds[1] == NULL)
-		printf("something!\n");
+	{
+		printf("minishell: unset: `%s': not a valid identifier\n", cmds[1]);
+		g_exit_status = 1;
+		return;
+	}
 	while (cmds[i])
 	{
 		delete_env_var(cmds[i], env);
@@ -197,6 +201,7 @@ void	export(char *str, char ***env)
 	cmds = ft_split(str, ' ');
 	if (!correct_input(cmds))
 	{
+		g_exit_status = 1;
 		free(cmds);
 		return ;
 	}

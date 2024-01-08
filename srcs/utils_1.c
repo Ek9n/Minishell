@@ -90,7 +90,7 @@ void free_and_close_data(t_data *data)
 
 	i = 0;
 	b = 0;
-	if (g_exit_status == 130)
+	if (g_exit_status == 130 || g_exit_status == 420)
 		if (data->INstruct != NULL)
 			while (data->INstruct[i] != NULL)
 			{
@@ -113,8 +113,11 @@ void free_and_close_data(t_data *data)
 				free(data->INstruct[i]->redirection);
 				free(data->INstruct[i]);
 				i++;
+				if (getpid() == 0)
+				printf("%d\n", getpid());
+					g_exit_status = 69;
 			}
-	if (g_exit_status == 69)
+	if (g_exit_status == 69 || g_exit_status == 420)
 	{
 		close(data->original_fd_in);
 		close(data->original_fd_out);

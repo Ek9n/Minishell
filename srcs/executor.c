@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/07 15:30:46 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/08 10:53:49 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,16 @@ void	execute_single_command(char *clean_word,t_data *data)
 		i++;
 	}
 	if ((pid = fork()) == -1)
-	perror("fork error");
-	else if (pid == 0) 
+	{
+		g_exit_status = 1;
+		perror("fork error");
+	}
+	else if (pid == 0 && g_exit_status == 0) 
 	{
 		execve(command, args, data->envp);
 		free(command);
 		printf("Return not expected. Must be an execve error.\n");
-		g_exit_status = 130;
+		g_exit_status = 420;
 		free_and_close_data(data);
 	}
 	else
@@ -52,7 +55,7 @@ void	execute_single_command(char *clean_word,t_data *data)
 			g_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			g_exit_status = 128 + WIFSIGNALED(status);
-		free_and_close_data(data);
 	}
+		free_and_close_data(data);
 
 }

@@ -23,6 +23,7 @@ char	*getpwd(void)
 	buf = getcwd(NULL, 0);
 	if (!buf)
 	{
+		g_exit_status = 1;
 		perror("getcwd() error");
 		return (NULL);
 	}
@@ -40,9 +41,9 @@ int	cd(char *dir, char ***env)
 		dir = ft_strdup(getenv("HOME"));
 	if (chdir(dir) != 0) 
     {
-        perror("(cd) No valid pathname!");
+        g_exit_status = 1;
+		perror("(cd) No valid pathname!");
 		free(pwd);
-		return (EXIT_FAILURE);
     }
 	export(pwd,env);
 	free(pwd);
