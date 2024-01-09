@@ -112,53 +112,6 @@ int get_num_of_pipes(char * str)
 	return(i);
 }
 
-// void	clean_word2(char **line)
-// {
-// 	char	*tmp_clean;
-// 	int		quotes; 	// 0 no, 1 single, 2 double quotes
-// 	int		i, j;
-// 	tmp_clean = malloc(ft_strlen(line));
-// 	redirection_space_extender2(&INstruct->word);
-// 	quotes = 0;
-// 	i = 0;
-// 	j = 0;
-// 	i += skip_spaces(&INstruct->word[i]);
-// 	while (INstruct->word[i] != '\0')
-// 	{
-// 		if (INstruct->word[i] == ' ' && quotes == 0)
-// 		{
-// 			i += skip_spaces(&INstruct->word[i]);
-// 			i--;
-// 		}
-// 		if (INstruct->word[i] == '\'' && quotes == 0)
-// 			quotes = 1;
-// 		else if (INstruct->word[i] == '\'' && quotes == 1)
-// 			quotes = 0;
-// 		if (INstruct->word[i] == '\"' && quotes == 0)
-// 			quotes = 2;
-// 		else if (INstruct->word[i] == '\"' && quotes == 2)
-// 			quotes = 0;
-// 		if (INstruct->word[i] == '$' && quotes != 1)
-// 		{
-// 			tmp_clean[j] = '@';
-// 			j++;
-// 		}
-// 		else if (!((INstruct->word[i] == '\'' && quotes != 2) || 
-// 				(INstruct->word[i] == '\"' && quotes != 1)))
-// 		{
-// 			tmp_clean[j] = INstruct->word[i];
-// 			j++;
-// 		}
-
-// 		i++;
-// 	}
-// 	while (tmp_clean[--j] == ' ');
-// 	tmp_clean[j + 1] = '\0';
-
-// 	INstruct->word_clean = ft_strdup(tmp_clean);
-// 	free(tmp_clean);
-// }
-
 t_words	**init_word_stack(char *line, t_words **words)
 {
 	int	i;
@@ -170,9 +123,7 @@ t_words	**init_word_stack(char *line, t_words **words)
 	/*
 	Still have to check for BS input 
 	*/
-
 	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
-	// redirection_space_extender2(&line);
 	while (line[i])
 	{
 		words[b] = ft_calloc(1, sizeof(t_words));
@@ -188,9 +139,7 @@ t_words	**init_word_stack(char *line, t_words **words)
 			words[b]->quotes_case = 1;
 		}
 		words[b]->word = ft_substr(line,0,i);
-		redirection_space_extender2(&words[b]->word);
-		printf("\nSTR after Extender in initwstack:%s\n", words[b]->word);
-		// printf("STRLEN:%ld\n", ft_strlen(words[b]->word));
+		redirection_space_extender(&words[b]->word);
 		line = trimstr(line,i);
 		if (line[0] != '\0')
 			words[b]->token_after_word = tokenizer(&line);
@@ -210,26 +159,6 @@ t_words	**init_word_stack(char *line, t_words **words)
 	words[b] = NULL;
 	while (words[i] != NULL)
 		words[i++]->num_of_elements = b;
-	// printf("\nSTR before clean_words:%s\n", words[b]->word);
-		// printf("\nSTR after clean words:%s\n", *words);
-	// clean_words(words);
-	// printf("\nSTR after Extender in initwstack:%s\n", words[0]->word);
-
-		// printf("\nDERSTRI132NG:%s\n", ft_strdup(words[0]->word));
-
-	// i = -1;
-		// printf("\nWORDS:%s\n", words[0]);
-		// printf("\nWORDS:%s\n", words[1]);
-	// while (words[++i] != NULL)
-	// {
-	// 	// printf("\ninloopWords:%s\n", words[i]);
-	// 	// printf("\ninloop:\n");
-	// 	words[i]->word_clean = ft_strdup(words[i]->word);
-	// 	// printf("\nDERSTRING:%s\n", words[i]->word_clean);
-	// }
-
-		// printf("END OF LEXER\n");
-		// printf("\nSTR after clean words:%s\n", words[0]->word_clean);
 	// free_dirty_words(words);
 	return(words);
 }

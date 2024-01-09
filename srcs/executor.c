@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	executor(char *clean_word,t_data *data)
+void	exec_cmd(char *clean_word,t_data *data)
 {
 
 	int pid;

@@ -46,6 +46,7 @@ typedef struct s_words
  	char 	*output; // Hannes Parser
 	t_redirection	*redirection;
 }	t_words;
+
 typedef struct s_data
 {
 	char	**envp;
@@ -58,11 +59,12 @@ enum	errors {
 	ALLOCERR,
 	SYNERR,		
 };
+
 // MAIN_UTILS
 void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
-char *ft_join(char **arr);
-void free_and_close_data(t_data *data,int status);
+char 	*ft_join(char **arr);
+void 	free_and_close_data(t_data *data,int status);
 
 // ENVIROMENT
 char	**arrdup(char **enviroment);
@@ -100,18 +102,12 @@ void free_dirty_words(t_words **words);
 int		parser(t_data *data, int i);
 void	routine(t_data	*data);
 // EXECUTOR 
-void	executor(char *clean_word,t_data *data);
-int		Executor2(t_data *data);
+void	exec_cmd(char *clean_word,t_data *data);
+int		Executor(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);
 
 //utils_1.c
 void	redirection_space_extender(char **dirty_word);
-
-
-
-void	redirection_space_extender2(char **dirty_word);
-
-
 
 #endif
