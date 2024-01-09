@@ -1,0 +1,3 @@
+in single_command:echo cat lol.c | cat > lol.c
+cat lol.c | cat > lol.c
+After routine (in main)!

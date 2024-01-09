@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 				Executor2(data);
 		}
 		unlink(".heredoc");
-		printf("After routine (in main)!\n");
+		// printf("After routine (in main)!\n");
 	}
 }
 

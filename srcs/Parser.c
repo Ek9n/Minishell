@@ -59,7 +59,7 @@ int	redir_case(char *c)
 
 void	redirection_space_extender2(char **dirty_word)
 {
-	printf("DIRTY1|%s|\n", *dirty_word);
+	// printf("DIRTY1|%s|\n", *dirty_word);
 
 	int		i;
 	int		j;
@@ -72,10 +72,10 @@ void	redirection_space_extender2(char **dirty_word)
 	last_quote = 0; // 1 = single, 2 = double quotes
 	i = 0;
 	j = 0;
-	printf("START\n");
+	// printf("START\n");
 	while (dirty_word[0][i])
 	{
-		printf("%c", dirty_word[0][i]);
+		// printf("%c", dirty_word[0][i]);
 		if (quotes == false && (dirty_word[0][i] == '\'' || dirty_word[0][i] == '\"'))
 		{
 			quotes = true;
@@ -117,8 +117,8 @@ void	redirection_space_extender2(char **dirty_word)
 		i++;
 	}
 	tmp_word2[j] = '\0';
-	printf("DIRTY2|%s|\n", tmp_word2);
-	printf("\nEND\n");
+	// printf("DIRTY2|%s|\n", tmp_word2);
+	// printf("\nEND\n");
 	free(dirty_word[0]);
 	dirty_word[0] = ft_strdup(tmp_word2);
 	free(tmp_word2);
@@ -351,6 +351,7 @@ static int	is_redirection(t_words **INstruct, int i)
 
 int	single_command(t_data *data,int i)
 {
+	printf("in single_command:%s\n", data->INstruct[i]->word_clean);
 	if (cmp_keyword("echo", data->INstruct[i]->word_clean))
 	{
 		data->INstruct[i]->output = echo(data->INstruct[i]->word_clean);
@@ -602,17 +603,11 @@ int Executor2(t_data *data)
 
 	redir = 0;
 	i = 0;
-	//while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
-	//		data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes
 	while (i < data->INstruct[0]->num_of_elements)
 	{
-		//if (data->INstruct[i]->redirection->whole_command != NULL)
-		//{
-			//get_fds(data, i);
-			//redir = 1;
-		//}
 		if (is_pipe(data->INstruct, i))
 		{
+			clean_words(data->INstruct);
 			piperino8(data->INstruct + i,data);
 			break;
 		}
@@ -620,10 +615,9 @@ int Executor2(t_data *data)
 		{
 			if (data->INstruct[i]->redirection->whole_command != NULL)
 				get_fds(data, i);
+			clean_words(data->INstruct);
 			single_command(data, i);
 		}
-		//dup2(data->original_fd_in, 0);
-		//dup2(data->original_fd_out, 1);
 		i++;
 	}
 	return (i);
