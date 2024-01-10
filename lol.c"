@@ -1,3 +1,8 @@
+<<<<<<< HEAD
 "cat lol.c | cat
 0
+=======
+in single_command:echo cat lol.c | cat > lol.c
+cat lol.c | cat > lol.c
+>>>>>>> WORKS03
 After routine (in main)!

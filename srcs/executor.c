@@ -6,13 +6,13 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/08 10:53:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/10 12:54:46 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	execute_single_command(char *clean_word,t_data *data)
+void	exec_cmd(char *clean_word,t_data *data)
 {
 
 	int pid;

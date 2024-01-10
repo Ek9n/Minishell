@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/07 15:00:06 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/10 12:55:06 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_words
  	char 	*output; // Hannes Parser
 	t_redirection	*redirection;
 }	t_words;
+
 typedef struct s_data
 {
 	char	**envp;
@@ -60,6 +61,7 @@ enum	errors {
 	ALLOCERR,
 	SYNERR,		
 };
+
 // MAIN_UTILS
 void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
@@ -79,9 +81,9 @@ int		cntenv(char **env);
 void	freeenv(char **env);
 void	delete_env_var(char *name, char ***env);
 void	add_env_var(char *name, char ***env);
-int	find_char_from_index(char *str, char c, int index);
-char *expand_env(char *str, char **env);
-char *dollar_baby(char *str);
+int		find_char_from_index(char *str, char c, int index);
+char	*expand_env(char *str, char **env);
+char 	*dollar_baby(char *str);
 // BUILTINS
 void	printenv(char **env);
 void	unset(char *str, char ***env);
@@ -94,7 +96,7 @@ char	*getpwd(void);
 // REDIRECTIONS
 void	init_redirection(t_words **words, int i);
 int		check_for_redirection(t_words **words);
-void get_fds(t_data *data,int index);
+void 	get_fds(t_data *data,int index);
 
 // LEXER 
 void	clean_word(t_words *INstruct);
@@ -109,7 +111,11 @@ void free_dirty_words(t_words **words);
 
 
 // EXECUTOR 
+<<<<<<< HEAD
 void	execute_single_command(char *clean_word,t_data *data);
+=======
+void	exec_cmd(char *clean_word,t_data *data);
+>>>>>>> WORKS03
 int		Executor(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);
@@ -117,5 +123,8 @@ void 	print_words(t_words **words);
 //utils_1.c
 void	redirection_space_extender(char **dirty_word);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> WORKS03
 #endif

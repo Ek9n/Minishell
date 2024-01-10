@@ -21,6 +21,154 @@ int	skip_spaces(char *str)
 	return (i);
 }
 
+char	*comb_extd_word(char **extd_words)
+{
+	char	*tmp_word;
+	char	*comb_word;
+	int	i;
+
+	tmp_word = NULL;
+	comb_word = NULL;
+	i = 0;
+	while (extd_words[i])
+	{
+		// if (comb_word == NULL)
+		if (i == 0)
+		{
+			comb_word = ft_strdup("");
+		}
+
+		tmp_word = ft_strjoin(comb_word, extd_words[i]);
+		free(comb_word);
+		comb_word = tmp_word;
+		// free(tmp_word)??? -> than we could implement strdup
+
+		i++;
+	}
+	return (comb_word);
+}
+
+int	redir_case(char *c)
+{
+	if ((*c == '<' && *(c + 1) == '<') || (*c == '>' && *(c + 1) == '>'))
+		return (2);
+	else if (*c == '<' || *c == '>')
+		return (1);
+	return (0);
+}
+
+void	redirection_space_extender2(char **dirty_word)
+{
+	// printf("DIRTY1|%s|\n", *dirty_word);
+
+	int		i;
+	int		j;
+	char	*tmp_word2;
+	bool	quotes;
+	int		last_quote;
+
+	tmp_word2 = malloc(ft_strlen(*dirty_word) * 2);
+	quotes = false;
+	last_quote = 0; // 1 = single, 2 = double quotes
+	i = 0;
+	j = 0;
+	// printf("START\n");
+	while (dirty_word[0][i])
+	{
+		// printf("%c", dirty_word[0][i]);
+		if (quotes == false && (dirty_word[0][i] == '\'' || dirty_word[0][i] == '\"'))
+		{
+			quotes = true;
+			if (dirty_word[0][i] == '\'')
+				last_quote = 1;
+			else if (dirty_word[0][i] == '\"')
+				last_quote = 2;
+
+		}
+		else if (quotes == true && last_quote == 1 && dirty_word[0][i] == '\'')
+		{
+			quotes = false;
+			last_quote = 0;
+		}
+		else if (quotes == true && last_quote == 2 && dirty_word[0][i] == '\"')
+		{
+			quotes = false;
+			last_quote = 0;
+		}
+
+
+
+		if (!quotes && redir_case(&dirty_word[0][i]) == 1)
+		{
+			tmp_word2[j++] =  ' ';
+			tmp_word2[j++] = dirty_word[0][i++];
+			tmp_word2[j++] =  ' ';
+		}
+		else if (!quotes && redir_case(&dirty_word[0][i]) == 2)
+		{
+			tmp_word2[j++] =  ' ';
+			tmp_word2[j++] = dirty_word[0][i++];
+			tmp_word2[j++] = dirty_word[0][i++];
+			tmp_word2[j++] =  ' ';
+		}
+		tmp_word2[j] = dirty_word[0][i];
+
+		j++;
+		i++;
+	}
+	tmp_word2[j] = '\0';
+	// printf("DIRTY2|%s|\n", tmp_word2);
+	// printf("\nEND\n");
+	free(dirty_word[0]);
+	dirty_word[0] = ft_strdup(tmp_word2);
+	free(tmp_word2);
+
+
+}
+
+void	redirection_space_extender(char **dirty_word)
+{
+	char	*q_start;
+	char	*q_end;
+	char	**extd_words;
+	char	*tmp_word;
+	char	*extd_word;
+	bool	quotes;
+	int		i;
+
+	extd_words = ft_split(*dirty_word, '<');
+	quotes = false;
+	i = 0;
+	while (extd_words[i])
+	{
+		if (i != 0 && extd_words[i][0] != ' ')
+		{
+			tmp_word = ft_strjoin(" ", extd_words[i]);
+			free(extd_words[i]);
+			extd_words[i] = tmp_word;
+			// free(tmp_word);
+		}
+		if (extd_words[i + 1] != NULL && extd_words[i][ft_strlen(extd_words[i]) - 1] != ' ')
+		{
+			tmp_word = ft_strjoin(extd_words[i], " <");
+			free(extd_words[i]);
+			extd_words[i] = tmp_word;
+		}
+		else if (extd_words[i + 1] != NULL)
+		{
+			tmp_word = ft_strjoin(extd_words[i], "<");
+			free(extd_words[i]);
+			extd_words[i] = tmp_word;		
+		}
+		i++;
+	}
+	extd_word = comb_extd_word(extd_words);
+	i = 0;
+	while (extd_words[i])
+		free(extd_words[i++]);
+	free(extd_words);
+}
+
 void	clean_word(t_words *INstruct)
 {
 	char	*tmp_clean;
@@ -64,6 +212,54 @@ void	clean_word(t_words *INstruct)
 	}
 	while (tmp_clean[--j] == ' ');
 	tmp_clean[j + 1] = '\0';
+
+	INstruct->word_clean = ft_strdup(tmp_clean);
+	free(tmp_clean);
+}
+
+void	clean_word2(t_words *INstruct)
+{
+	char	*tmp_clean;
+	int		quotes; 	// 0 no, 1 single, 2 double quotes
+	int		i, j;
+	tmp_clean = malloc(ft_strlen(INstruct->word));
+	// redirection_space_extender2(&INstruct->word);
+	quotes = 0;
+	i = 0;
+	j = 0;
+	i += skip_spaces(&INstruct->word[i]);
+	while (INstruct->word[i] != '\0')
+	{
+		if (INstruct->word[i] == ' ' && quotes == 0)
+		{
+			i += skip_spaces(&INstruct->word[i]);
+			i--;
+		}
+		if (INstruct->word[i] == '\'' && quotes == 0)
+			quotes = 1;
+		else if (INstruct->word[i] == '\'' && quotes == 1)
+			quotes = 0;
+		if (INstruct->word[i] == '\"' && quotes == 0)
+			quotes = 2;
+		else if (INstruct->word[i] == '\"' && quotes == 2)
+			quotes = 0;
+		if (INstruct->word[i] == '$' && quotes != 1)
+		{
+			tmp_clean[j] = '@';
+			j++;
+		}
+		else if (!((INstruct->word[i] == '\'' && quotes != 2) || 
+				(INstruct->word[i] == '\"' && quotes != 1)))
+		{
+			tmp_clean[j] = INstruct->word[i];
+			j++;
+		}
+
+		i++;
+	}
+	while (tmp_clean[--j] == ' ');
+	tmp_clean[j + 1] = '\0';
+
 	INstruct->word_clean = ft_strdup(tmp_clean);
 	ft_putstr_fd(INstruct->word_clean, 1);
 	free(tmp_clean);
@@ -166,12 +362,9 @@ int	single_command(t_data *data,int i)
 	else if (cmp_keyword("env", data->INstruct[i]->word_clean))
 		printenv(data->envp);
 	else if (cmp_keyword("exit", data->INstruct[i]->word_clean))
-		{
-			g_exit_status = 69;
-			free_and_close_data(data);
-		}
-	else 
-		execute_single_command(data->INstruct[i]->word_clean, data);
+		free_and_close_data(data);
+	else
+		exec_cmd(data->INstruct[i]->word_clean, data);
 	return (0);
 }
 
@@ -417,11 +610,17 @@ int Executor(t_data *data)
 
 	redir = 0;
 	i = 0;
+<<<<<<< HEAD
 	while (i < data->INstruct[0]->num_of_elements && g_exit_status == 0)
 	{
 		free_and_close_data(data); // checks after each element if something fialed, if yes its starts to free and other things wont be executed
+=======
+	while (i < data->INstruct[0]->num_of_elements)
+	{
+>>>>>>> WORKS03
 		if (is_pipe(data->INstruct, i))
 		{
+			clean_words(data->INstruct);
 			piperino8(data->INstruct + i,data);
 			break;
 		}
@@ -430,8 +629,12 @@ int Executor(t_data *data)
 			printf("THEWORD:|%s|, i:%d\n", data->INstruct[i]->word_clean, i);
 			if (data->INstruct[i]->redirection->whole_command != NULL)
 				get_fds(data, i);
+<<<<<<< HEAD
 			dup2(data->INstruct[i]->redirection->fd_in, 0);
 			dup2(data->INstruct[i]->redirection->fd_out, 1);
+=======
+			clean_words(data->INstruct);
+>>>>>>> WORKS03
 			single_command(data, i);
 			dup2(data->original_fd_in, 0);
 			dup2(data->original_fd_out, 1);
