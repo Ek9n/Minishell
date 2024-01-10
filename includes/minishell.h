@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/10 12:55:06 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/10 13:01:05 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,24 +107,10 @@ char	*tokenizer(char **line,t_data *data);
 t_words	**init_word_stack(char *line, t_words **words,t_data *data);
 void	clean_words(t_words **INstruct);
 void free_dirty_words(t_words **words);
-// PARSER
-
-
+void	redirection_space_extender2(char **dirty_word);
 // EXECUTOR 
-<<<<<<< HEAD
-void	execute_single_command(char *clean_word,t_data *data);
-=======
+int Executor(t_data *data);
 void	exec_cmd(char *clean_word,t_data *data);
->>>>>>> WORKS03
-int		Executor(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);
-
-//utils_1.c
-void	redirection_space_extender(char **dirty_word);
-
-<<<<<<< HEAD
-
-=======
->>>>>>> WORKS03
 #endif

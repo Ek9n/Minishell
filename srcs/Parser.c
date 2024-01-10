@@ -125,7 +125,7 @@ void	redirection_space_extender2(char **dirty_word)
 
 
 }
-
+/*
 void	redirection_space_extender(char **dirty_word)
 {
 	char	*q_start;
@@ -167,7 +167,7 @@ void	redirection_space_extender(char **dirty_word)
 	while (extd_words[i])
 		free(extd_words[i++]);
 	free(extd_words);
-}
+}*/
 
 void	clean_word(t_words *INstruct)
 {
@@ -610,14 +610,9 @@ int Executor(t_data *data)
 
 	redir = 0;
 	i = 0;
-<<<<<<< HEAD
 	while (i < data->INstruct[0]->num_of_elements && g_exit_status == 0)
 	{
 		free_and_close_data(data); // checks after each element if something fialed, if yes its starts to free and other things wont be executed
-=======
-	while (i < data->INstruct[0]->num_of_elements)
-	{
->>>>>>> WORKS03
 		if (is_pipe(data->INstruct, i))
 		{
 			clean_words(data->INstruct);
@@ -629,12 +624,8 @@ int Executor(t_data *data)
 			printf("THEWORD:|%s|, i:%d\n", data->INstruct[i]->word_clean, i);
 			if (data->INstruct[i]->redirection->whole_command != NULL)
 				get_fds(data, i);
-<<<<<<< HEAD
 			dup2(data->INstruct[i]->redirection->fd_in, 0);
 			dup2(data->INstruct[i]->redirection->fd_out, 1);
-=======
-			clean_words(data->INstruct);
->>>>>>> WORKS03
 			single_command(data, i);
 			dup2(data->original_fd_in, 0);
 			dup2(data->original_fd_out, 1);
