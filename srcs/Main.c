@@ -95,4 +95,14 @@ int	main(int argc, char **argv, char **envp)
 		3368	./malloc/malloc.c: No such file or directory.
 	segfault is sorted, it was a mistake in my freeing and exit function. 
 	cat is failing because there are double spaces, when spaces already exist, split gets a little oofed.
+
+
+	Tests:
+
+	This i got one time, idk why just once..
+	Minishell>>: echo "-n"
+		Syntax is wrong, Sunny.-n
+		Segmentation fault
+
+	
   */

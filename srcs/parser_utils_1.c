@@ -5,15 +5,22 @@ char	*echo(char *word)
 	bool	flag;
 	flag = false;
 	word += 5;
-	while (ft_strcmp("-n ", word) == 0)
+	// printf("HIER\n%s\n", word);
+	if (ft_strcmp("-n ", word) == 0)
 	{
 		flag = true;
 		word += 3;
+	}
+	else if (*(word + 3) == '\0' && ft_strcmp("-n", word) == 0)
+	{
+		printf("bla\n");
 	}
 	if (flag)
 		return (ft_savef("%s", word));
 	return (ft_savef("%s\n", word));
 }
+// Minishell>>: "echo hallo du"
+// hallo du
 
 char	*getpwd(void)
 {
