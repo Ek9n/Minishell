@@ -362,7 +362,10 @@ int	single_command(t_data *data,int i)
 	else if (cmp_keyword("env", data->INstruct[i]->word_clean))
 		printenv(data->envp);
 	else if (cmp_keyword("exit", data->INstruct[i]->word_clean))
-		free_and_close_data(data);
+		{
+			g_exit_status = 42069;
+			free_and_close_data(data);
+		}
 	else
 		exec_cmd(data->INstruct[i]->word_clean, data);
 	return (0);
@@ -514,6 +517,7 @@ void get_fds(t_data *data,int index)
 	i = 0;
 	if (data->INstruct[index]->redirection->whole_command != NULL)
 	{
+		data->INstruct[index]->redirection->split_command = ft_split(data->INstruct[index]->redirection->whole_command, ' ');
 		while (data->INstruct[index]->redirection->split_command[i])
 		{	
 			if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 4)
@@ -564,7 +568,6 @@ void get_fds(t_data *data,int index)
 		}
 		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 2) // <
 		{
-			ft_putstr_fd(data->INstruct[index]->redirection->split_command[i+1], 1);
 			data->INstruct[index]->redirection->fd_in = open(data->INstruct[index]->redirection->split_command[i + 1], O_RDONLY);
 			if (data->INstruct[index]->redirection->fd_in == -1)
 			{
@@ -610,12 +613,12 @@ int Executor(t_data *data)
 
 	redir = 0;
 	i = 0;
+	clean_words(data->INstruct);
 	while (i < data->INstruct[0]->num_of_elements && g_exit_status == 0)
 	{
 		free_and_close_data(data); // checks after each element if something fialed, if yes its starts to free and other things wont be executed
 		if (is_pipe(data->INstruct, i))
 		{
-			clean_words(data->INstruct);
 			piperino8(data->INstruct + i,data);
 			break;
 		}

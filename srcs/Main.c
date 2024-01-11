@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/10 12:55:57 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/11 12:57:23 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	main(int argc, char **argv, char **envp)
   edge case doc: 
   unset home and cd , cd doesnt care, it should fail and exit. 
   cd doesnt update exit code.. we need to pass the data strcut to cd.
+  
   ====
   
   FROM EVAL SHEET: (https://42evals.com/Cursus/minishell) password for website is CVb3d2023
