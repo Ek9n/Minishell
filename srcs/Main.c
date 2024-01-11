@@ -99,10 +99,6 @@ int	main(int argc, char **argv, char **envp)
 
 	Tests:
 
-	This i got one time, idk why just once..
-	Minishell>>: echo "-n"
-		Syntax is wrong, Sunny.-n
-		Segmentation fault
 
 	
   */

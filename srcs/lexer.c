@@ -159,6 +159,23 @@ t_words	**init_word_stack(char *line, t_words **words)
 	words[b] = NULL;
 	while (words[i] != NULL)
 		words[i++]->num_of_elements = b;
+	// This checks if there are odd amount of quotes in the words:
+	i = -1;
+	while (words[++i])
+	{
+		int	quotes = 0;
+		int	j = -1;
+		while (words[i]->word[++j])
+		{
+			if (words[i]->word[j] == '\'' || words[i]->word[j] == '\"')
+				quotes++;
+		}
+		if (quotes % 2 != 0)
+		{
+			puterr(SYNERR);
+			// printf("CMD is FUCKED\n");
+		}
+	}
 	// free_dirty_words(words);
 	return(words);
 }
