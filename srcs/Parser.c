@@ -600,11 +600,13 @@ int Executor(t_data *data)
 	i = 0;
 	while (i < data->INstruct[0]->num_of_elements)
 	{
+	printf("InExecutor:%s\n", data->INstruct[i]->word);
 		if (is_pipe(data->INstruct, i))
 		{
+
 			clean_words(data->INstruct);
 			piperino8(data->INstruct + i,data);
-			break;
+			break ;
 		}
 		else
 		{
@@ -612,6 +614,8 @@ int Executor(t_data *data)
 			if (data->INstruct[i]->redirection->whole_command != NULL)
 				get_fds(data, i);
 			clean_words(data->INstruct);
+	printf("InExecutor:%s\n", data->INstruct[i]->word_clean);
+
 			single_command(data, i);
 		}
 		i++;

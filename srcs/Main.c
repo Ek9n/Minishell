@@ -98,7 +98,29 @@ int	main(int argc, char **argv, char **envp)
 
 
 	Tests:
+Minishell>>: ec"ho" "bla" bla
+Syntax is wrong, Sunny.Syntax is wrong, Sunny.
+Return not expected. Must be an execve error.
+free(): invalid next size (fast)
+Return not expected. Must be an execve error.
+free(): invalid next size (fast)
+free(): invalid pointer
+Aborted (core dumped)
+
+Julius:
+Please fix it when the line is like cmd asd"sadad"adsdas << lexer cuts the rest away
+
+Minishell>>: echo "bal"dasd
+Syntax is wrong, Sunny.InExecutor:echo "bal"
+Minishell>>: ech"ho" bla
+Syntax is wrong, Sunny.InExecutor:ech"ho"
+Minishell>>: ed"f asd "dadas
+Return not expected. Must be an execve error.
+InExecutor:
+Segmentation fault (core dumped)
 
 
-	
-  */
+May we need to check if the cmds are existing allrdy.. and not do it by execve:
+XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/home/hstein/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
+PATH=/home/hstein/bin:/home/hstein/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+*/

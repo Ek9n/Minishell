@@ -123,6 +123,8 @@ t_words	**init_word_stack(char *line, t_words **words)
 	/*
 	Still have to check for BS input 
 	*/
+		printf("HIER>%s<\n", line);
+
 	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
 	while (line[i])
 	{
@@ -141,6 +143,7 @@ t_words	**init_word_stack(char *line, t_words **words)
 		words[b]->word = ft_substr(line,0,i);
 		redirection_space_extender(&words[b]->word);
 		line = trimstr(line,i);
+		printf("HIER>%s<\n", line);
 		if (line[0] != '\0')
 			words[b]->token_after_word = tokenizer(&line);
 			words[b]->redirection = ft_calloc(1, sizeof(t_redirection ));
@@ -173,9 +176,12 @@ t_words	**init_word_stack(char *line, t_words **words)
 		if (quotes % 2 != 0)
 		{
 			puterr(SYNERR);
-			// printf("CMD is FUCKED\n");
+			printf("CMD is FUCKED\n");
 		}
 	}
+	// printf("InLexer1:%s\n", words[0]->word);
+	// printf("InLexer2:%s\n", words[1]->word);
+
 	// free_dirty_words(words);
 	return(words);
 }
