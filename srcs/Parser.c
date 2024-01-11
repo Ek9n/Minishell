@@ -608,6 +608,7 @@ int Executor(t_data *data)
 		}
 		else
 		{
+			printf("2-singlecommand: %s//\n", data->INstruct[i]->word);
 			if (data->INstruct[i]->redirection->whole_command != NULL)
 				get_fds(data, i);
 			clean_words(data->INstruct);

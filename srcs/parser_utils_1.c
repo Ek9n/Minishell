@@ -1,11 +1,16 @@
 #include "minishell.h"
-
+// |echo -n " bla"
+// | blah
+// echo -n " bla"
+//  blah
+// echo -n" bla"
+// -n bla
 char	*echo(char *word)
 {
 	bool	flag;
 	flag = false;
 	word += 5;
-	// printf("HIER\n%s\n", word);
+	printf("HIER\n%s\n", word);
 	if (ft_strcmp("-n ", word) == 0)
 	{
 		flag = true;
