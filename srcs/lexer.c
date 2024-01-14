@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/01 14:12:53 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/14 12:18:26 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,33 @@ int		is_in_quotes(char * line)
 	}
 		return(0);
 }
+int quotes_start(char *line)
+{
+	int i;
 
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == 34 || line[i] == 39)
+			return(i);
+		i++;
+	}
+	return(0);
+}
+int quotes_end(char *line, int i)
+{
+	int a;
+
+	a = 0;
+	while (line[i])
+	{
+		if (line[i] == 34 || line[i] == 39)
+			return(a);
+		i++;
+		a++;
+	}
+	return(0);
+}
 int check_token_syntax(char *str)
 {
 	if (ft_strlen(str) == 1)
@@ -111,8 +137,89 @@ int get_num_of_pipes(char * str)
 	}	
 	return(i);
 }
+void do_redirection_stack(t_words *words)
+{
+	int start;
+	int end;
 
-t_words	**init_word_stack(char *line, t_words **words)
+	if (words->quotes_case)
+	{
+		start = quotes_start(words->word);
+		end = quotes_end(words->word, start);	
+	}
+	
+	redirection_space_extender(&words->word);
+	words->redirection = ft_calloc(1, sizeof(t_redirection ));
+	words->redirection->whole_command = ft_strdup(words->word);
+	words->redirection->split_command = ft_split(words->word, ' ');
+	words->redirection->fd_in = 0;
+	words->redirection->fd_out = 1;
+}
+t_words	**init_word_stack(char *line)
+{
+	int	i;
+	int	b;
+	t_words **words;
+
+	b = 0;
+	i = 0;
+
+	//asd"sadad"adsdas << 
+	//Still have to check for BS input 
+	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
+	while (line[i])
+	{
+		words[b] = ft_calloc(1, sizeof(t_words));
+		if (!words[b])
+			puterr(ALLOCERR);// exit with failure
+		i = 0;
+		while (line[i] && line[i] != '|')
+			i++;
+		words[b]->word = ft_substr(line,0,i);
+		if (is_in_quotes(words[b]->word))
+			words[b]->quotes_case = 1;
+		line = trimstr(line,i);
+		if (line[0] != '\0')
+			words[b]->token_after_word = tokenizer(&line);
+		if (ft_strchr(words[b]->word, '>') || ft_strchr(words[b]->word, '<')) // add errorchecking: >>> >>23 ...
+			do_redirection_stack(words[b]);
+		else
+			words[b]->redirection = NULL;
+		b++;
+		i = 0;
+	}
+	words[b] = NULL;
+	while (words[i] != NULL)
+		words[i++]->num_of_elements = b;
+	i = 0;
+	// This checks if there are odd amount of quotes in the words:
+	i = -1;
+	while (words[++i])
+	{
+		int	quotes = 0;
+		int	j = -1;
+		while (words[i]->word[++j])
+		{
+			if (words[i]->word[j] == '\'' || words[i]->word[j] == '\"')
+				quotes++;
+		}
+		if (quotes % 2 != 0)
+		{
+			puterr(SYNERR);
+			printf("CMD is FUCKED\n");
+		}
+	}
+	// printf("InLexer1:%s\n", words[0]->word);
+	// printf("InLexer2:%s\n", words[1]->word);
+
+	// free_dirty_words(words);
+	return(words);
+}
+
+
+
+
+/*t_words	**init_word_stack(char *line, t_words **words)
 {
 	int	i;
 	int	b;
@@ -122,7 +229,6 @@ t_words	**init_word_stack(char *line, t_words **words)
 
 	/*
 	Still have to check for BS input 
-	*/
 		printf("HIER>%s<\n", line);
 
 	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
@@ -185,3 +291,4 @@ t_words	**init_word_stack(char *line, t_words **words)
 	// free_dirty_words(words);
 	return(words);
 }
+*/

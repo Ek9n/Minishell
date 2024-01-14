@@ -462,6 +462,8 @@ void print_redirection(t_redirection *redirection)
 	int	i;
 
 	i = 0;
+	if (redirection == NULL)
+		return ;
 	printf("whole_command:%s\n", redirection->whole_command);
 	printf("fd_in:%d\n", redirection->fd_in);
 	printf("fd_out:%d\n", redirection->fd_out);
@@ -611,7 +613,7 @@ int Executor(t_data *data)
 		else
 		{
 			// printf("2-singlecommand: %s//\n", data->INstruct[i]->word);
-			if (data->INstruct[i]->redirection->whole_command != NULL)
+			if (data->INstruct[i]->redirection!= NULL)
 				get_fds(data, i);
 			clean_words(data->INstruct);
 	printf("InExecutor:%s\n", data->INstruct[i]->word_clean);

@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+int ft_strlchr(char *str, char c,int index)
+{
+	int i;
+
+	i = 0;
+	while (str[i] && i < index)
+	{
+		if (str[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	i;
@@ -42,6 +56,7 @@ void 	print_words(t_words **words)
 		printf("token: %s\n",words[i]->token_after_word);
 		printf("num_of_elements: %d\n",words[i]->num_of_elements);
 		if(words[i]->redirection->whole_command != NULL)
+		{
 			 while (words[i]->redirection->whole_command[b])
 			{
 				printf("whole_command_redirection: %s\n",words[i]->redirection->split_command[b]);
@@ -49,6 +64,7 @@ void 	print_words(t_words **words)
 			}
 		printf("fd_in: %d\n",words[i]->redirection->fd_in);
 		printf("fd_out: %d\n",words[i]->redirection->fd_out);
+		}
 		printf("quotes_case: %d\n",words[i]->quotes_case);
 		printf("\n");
 		printf("\n");

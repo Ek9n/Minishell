@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/02 13:58:38 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/14 12:04:24 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
 char 	*ft_join(char **arr);
 void 	free_and_close_data(t_data *data,int status);
+int		 ft_strlchr(char *str, char c,int index);
+
 
 // ENVIROMENT
 char	**arrdup(char **enviroment);
@@ -95,7 +97,7 @@ int		is_in_quotes(char * line);
 int		check_token_syntax(char *str);
 char	*trimstr(char *str,int i);
 char	*tokenizer(char **line);
-t_words	**init_word_stack(char *line, t_words **words);
+t_words	**init_word_stack(char *line);
 void	clean_words(t_words **INstruct);
 void free_dirty_words(t_words **words);
 // PARSER
@@ -106,6 +108,7 @@ void	exec_cmd(char *clean_word,t_data *data);
 int		Executor(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);
+void print_redirection(t_redirection *redirection);
 
 //utils_1.c
 void	redirection_space_extender(char **dirty_word);
