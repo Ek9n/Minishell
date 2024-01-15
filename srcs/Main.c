@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:40:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/14 10:08:23 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/15 17:26:04 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,15 @@ int	main(int argc, char **argv, char **envp)
 			add_history(input); // history works
 		if (input[0] != '\0')
 		{
-			data->INstruct = init_word_stack(input);
-			if (data->INstruct != NULL)
-				Executor(data);
+			replace_spaces_in_quotes(input);
+			printf("%s\n",input);
+			
+			//data->INstruct = init_word_stack(input);
+			//clean_words(data->INstruct);
+			//print_words(data->INstruct);
+			//if (data->INstruct != NULL)
+				//Executor(data);
+			
 		}
 		unlink(".heredoc");
 		// printf("After routine (in main)!\n");
@@ -123,4 +129,43 @@ Segmentation fault (core dumped)
 May we need to check if the cmds are existing allrdy.. and not do it by execve:
 XDG_DATA_DIRS=/usr/share/ubuntu:/usr/share/gnome:/home/hstein/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share:/var/lib/snapd/desktop
 PATH=/home/hstein/bin:/home/hstein/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+FRESH_STRUCTURE
+
+A=IAMVAR
+ec"ho $Abla"dasd|   blu"b" >file
+
+#sub spaces in quotes with unprintables
+ec"ho@$Abla"dasd|   blu"b" >file
+
+#Split by Pipes
+a) ec"ho@$Abla"dasd /b)    blu"b" >file
+
+#Extend spaces (for redirections)
+a) ec"ho@$Abla"dasd /b)    blu"b"  > file
+
+#Clean Spaces
+a) ec"ho@$Abla"dasd /b) blu"b" > file
+
+#Split by spaces
+a) //a.1) ec"ho@$Abla"dasd /b) //b.1) blu"b" //b.2) > //b.3) file
+
+#bring back the spaces
+a) //a.1) ec"ho $Abla"dasd /b) //b.1) blu"b" //b.2) > //b.3) file
+
+#Add Vars
+a) //a.1) ec"ho IAMVARbla"dasd /b) //b.1) blu"b" //b.2) > //b.3) file
+
+#Get rid of quotes
+a) //a.1) echo IAMVARbladasd /b) //b.1) blub //b.2) > //b.3) file
+
+
+
+
+
+
+
+jfoltan
+  3:21 PM
+wo bist du
+
 */

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/14 12:04:24 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/15 17:48:12 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 typedef struct redirection
 {
-	char  	*whole_command;
+	//char  	*whole_command;
 	char  	**split_command;
 	int		fd_out;
 	int		fd_in;
@@ -38,8 +38,7 @@ typedef struct redirection
 
 typedef struct s_words
 {
-	char	*word; //julius Lexer
-	char	*word_clean; //Hannes Parser
+	char	*command; //Hannes Parser
 	int		num_of_elements; //julius Lexer
 	int		quotes_case;
 	char	*token_after_word; //julius Lexer
@@ -65,7 +64,6 @@ void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
 char 	*ft_join(char **arr);
 void 	free_and_close_data(t_data *data,int status);
-int		 ft_strlchr(char *str, char c,int index);
 
 
 // ENVIROMENT
@@ -100,6 +98,8 @@ char	*tokenizer(char **line);
 t_words	**init_word_stack(char *line);
 void	clean_words(t_words **INstruct);
 void free_dirty_words(t_words **words);
+void replace_spaces_in_quotes(char *input);
+
 // PARSER
 int		parser(t_data *data, int i);
 void	routine(t_data	*data);
@@ -109,6 +109,12 @@ int		Executor(t_data *data);
 //DEBUG 
 void 	print_words(t_words **words);
 void print_redirection(t_redirection *redirection);
+//expander
+int	find_char_from_index(char *str, char c, int index);
+char *dollar_baby(char *str);
+int find_var(char *str, char **envp);
+int	ft_strllen(char *str,int i);
+char *expand_env(char *str, char **env);
 
 //utils_1.c
 void	redirection_space_extender(char **dirty_word);

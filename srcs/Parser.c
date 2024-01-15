@@ -600,6 +600,8 @@ int Executor(t_data *data)
 
 	redir = 0;
 	i = 0;
+	//while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
+		//data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes
 	while (i < data->INstruct[0]->num_of_elements)
 	{
 	printf("InExecutor:%s\n", data->INstruct[i]->word);

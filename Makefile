@@ -6,7 +6,7 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2023/12/15 17:22:21 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/01/15 15:56:30 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRCS =	Main.c				\
 		parser_utils_1.c	\
 		executor.c			\
 		enviromentvars.c	\
-		redirections.c
+		redirections.c		\
+		expander.c
 
 OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))
 

@@ -6,12 +6,12 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/14 12:18:26 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/15 17:50:09 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 int		is_in_quotes(char * line)
 {
 	int		i;
@@ -137,18 +137,38 @@ int get_num_of_pipes(char * str)
 	}	
 	return(i);
 }
+int	is_redirection(char 	*words)
+{
+	int i;
+	int start;
+	int end;
+
+	if ()
+	start = quotes_start(words);
+	end = quotes_end(words, start) + start;
+	i = 0;
+	while (words[i])
+	{
+		if (words[i] == '>' || words[i] == '<')
+			if ( i < start || i > end)
+				return(1);
+		i++;
+	}
+	return(0);
+}
 void do_redirection_stack(t_words *words)
 {
 	int start;
 	int end;
-
-	if (words->quotes_case)
-	{
-		start = quotes_start(words->word);
-		end = quotes_end(words->word, start);	
-	}
-	
-	redirection_space_extender(&words->word);
+	char *buffer;
+	//redirection_space_extender(&words->word); have to rewrite this
+	if (words->quotes_case == 1)
+		{
+			start = quotes_start(words->word);
+			end = quotes_end(words->word, start) + start;
+			buffer = ft_substr(words->word, start, end);
+				
+		}
 	words->redirection = ft_calloc(1, sizeof(t_redirection ));
 	words->redirection->whole_command = ft_strdup(words->word);
 	words->redirection->split_command = ft_split(words->word, ' ');
@@ -166,26 +186,38 @@ t_words	**init_word_stack(char *line)
 
 	//asd"sadad"adsdas << 
 	//Still have to check for BS input 
+---	check_num_of_quotes(line);
+----replace_spaces_in_quotes(line); // HERE BITCH
+----replace_pipes_in_quotes(line); // HERE BITCH
+----split_by_pipe(line)
 	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
-	while (line[i])
+	while (split_command[i])
 	{
 		words[b] = ft_calloc(1, sizeof(t_words));
 		if (!words[b])
 			puterr(ALLOCERR);// exit with failure
 		i = 0;
-		while (line[i] && line[i] != '|')
-			i++;
-		words[b]->word = ft_substr(line,0,i);
-		if (is_in_quotes(words[b]->word))
-			words[b]->quotes_case = 1;
-		line = trimstr(line,i);
-		if (line[0] != '\0')
-			words[b]->token_after_word = tokenizer(&line);
-		if (ft_strchr(words[b]->word, '>') || ft_strchr(words[b]->word, '<')) // add errorchecking: >>> >>23 ...
-			do_redirection_stack(words[b]);
-		else
-			words[b]->redirection = NULL;
-		b++;
+---		extend spaces for redirection(split_command[i]);
+----	clean_spaces(split_command[i]); (clean_words)
+----	split by spaces(words[b]->word_clean);
+----	bring back da spaces and da pipes(yomama);
+---		expand_vars;
+---get_rid_of_quotes
+		//while (line[i] && line[i] != '|')
+		//	i++;
+		//words[b]->word = ft_substr(line,0,i);
+		//line = trimstr(line,i);
+		
+		//if (is_in_quotes(words[b]->word))
+			//words[b]->quotes_case = 1;
+		
+		//if (line[0] != '\0')
+			//words[b]->token_after_word = tokenizer(&line); //,aybe just '|' is enough, but could be good for error check
+		//if (is_redirection(words[b]->word)) // add errorchecking: >>> >>23 ...
+			//do_redirection_stack(words[b]);
+----	if_theres_redirection
+----	do redireciton
+		b++;	
 		i = 0;
 	}
 	words[b] = NULL;
@@ -227,7 +259,7 @@ t_words	**init_word_stack(char *line)
 	b = 0;
 	i = 0;
 
-	/*
+
 	Still have to check for BS input 
 		printf("HIER>%s<\n", line);
 

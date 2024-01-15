@@ -1,18 +1,5 @@
 #include "minishell.h"
 
-int ft_strlchr(char *str, char c,int index)
-{
-	int i;
-
-	i = 0;
-	while (str[i] && i < index)
-	{
-		if (str[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
 
 int	ft_strcmp(const char *s1, const char *s2)
 {
