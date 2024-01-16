@@ -159,13 +159,15 @@ a) //a.1) ec"ho IAMVARbla"dasd /b) //b.1) blu"b" //b.2) > //b.3) file
 a) //a.1) echo IAMVARbladasd /b) //b.1) blub //b.2) > //b.3) file
 
 
-
-
-
-
-
-jfoltan
-  3:21 PM
-wo bist du
+// A=BLA
+// hstein@c4b6c1:~/Repositories/minishell$ bash
+// hstein@c4b6c1:~/Repositories/minishell$ echo bla$A
+// blaBLA
+// hstein@c4b6c1:~/Repositories/minishell$ echo bla$Adum
+// bla
+// hstein@c4b6c1:~/Repositories/minishell$ echo bl"a$Ad"um
+// blaum
+// hstein@c4b6c1:~/Repositories/minishell$ echo $Abla
+// 
 
 */
