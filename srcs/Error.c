@@ -6,11 +6,11 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:17:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/12/18 18:30:55 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/17 16:50:33 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	puterr(int err)
 {

@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	find_char_from_index(char *str, char c, int index)
 {
@@ -42,6 +42,7 @@ int	ft_strllen(char *str,int i)
 		i++;
 	return (i);
 }
+
 char *expand_env(char *str, char **env)
 {
     int a;
@@ -53,7 +54,15 @@ char *expand_env(char *str, char **env)
 
     if ((dollar_index = find_char_from_index(str, '$', 0)) == -1)
         return (str);
-    temp = dollar_baby(str);i
+    temp = dollar_baby(str);
+    a = find_var(temp,env);
+    if (a != -1)
+    {
+        temp2 = ft_calloc(ft_strlen(str) - ft_strlen(temp) + ft_strllen(env[a],find_char_from_index(env[a],'=',0)) + 1, sizeof(char));
+        while (i < dollar_index)
+        {
+            temp2[i] = str[i];
+            i++;
         }
         while (env[a][c] != '=')
             c++;

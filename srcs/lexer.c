@@ -1,128 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 14:45:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/15 17:50:09 by jfoltan          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#include "minishell.h"
-/*
-int		is_in_quotes(char * line)
-{
-	int		i;
-	int		check;
+#include "../includes/minishell.h"
 
-	check = 0;
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == 34 || line[i] == 39)
-			check += 1;
-		if (check == 2)
-			return(i+1);
-		i++;	
-	}
-		return(0);
-}
-int quotes_start(char *line)
-{
-	int i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == 34 || line[i] == 39)
-			return(i);
-		i++;
-	}
-	return(0);
-}
-int quotes_end(char *line, int i)
-{
-	int a;
-
-	a = 0;
-	while (line[i])
-	{
-		if (line[i] == 34 || line[i] == 39)
-			return(a);
-		i++;
-		a++;
-	}
-	return(0);
-}
-int check_token_syntax(char *str)
-{
-	if (ft_strlen(str) == 1)
-	{
-		if ( str[0] == '|')
-			return(1);
-		if (str[0] == '<') 
-			return(2);		
-		if (str[0] == '>')
-			return(3);
-	}
-	else if (ft_strlen(str) == 2)
-	{
-	if (str[0] == '<' && str[1] == '<')
-		return (4);
-	if (str[0] == '>' && str[1] == '>')
-		return (5);
-	}
-	return(0);
-}
-
-
-char	*trimstr(char *str,int i)
-{
-	int		a;
-	char  *returnstr;
-	int start;
-	
-	start = i;
-	a = 0;
-	while (str[i])
-	{
-		i++;
-		a++;
-	}
-	returnstr = ft_calloc(a + 1,sizeof(char));
-	if (!returnstr)
-		puterr(ALLOCERR);// exit with failure
-	i = 0;
-	while (str[start] != '\0')
-	{
-		returnstr[i] = str[start];
-		i++;
-		start++;
-	}
-	returnstr[i] = 0;
-	return(returnstr);
-}
-
-char *tokenizer(char **line)
-{
-	int		i;
-	char *buffer;
-
-	i = 0;
-	if(*line[i] == 0)
-		return(NULL);
-	while ((*line)[i] == '>' || (*line)[i] == '|' || (*line)[i] == '<')
-		i++;
-	buffer = ft_substr(*line,0,i);
-	*line = trimstr(*line,i);
-	if (!check_token_syntax(buffer))
-		puterr(SYNERR);	
-	return(buffer);
-}
-
-int get_num_of_pipes(char * str)
+int 	get_num_of_pipes(char * str)
 {
 	int i;
 	int a;
@@ -137,190 +16,220 @@ int get_num_of_pipes(char * str)
 	}	
 	return(i);
 }
-int	is_redirection(char 	*words)
+void 	replace_spaces_and_pipes_in_quotes(char *input)
 {
-	int i;
-	int start;
-	int end;
-
-	if ()
-	start = quotes_start(words);
-	end = quotes_end(words, start) + start;
+	int		quotes; 	// 0 no, 1 single, 2 double quotes
+	int		i, j;
+	quotes = 0;
 	i = 0;
-	while (words[i])
+	j = 0;
+	while (input[i] != '\0')
 	{
-		if (words[i] == '>' || words[i] == '<')
-			if ( i < start || i > end)
-				return(1);
+		if (input[i] == '\'' && quotes == 0)
+			quotes = 1;
+		else if (input[i] == '\'' && quotes == 1)
+			quotes = 0;
+		if (input[i] == '\"' && quotes == 0)
+			quotes = 2;
+		else if (input[i] == '\"' && quotes == 2)
+			quotes = 0;
+		if (input[i] == ' ' && (quotes == 1 || quotes == 2))
+			input[i] = '@';
+		if (input[i] == '|' && (quotes == 1 || quotes == 2))
+			input[i] = '$';
 		i++;
 	}
-	return(0);
 }
-void do_redirection_stack(t_words *words)
+char	*comb_extd_word(char **extd_words)
 {
-	int start;
-	int end;
-	char *buffer;
-	//redirection_space_extender(&words->word); have to rewrite this
-	if (words->quotes_case == 1)
+	char	*tmp_word;
+	char	*comb_word;
+	int	i;
+
+	tmp_word = NULL;
+	comb_word = NULL;
+	i = 0;
+	while (extd_words[i])
+	{
+		// if (comb_word == NULL)
+		if (i == 0)
 		{
-			start = quotes_start(words->word);
-			end = quotes_end(words->word, start) + start;
-			buffer = ft_substr(words->word, start, end);
-				
+			comb_word = ft_strdup("");
 		}
-	words->redirection = ft_calloc(1, sizeof(t_redirection ));
-	words->redirection->whole_command = ft_strdup(words->word);
-	words->redirection->split_command = ft_split(words->word, ' ');
-	words->redirection->fd_in = 0;
-	words->redirection->fd_out = 1;
+
+		tmp_word = ft_strjoin(comb_word, extd_words[i]);
+		free(comb_word);
+		comb_word = tmp_word;
+		// free(tmp_word)??? -> than we could implement strdup
+
+		i++;
+	}
+	return (comb_word);
 }
-t_words	**init_word_stack(char *line)
+int		redir_case(char *c)
+{
+	if ((*c == '<' && *(c + 1) == '<') || (*c == '>' && *(c + 1) == '>'))
+		return (2);
+	else if (*c == '<' || *c == '>')
+		return (1);
+	return (0);
+}
+void	detect_quote(char *dirty_word, bool *quotes, int *last_quote)
+{
+	if (*quotes == false && (dirty_word[0] == '\'' || dirty_word[0] == '\"'))
+	{
+		*quotes = true;
+		if (dirty_word[0] == '\'')
+			*last_quote = 1;
+		else if (dirty_word[0] == '\"')
+			*last_quote = 2;
+
+	}
+	else if (*quotes == true && *last_quote == 1 && dirty_word[0] == '\'')
+	{
+		*quotes = false;
+		*last_quote = 0;
+	}
+	else if (*quotes == true && *last_quote == 2 && dirty_word[0] == '\"')
+	{
+		*quotes = false;
+		*last_quote = 0;
+	}
+}
+void	redirection_space_extender3(char **dirty_word)
+{
+	int		i;
+	int		j;
+	char	*tmp_word2;
+	bool	quotes;
+	int		last_quote;
+
+	tmp_word2 = malloc(ft_strlen(*dirty_word) * 2);
+	quotes = false;
+	last_quote = 0; // 1 = single, 2 = double quotes
+	i = 0;
+	j = 0;
+	while (dirty_word[0][i])
+	{
+		detect_quote(&dirty_word[0][i], &quotes, &last_quote);
+		if (!quotes && redir_case(&dirty_word[0][i]) == 1)
+		{
+			tmp_word2[j++] =  ' ';
+			tmp_word2[j++] = dirty_word[0][i++];
+			tmp_word2[j++] =  ' ';
+			detect_quote(&dirty_word[0][i], &quotes, &last_quote);
+		}
+		else if (!quotes && redir_case(&dirty_word[0][i]) == 2)
+		{
+			tmp_word2[j++] =  ' ';
+			tmp_word2[j++] = dirty_word[0][i++];
+			tmp_word2[j++] = dirty_word[0][i++];
+			tmp_word2[j++] =  ' ';
+			detect_quote(&dirty_word[0][i], &quotes, &last_quote);
+		}
+		tmp_word2[j] = dirty_word[0][i];
+		j++;
+		i++;
+	}
+	tmp_word2[j] = '\0';
+	free(dirty_word[0]);
+	dirty_word[0] = ft_strdup(tmp_word2);
+	free(tmp_word2);
+}
+int		skip_spaces(char *str)
 {
 	int	i;
-	int	b;
-	t_words **words;
 
-	b = 0;
 	i = 0;
-
-	//asd"sadad"adsdas << 
-	//Still have to check for BS input 
----	check_num_of_quotes(line);
-----replace_spaces_in_quotes(line); // HERE BITCH
-----replace_pipes_in_quotes(line); // HERE BITCH
-----split_by_pipe(line)
-	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
-	while (split_command[i])
-	{
-		words[b] = ft_calloc(1, sizeof(t_words));
-		if (!words[b])
-			puterr(ALLOCERR);// exit with failure
-		i = 0;
----		extend spaces for redirection(split_command[i]);
-----	clean_spaces(split_command[i]); (clean_words)
-----	split by spaces(words[b]->word_clean);
-----	bring back da spaces and da pipes(yomama);
----		expand_vars;
----get_rid_of_quotes
-		//while (line[i] && line[i] != '|')
-		//	i++;
-		//words[b]->word = ft_substr(line,0,i);
-		//line = trimstr(line,i);
-		
-		//if (is_in_quotes(words[b]->word))
-			//words[b]->quotes_case = 1;
-		
-		//if (line[0] != '\0')
-			//words[b]->token_after_word = tokenizer(&line); //,aybe just '|' is enough, but could be good for error check
-		//if (is_redirection(words[b]->word)) // add errorchecking: >>> >>23 ...
-			//do_redirection_stack(words[b]);
-----	if_theres_redirection
-----	do redireciton
-		b++;	
-		i = 0;
-	}
-	words[b] = NULL;
-	while (words[i] != NULL)
-		words[i++]->num_of_elements = b;
-	i = 0;
-	// This checks if there are odd amount of quotes in the words:
-	i = -1;
-	while (words[++i])
-	{
-		int	quotes = 0;
-		int	j = -1;
-		while (words[i]->word[++j])
-		{
-			if (words[i]->word[j] == '\'' || words[i]->word[j] == '\"')
-				quotes++;
-		}
-		if (quotes % 2 != 0)
-		{
-			puterr(SYNERR);
-			printf("CMD is FUCKED\n");
-		}
-	}
-	// printf("InLexer1:%s\n", words[0]->word);
-	// printf("InLexer2:%s\n", words[1]->word);
-
-	// free_dirty_words(words);
-	return(words);
+	while (str[i] == ' ')
+		i++;
+	return (i);
 }
-
-
-
-
-/*t_words	**init_word_stack(char *line, t_words **words)
+void	clean_spaces_in_command(char **command)
 {
-	int	i;
-	int	b;
-	
-	b = 0;
+	char	*tmp_clean;
+	int		i;
+	int		j;
+
+	tmp_clean = malloc(ft_strlen(*command));
 	i = 0;
-
-
-	Still have to check for BS input 
-		printf("HIER>%s<\n", line);
-
-	words = ft_calloc(get_num_of_pipes(line) + 2, sizeof(t_words *));
-	while (line[i])
+	j = 0;
+	i += skip_spaces(*command);
+	while (command[0][i] != '\0')
 	{
-		words[b] = ft_calloc(1, sizeof(t_words));
-		if (!words[b])
-			puterr(ALLOCERR);// exit with failure
-		i = 0;
-		if (!is_in_quotes(line))
-			while (line[i] && line[i] != '|')
-				i++;
-		else
+		if (command[0][i] == ' ')
 		{
-			i = is_in_quotes(line);
-			words[b]->quotes_case = 1;
-		}
-		words[b]->word = ft_substr(line,0,i);
-		redirection_space_extender(&words[b]->word);
-		line = trimstr(line,i);
-		printf("HIER>%s<\n", line);
-		if (line[0] != '\0')
-			words[b]->token_after_word = tokenizer(&line);
-			words[b]->redirection = ft_calloc(1, sizeof(t_redirection ));
-		if (ft_strchr(words[b]->word, '>') || ft_strchr(words[b]->word, '<')) // add errorchecking: >>> >>23 ...
-		{
-			words[b]->redirection->whole_command = ft_strdup(words[b]->word);
-			words[b]->redirection->split_command = ft_split(words[b]->word, ' ');
-			words[b]->redirection->fd_in = 0;
-			words[b]->redirection->fd_out = 1;
+			i += skip_spaces(&command[0][i]);
+			tmp_clean[j++] = ' ';
 		}
 		else
-			words[b]->redirection->whole_command = NULL;
-		b++;
-		i = 0;
+			tmp_clean[j++] = command[0][i++];
 	}
-	words[b] = NULL;
-	while (words[i] != NULL)
-		words[i++]->num_of_elements = b;
-	// This checks if there are odd amount of quotes in the words:
-	i = -1;
-	while (words[++i])
-	{
-		int	quotes = 0;
-		int	j = -1;
-		while (words[i]->word[++j])
-		{
-			if (words[i]->word[j] == '\'' || words[i]->word[j] == '\"')
-				quotes++;
-		}
-		if (quotes % 2 != 0)
-		{
-			puterr(SYNERR);
-			printf("CMD is FUCKED\n");
-		}
-	}
-	// printf("InLexer1:%s\n", words[0]->word);
-	// printf("InLexer2:%s\n", words[1]->word);
-
-	// free_dirty_words(words);
-	return(words);
+	while (tmp_clean[--j] == ' ');
+	tmp_clean[j + 1] = '\0';
+	free(*command);
+	*command = ft_strdup(tmp_clean);
+	free(tmp_clean);
 }
-*/
+void 	putback_spaces_and_pipes_in_quotes(char *input)
+{
+	int		quotes; 	// 0 no, 1 single, 2 double quotes
+	int		i, j;
+	quotes = 0;
+	i = 0;
+	j = 0;
+	while (input[i] != '\0')
+	{
+		if (input[i] == '\'' && quotes == 0)
+			quotes = 1;
+		else if (input[i] == '\'' && quotes == 1)
+			quotes = 0;
+		if (input[i] == '\"' && quotes == 0)
+			quotes = 2;
+		else if (input[i] == '\"' && quotes == 2)
+			quotes = 0;
+		if (input[i] == '@' && (quotes == 1 || quotes == 2))
+			input[i] = ' ';
+		if (input[i] == '$' && (quotes == 1 || quotes == 2))
+			input[i] = '|';
+		i++;
+	}
+}
+
+t_words **init_nodes(char *input, t_data *data)
+{
+	t_words	**nodes;
+	char 	**buffer;
+	int		i;
+	int		a;
+
+		replace_spaces_and_pipes_in_quotes(input);
+		redirection_space_extender3(&input);
+		nodes = ft_calloc(get_num_of_pipes(input) + 2, sizeof(t_words *));
+		buffer = ft_split(input, '|');
+		
+		while (buffer[i] != NULL)
+		{
+			nodes[a] = ft_calloc(1, sizeof(t_words)); // protect
+			nodes[a]->command = buffer[i];
+			
+			clean_spaces_in_command(&nodes[a]->command);
+
+			a++;
+			i++;
+		}
+
+		// #bring back the spaces //for now testing.. first split and redirections..
+		a = 0;
+		while (nodes[a] && nodes[a]->command)
+		{
+			putback_spaces_and_pipes_in_quotes(nodes[a]->command);
+			while (ft_strchr(nodes[a]->command,'$'))
+				nodes[a]->command = expand_env(nodes[a]->command, data->envp);
+			nodes[a]->split_command = ft_split(nodes[a]->command, ' ');
+			a++;
+		}
+		a = 0;
+		// fflush(0);			
+	return (nodes);
+}

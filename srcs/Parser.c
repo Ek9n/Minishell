@@ -10,17 +10,7 @@ int	cmp_keyword(char *keyword, char *str)
 		return (1);
 	return (0);
 }
-
-int	skip_spaces(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] == ' ')
-		i++;
-	return (i);
-}
-
+/*
 char	*comb_extd_word(char **extd_words)
 {
 	char	*tmp_word;
@@ -57,10 +47,36 @@ int	redir_case(char *c)
 	return (0);
 }
 
-void	redirection_space_extender2(char **dirty_word)
+void	redirection_space_extende
+char	*comb_extd_word(char **extd_words)
 {
-	// printf("DIRTY1|%s|\n", *dirty_word);
+	char	*tmp_word;
+	char	*comb_word;
+	int	i;
 
+	tmp_word = NULL;
+	comb_word = NULL;
+	i = 0;
+	while (extd_words[i])
+	{
+		// if (comb_word == NULL)
+		if (i == 0)
+		{
+			comb_word = ft_strdup("");
+		}
+
+		tmp_word = ft_strjoin(comb_word, extd_words[i]);
+		free(comb_word);
+		comb_word = tmp_word;
+		// free(tmp_word)??? -> than we could implement strdup
+
+		i++;
+	}
+	return (comb_word);
+}
+*//*
+int	redir_case(char *c)
+{
 	int		i;
 	int		j;
 	char	*tmp_word2;
@@ -273,7 +289,7 @@ void	clean_words(t_words **INstruct)
 		i++;
 	}
 }
-
+*//*
 void error_exit(char *msg)
 {
 	perror(msg);
@@ -332,48 +348,40 @@ static int	is_pipe(t_words **INstruct, int i)
 		return (1);
 	return (0);
 }
-
-static int	is_redirection(t_words **INstruct, int i)
-{
-	if (INstruct[i+1] != NULL && INstruct[i]->token_after_word != NULL && \
-			(INstruct[i]->token_after_word[0] == '>' || \
-			INstruct[i]->token_after_word[0] == '<'))
-		return (1);
-	return (0);
-}
-
+*/
 int	single_command(t_data *data,int i)
 {
 	// printf("in single_command:%s\n", data->INstruct[i]->word_clean);
-	if (cmp_keyword("echo", data->INstruct[i]->word_clean))
+	if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
 	{
-		data->INstruct[i]->output = echo(data->INstruct[i]->word_clean);
-		printf("%s", data->INstruct[i]->output);
+		data->nodes[i]->output = echo(data->nodes[i]->split_command[1]);
+		printf("%s", data->nodes[i]->output);
 	}
-	else if (cmp_keyword("pwd",data->INstruct[i]->word_clean))
+	else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
 	{
-		data->INstruct[i]->output = getpwd();
-		printf("%s\n", data->INstruct[i]->output);
+		data->nodes[i]->output = getpwd();
+		printf("%s\n", data->nodes[i]->output);
 	}
-	else if (cmp_keyword("cd", data->INstruct[i]->word_clean))
-		cd(data->INstruct[i]->word_clean, &data->envp);
-	else if (cmp_keyword("export", data->INstruct[i]->word_clean))
+	else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
+		cd(data->nodes[i]->split_command[1], &data->envp);
+	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
-		unset(data->INstruct[i]->word_clean, &data->envp);
-		export(data->INstruct[i]->word_clean, &data->envp);
+		unset(data->nodes[i]->split_command[1], &data->envp);
+		export(data->nodes[i]->split_command[1], &data->envp);
 	}
-	else if (cmp_keyword("unset", data->INstruct[i]->word_clean))
-		unset(data->INstruct[i]->word_clean, &data->envp);
-	else if (cmp_keyword("env", data->INstruct[i]->word_clean))
+	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
+		unset(data->nodes[i]->split_command[1], &data->envp);
+	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
 		printenv(data->envp);
-	else if (cmp_keyword("exit", data->INstruct[i]->word_clean))
-		free_and_close_data(data, 0);
+	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
+		//free_and_close_data(data, 0);
+		exit(0);
 	else
-		exec_cmd(data->INstruct[i]->word_clean, data);
+		exec_cmd(data->nodes[i]->split_command, data);
 	return (0);
 }
-
-int	piperino8(t_words **INstruct,t_data *data)
+/*
+int	piperino8(t_words **nodes,t_data *data)
 {
     char	**cmd1;
     char	*path1;
@@ -457,142 +465,7 @@ int	piperino8(t_words **INstruct,t_data *data)
     }
     return (i);
 }
-void print_redirection(t_redirection *redirection)
-{
-	int	i;
-
-	i = 0;
-	if (redirection == NULL)
-		return ;
-	printf("whole_command:%s\n", redirection->whole_command);
-	printf("fd_in:%d\n", redirection->fd_in);
-	printf("fd_out:%d\n", redirection->fd_out);
-	while (redirection->split_command[i] != NULL)
-	{
-		printf("split_command[%d]:%s\n", i, redirection->split_command[i]);
-		i++;
-	}
-	printf("\n");
-	printf("====================================");
-	printf("\n");
-
-}
-
-int	ft_heredoc(char * delimiter)
-{
-	char	*line;
-	int		fd;
-	int		i;
-
-	i = 0;
-	fd = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd == -1)
-		return (-1);
-	line = ft_calloc(1, sizeof(char));
-	while (true)
-	{
-		line = readline("> ");
-		if (ft_strcmp(line, delimiter) == 0)
-			break;	//add variable expansion
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-	}
-	close(fd);
-	return (fd);
-}
-void get_fds(t_data *data,int index)
-{
-	int	i;
-	int here;
-
-	here = 0;
-	i = 0;
-	if (data->INstruct[index]->redirection->whole_command != NULL)
-	{
-		while (data->INstruct[index]->redirection->split_command[i])
-		{	
-			if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 4)
-				{
-					i = ft_heredoc(data->INstruct[index]->redirection->split_command[i + 1]);
-					break;
-				}
-				else
-					i++;
-		}
-	i = 0;
-	while (data->INstruct[index]->redirection->split_command[i])
-	{
-		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 3) // >
-		{
-			data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (data->INstruct[index]->redirection->fd_out == -1)
-			{
-				dup2(data->original_fd_in, 0);
-				dup2(data->original_fd_out, 1);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed", 1);
-			}	
-			data->INstruct[index]->redirection->split_command[i][0] = '\0';
-			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
-			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
-			dup2(data->INstruct[index]->redirection->fd_out, STDOUT_FILENO);	
-			//close(data->INstruct[index]->redirection->fd_out);
-		}
-		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 5) // >>
-		{
-			data->INstruct[index]->redirection->fd_out = open(data->INstruct[index]->redirection->split_command[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);				//protect open
-			if (data->INstruct[index]->redirection->fd_out == -1)
-			{
-				dup2(data->original_fd_in, 0);
-				dup2(data->original_fd_out, 1);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed", 1);
-			}	
-			data->INstruct[index]->redirection->split_command[i][0] = '\0';
-			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
-			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
-			dup2(data->INstruct[index]->redirection->fd_out, STDOUT_FILENO);
-		}
-		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 2) // <
-		{
-			data->INstruct[index]->redirection->fd_in = open(data->INstruct[index]->redirection->split_command[i + 1], O_RDONLY);
-			if (data->INstruct[index]->redirection->fd_in == -1)
-			{
-				dup2(data->original_fd_in, 0);
-				dup2(data->original_fd_out, 1);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed, file doesnt exist probably", 1);
-			}
-			data->INstruct[index]->redirection->split_command[i][0] = '\0';
-			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
-			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
-			dup2(data->INstruct[index]->redirection->fd_in, STDIN_FILENO);
-		}
-		if (check_token_syntax(data->INstruct[index]->redirection->split_command[i]) == 4) // <<
-		{ 
-			data->INstruct[index]->redirection->fd_in = open(".heredoc", O_RDONLY);
-			if (data->INstruct[index]->redirection->fd_in == -1)
-			{
-				dup2(data->original_fd_in, 0);
-				dup2(data->original_fd_out, 1);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("Heredoc failed to create a temp file.", 1);
-			}
-			data->INstruct[index]->redirection->split_command[i][0] = '\0';
-			data->INstruct[index]->redirection->split_command[i + 1][0] = '\0';
-			data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command);
-			dup2(data->INstruct[index]->redirection->fd_in, STDIN_FILENO);
-		}
-		i++;
-	}
-		data->INstruct[index]->word_clean = ft_join(data->INstruct[index]->redirection->split_command); //free
-	}
-}
-
+*/
 int Executor(t_data *data)
 {
 	int	i;
@@ -600,28 +473,15 @@ int Executor(t_data *data)
 
 	redir = 0;
 	i = 0;
-	//while (find_char_from_index(data->INstruct[i]->word_clean,'$',0) != -1)
-		//data->INstruct[i]->word_clean = expand_env(data->INstruct[i]->word_clean, data->envp); //still have to handle quotes
-	while (i < data->INstruct[0]->num_of_elements)
+	while(data->nodes[i])
 	{
-	printf("InExecutor:%s\n", data->INstruct[i]->word);
-		if (is_pipe(data->INstruct, i))
-		{
-
-			clean_words(data->INstruct);
-			piperino8(data->INstruct + i,data);
-			break ;
-		}
-		else
-		{
-			// printf("2-singlecommand: %s//\n", data->INstruct[i]->word);
-			if (data->INstruct[i]->redirection!= NULL)
-				get_fds(data, i);
-			clean_words(data->INstruct);
-	printf("InExecutor:%s\n", data->INstruct[i]->word_clean);
-
+		//if (is_pipe(data->command, i))
+		//{
+			//piperino8(data->command + i,data);
+			//break ;
+		//}
+		//else
 			single_command(data, i);
-		}
 		i++;
 	}
 	return (i);

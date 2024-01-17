@@ -17,46 +17,23 @@ int	ft_strcmp(const char *s1, const char *s2)
 	}
 	return (0);
 }
-void free_dirty_words(t_words **words) 
+void 	print_nodes(t_words **nodes)
 {
 	int i;
-
+	int a;
 	i = 0;
-    while (words[i])
+	a = 0;
+	while (nodes[i])
 	{
-		// words[i]-> word_clean = ft_strdup(words[i]->word);
-        free((words[i])->word);
-        (*words)->word = NULL;
-        words++;
-    }
-}
-void 	print_words(t_words **words)
-{
-	int i;
-	int b;
-
-	i = 0;
-	b = 0;
-	while (words[i] != NULL)
-	{
-		printf("word: %s\n",words[i]->word_clean);
-		printf("token: %s\n",words[i]->token_after_word);
-		printf("num_of_elements: %d\n",words[i]->num_of_elements);
-		if(words[i]->redirection->whole_command != NULL)
+		printf("command at pos %i: %s\n", i,nodes[i]->command);
+		while (nodes[i]->split_command[a])
 		{
-			 while (words[i]->redirection->whole_command[b])
-			{
-				printf("whole_command_redirection: %s\n",words[i]->redirection->split_command[b]);
-				b++;
-			}
-		printf("fd_in: %d\n",words[i]->redirection->fd_in);
-		printf("fd_out: %d\n",words[i]->redirection->fd_out);
+			printf("split_command at node %i, pos %i: %s\n", i,a,nodes[i]->split_command[a]);
+			a++;
 		}
-		printf("quotes_case: %d\n",words[i]->quotes_case);
-		printf("\n");
-		printf("\n");
 		i++;
 	}
+	
 }
 char *ft_join(char **arr)
 {
@@ -85,7 +62,7 @@ char *ft_join(char **arr)
     }
 
     return str;
-}
+}/*
 void free_and_close_data(t_data *data,int status)
 {
 	int i;
@@ -134,4 +111,4 @@ void free_and_close_data(t_data *data,int status)
 			exit(EXIT_SUCCESS);
 	}
 
-}
+}*/

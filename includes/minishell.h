@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/15 17:48:12 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:03:33 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,17 @@
 # include <errno.h>
 # include <fcntl.h>
 
-typedef struct redirection
-{
-	//char  	*whole_command;
-	char  	**split_command;
-	int		fd_out;
-	int		fd_in;
-} 	t_redirection;
 
 typedef struct s_words
 {
 	char	*command; //Hannes Parser
+	char	**split_command; //julius Lexer
 	int		num_of_elements; //julius Lexer
-	int		quotes_case;
-	char	*token_after_word; //julius Lexer
+	int		fd_out;
+	int		fd_in;
+	//int		quotes_case;
+	//char	*token_after_word; //julius Lexer
  	char 	*output; // Hannes Parser
-	t_redirection	*redirection;
 }	t_words;
 
 typedef struct s_data
@@ -51,7 +46,7 @@ typedef struct s_data
 	char	**envp;
 	int	    original_fd_in;
 	int	    original_fd_out;
-	t_words	**INstruct;
+	t_words	**nodes;
 }	t_data;
 
 enum	errors {
@@ -84,31 +79,34 @@ int		cd(char *dir, char ***env);
 int		ls(char *dir);
 char	*getpwd(void);
 		//make exit
+//builtin_utils
+int	correct_input(char **cmds);
+void	purge_arr(char *cmds,char ***env);
+
+
 // REDIRECTIONS
-void	init_redirection(t_words **words, int i);
-int		check_for_redirection(t_words **words);
 void 	get_fds(t_data *data,int index);
 
 // LEXER 
-void	clean_word(t_words *INstruct);
-int		is_in_quotes(char * line);
-int		check_token_syntax(char *str);
-char	*trimstr(char *str,int i);
-char	*tokenizer(char **line);
-t_words	**init_word_stack(char *line);
-void	clean_words(t_words **INstruct);
-void free_dirty_words(t_words **words);
-void replace_spaces_in_quotes(char *input);
+void 	putback_spaces_and_pipes_in_quotes(char *input);
+void	clean_spaces_in_command(char **command);
+int		skip_spaces(char *str);
+void	redirection_space_extender3(char **dirty_word);
+void	detect_quote(char *dirty_word, bool *quotes, int *last_quote);
+int		redir_case(char *c);
+char	*comb_extd_word(char **extd_words);
+void 	replace_spaces_and_pipes_in_quotes(char *input);
+int 	get_num_of_pipes(char * str);
+t_words	**init_nodes(char *input,t_data *data);
 
 // PARSER
 int		parser(t_data *data, int i);
 void	routine(t_data	*data);
 // EXECUTOR 
-void	exec_cmd(char *clean_word,t_data *data);
+void    exec_cmd(char **split_command,t_data *data);
 int		Executor(t_data *data);
 //DEBUG 
-void 	print_words(t_words **words);
-void print_redirection(t_redirection *redirection);
+void 	print_nodes(t_words **nodes);
 //expander
 int	find_char_from_index(char *str, char c, int index);
 char *dollar_baby(char *str);

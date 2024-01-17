@@ -1,15 +1,10 @@
-#include "minishell.h"
-// |echo -n " bla"
-// | blah
-// echo -n " bla"
-//  blah
-// echo -n" bla"
-// -n bla
+#include "../includes/minishell.h"
+
 char	*echo(char *word)
 {
 	bool	flag;
 	flag = false;
-	word += 5;
+	//word += 5;
 	printf("InEcho:%s\n", word);
 	if (ft_strcmp("-n ", word) == 0)
 	{
@@ -21,7 +16,7 @@ char	*echo(char *word)
 		printf("bla\n");
 	}
 	if (flag)
-		return (ft_savef("%s", word));
+		return (ft_savef("%s",word));
 	return (ft_savef("%s\n", word));
 }
 // Minishell>>: "echo hallo du"
@@ -81,4 +76,59 @@ int	ls(char *dir)
 		exit(1);
 	}
 	return 0;
+}
+
+
+
+
+void	unset(char *str, char ***env)
+{
+	char	**cmds;
+	int		i;
+
+	cmds = ft_split(str, ' ');
+	i = 0;
+	if (cmds[1] == NULL)
+		printf("something!\n");
+	while (cmds[i])
+	{
+		delete_env_var(cmds[i], env);
+		i++;
+	}
+}
+
+void	export(char *str, char ***env)
+{
+	char	**cmds;
+
+	int		i;
+
+	cmds = ft_split(str, ' ');
+	if (!correct_input(cmds))
+	{
+		free(cmds);
+		return ;
+	}
+	if (cmds[1] == NULL)
+	{
+		i = 0;
+		while (env[0][i] != NULL)
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd(env[0][i], 1);
+			printf("\n");
+			i++;
+		}
+	}
+	else
+	{
+		i = 1;
+		while (cmds[i])
+		{
+			purge_arr(cmds[i], env);
+			add_env_var(cmds[i], env);
+			i++;
+		}
+	}
+	free(cmds);
 }

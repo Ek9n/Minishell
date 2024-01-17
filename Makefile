@@ -6,7 +6,7 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/01/15 15:56:30 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/01/17 17:03:13 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,15 +25,18 @@ HEADERS			=	-I $(INC_FOLDER)
 VPATH			=	$(SRC_FOLDER)
 
 SRCS =	Main.c				\
-		Error.c				\
-		utils_1.c			\
 		lexer.c				\
-		Parser.c			\
-		parser_utils_1.c	\
-		executor.c			\
 		enviromentvars.c	\
+		utils_1.c			\
 		redirections.c		\
-		expander.c
+		Parser.c			\
+		builtins.c			\
+		expander.c			\
+		executor.c			\
+		#Error.c			\
+		lexer.c				\
+		parser_utils_1.c	\
+		#expander.c
 
 OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))
 
