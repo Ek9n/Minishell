@@ -354,7 +354,7 @@ int	single_command(t_data *data,int i)
 	// printf("in single_command:%s\n", data->INstruct[i]->word_clean);
 	if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
 	{
-		data->nodes[i]->output = echo(data->nodes[i]->split_command[1]);
+		data->nodes[i]->output = echo(data->nodes[i]->command);
 		printf("%s", data->nodes[i]->output);
 	}
 	else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
@@ -366,8 +366,8 @@ int	single_command(t_data *data,int i)
 		cd(data->nodes[i]->split_command[1], &data->envp);
 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
-		unset(data->nodes[i]->split_command[1], &data->envp);
-		export(data->nodes[i]->split_command[1], &data->envp);
+		unset(data->nodes[i]->command, &data->envp);
+		export(data->nodes[i]->command, &data->envp);
 	}
 	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
 		unset(data->nodes[i]->split_command[1], &data->envp);
