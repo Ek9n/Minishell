@@ -10,7 +10,7 @@ char	*echo(char *word)
 	bool	flag;
 	flag = false;
 	word += 5;
-	printf("InEcho:%s\n", word);
+	// printf("InEcho:%s\n", word);
 	if (ft_strcmp("-n ", word) == 0)
 	{
 		flag = true;
