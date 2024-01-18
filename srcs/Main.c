@@ -28,7 +28,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(input);
 		data->nodes  = init_nodes(input,data);
 		get_fds(data,0);
-		print_nodes(data->nodes);
+		// print_nodes(data->nodes);
 		if (data->nodes != NULL)
 			Executor(data);
 		// #bring back the spaces //for now testing.. first split and redirections..
