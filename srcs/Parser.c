@@ -379,8 +379,9 @@ int	single_command(t_data *data,int i)
 	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
 		printenv(data->envp);
 	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
-		//free_and_close_data(data, 0);
-		exit(0);
+		free_and_close_data(data);
+	else if (cmp_keyword("$?",data->nodes[i]->split_command[0]))
+			printf("%d\n", data->last_exit_status);
 	else
 		exec_cmd(data->nodes[i]->split_command, data);
 	return (0);
@@ -411,7 +412,7 @@ int	piperino8(t_words **nodes,t_data *data)
         pids[i] = fork();
         if (pids[i] == 0)
         {
-            if ( nodes[i]->whole_command != NULL)
+            if ( nodes[i]->command != NULL)
 			{
 				get_fds(data, i);
 				data->nodes[i]->command = ft_join(data->nodes[i]->split_command); //free? .. do we need it like that?...
@@ -426,7 +427,7 @@ int	piperino8(t_words **nodes,t_data *data)
             }
             if (is_pipe(nodes, i))
             {
-				if (nodes[i]->whole_command != NULL)
+				if (nodes[i]->command != NULL)
 					dup2(nodes[i]->fd_out, STDOUT_FILENO);
 				else	
 			    	dup2(pipe_fd[i][1], STDOUT_FILENO);
@@ -458,7 +459,7 @@ int	piperino8(t_words **nodes,t_data *data)
     }
     for (int j = 0; j < i; j++)
     {
-        if (is_pipe(INstruct, j))
+        if (is_pipe(nodes, j))
         {
             close(pipe_fd[j][0]);
             close(pipe_fd[j][1]);

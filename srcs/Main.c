@@ -1,4 +1,5 @@
 # include "../includes/minishell.h"
+int g_exit_status = 0;
 
 t_data	*init_data(t_data *data, char **envp)
 {
@@ -20,7 +21,8 @@ int	main(int argc, char **argv, char **envp)
 	data = init_data(data, envp);
 	while (true)
 	{
-		a = 0;
+		data->last_exit_status = g_exit_status;
+		g_exit_status = 0;
 		dup2(data->original_fd_in, 0);
 		dup2(data->original_fd_out, 1);
 		input = readline("Minishell>>: ");
@@ -39,5 +41,6 @@ int	main(int argc, char **argv, char **envp)
 }
 /* TODO
 echo < file1 "how are you" echo doesnt actually read standard in, it reads argument. does our work like that ? 
-
+exit codes redo them 
+echo $? doesnt work
 */

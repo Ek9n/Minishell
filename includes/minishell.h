@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/17 17:49:23 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/19 18:13:18 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <errno.h>
 # include <fcntl.h>
 
+extern int g_exit_status;
 
 typedef struct s_words
 {
@@ -37,7 +38,7 @@ typedef struct s_words
 	int		fd_out;
 	int		fd_in;
 	//int		quotes_case;
-	//char	*token_after_word; //julius Lexer
+	char	*token_after_word; //julius Lexer
  	char 	*output; // Hannes Parser
 }	t_words;
 
@@ -46,6 +47,7 @@ typedef struct s_data
 	char	**envp;
 	int	    original_fd_in;
 	int	    original_fd_out;
+	int		last_exit_status;
 	t_words	**nodes;
 }	t_data;
 
@@ -58,7 +60,7 @@ enum	errors {
 void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
 char 	*ft_join(char **arr);
-void 	free_and_close_data(t_data *data,int status);
+void 	free_and_close_data(t_data *data);
 
 
 // ENVIROMENT

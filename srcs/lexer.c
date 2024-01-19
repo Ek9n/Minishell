@@ -227,6 +227,7 @@ t_words **init_nodes(char *input, t_data *data)
 			while (ft_strchr(nodes[a]->command,'$'))
 				nodes[a]->command = expand_env(nodes[a]->command, data->envp);
 			nodes[a]->split_command = ft_split(nodes[a]->command, ' ');
+			nodes[a]->token_after_word = "|";
 			a++;
 		}
 		a = 0;

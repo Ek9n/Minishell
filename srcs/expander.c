@@ -87,5 +87,7 @@ char *expand_env(char *str, char **env)
         }
     }
     free(temp);
+	if (ft_strcmp(temp2, "?") == 0)
+		temp2 = ft_strdup("ZEROBIATCH");
     return temp2;
 }
