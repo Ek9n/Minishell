@@ -379,9 +379,10 @@ int	single_command(t_data *data,int i)
 	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
 		printenv(data->envp);
 	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
+	{
+		g_exit_status = 69;
 		free_and_close_data(data);
-	else if (cmp_keyword("$?",data->nodes[i]->split_command[0]))
-			printf("%d\n", data->last_exit_status);
+	}
 	else
 		exec_cmd(data->nodes[i]->split_command, data);
 	return (0);
@@ -479,16 +480,17 @@ int Executor(t_data *data)
 
 	redir = 0;
 	i = 0;
-	while(data->nodes[i])
-	{
-		//if (is_pipe(data->command, i))
-		//{
-			//piperino8(data->command + i,data);
-			//break ;
-		//}
-		//else
-			single_command(data, i);
-		i++;
-	}
+	if (g_exit_status == 0)
+		while(data->nodes[i])
+		{
+			//if (is_pipe(data->command, i))
+			//{
+				//piperino8(data->command + i,data);
+				//break ;
+			//}
+			//else
+				single_command(data, i);
+			i++;
+		}
 	return (i);
 }

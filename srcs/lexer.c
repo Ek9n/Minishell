@@ -206,28 +206,27 @@ t_words **init_nodes(char *input, t_data *data)
 		replace_spaces_and_pipes_in_quotes(input);
 		redirection_space_extender3(&input);
 		nodes = ft_calloc(get_num_of_pipes(input) + 2, sizeof(t_words *));
+		if (!nodes)
+			g_exit_status = 1;
 		buffer = ft_split(input, '|');
-		
+		a = 0;
+		i = 0;
 		while (buffer[i] != NULL)
 		{
 			nodes[a] = ft_calloc(1, sizeof(t_words)); // protect
-			nodes[a]->command = buffer[i];
-			
+			nodes[a]->command = ft_strdup(buffer[i]);
 			clean_spaces_in_command(&nodes[a]->command);
-
 			a++;
 			i++;
 		}
-
-		// #bring back the spaces //for now testing.. first split and redirections..
 		a = 0;
 		while (nodes[a] && nodes[a]->command)
 		{
 			putback_spaces_and_pipes_in_quotes(nodes[a]->command);
 			while (ft_strchr(nodes[a]->command,'$'))
-				nodes[a]->command = expand_env(nodes[a]->command, data->envp);
+				nodes[a]->command = expand_env(nodes[a]->command, data);
 			nodes[a]->split_command = ft_split(nodes[a]->command, ' ');
-			nodes[a]->token_after_word = "|";
+			nodes[a]->token_after_word = ft_strdup("|");
 			a++;
 		}
 		a = 0;

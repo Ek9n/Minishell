@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/19 18:13:18 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/20 10:13:14 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,13 @@ int		ft_strcmp(const char *s1, const char *s2);
 char 	*ft_join(char **arr);
 void 	free_and_close_data(t_data *data);
 
-
+// SIGNALS
+void	sig_handler_c(int sig);
+void	assign_signals(void);
+void  assign_interactive_backslash(int sig);
+void assign_interactive_C(int sig);
+void assign_empty_line(int sig);
+void  assign_interactive_signals(void);
 // ENVIROMENT
 char	**arrdup(char **enviroment);
 int		cntenv(char **env);
@@ -70,7 +76,6 @@ void	freeenv(char **env);
 void	delete_env_var(char *name, char ***env);
 void	add_env_var(char *name, char ***env);
 int		find_char_from_index(char *str, char c, int index);
-char	*expand_env(char *str, char **env);
 char 	*dollar_baby(char *str);
 // BUILTINS
 void	printenv(char **env);
@@ -114,7 +119,7 @@ int	find_char_from_index(char *str, char c, int index);
 char *dollar_baby(char *str);
 int find_var(char *str, char **envp);
 int	ft_strllen(char *str,int i);
-char *expand_env(char *str, char **env);
+char *expand_env(char *str, t_data *data);
 
 //utils_1.c
 void	redirection_space_extender(char **dirty_word);

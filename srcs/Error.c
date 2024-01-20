@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:17:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/19 18:12:40 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/20 11:23:30 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,32 +39,33 @@ void free_and_close_data(t_data *data)
 	pid = getpid();
 	i = 0;
 	b = 0;
-	if (pid == 0 ||(g_exit_status == 130 || g_exit_status == 420 || g_exit_status == 42069))
-		if (data->nodes != NULL)
-			while (data->nodes[i] != NULL)
+	printf("EXIT_ON_FREE: %d\n", g_exit_status);
+	if (data->nodes != NULL)
+		while (data->nodes[i] != NULL)
+		{
+			free(data->nodes[i]->command);
+			free(data->nodes[i]->token_after_word);
+			free(data->nodes[i]->output);
+			if(data->nodes[i]->split_command != NULL)
 			{
-				free(data->nodes[i]->command);
-				free(data->nodes[i]->token_after_word);
-				free(data->nodes[i]->output);
-				if(data->nodes[i]->split_command != NULL)
+				while (data->nodes[i]->split_command[b])
 				{
-					while (data->nodes[i]->split_command[b])
-					{
-						free(data->nodes[i]->split_command[b]);
-						b++;
-					}
-				free(data->nodes[i]->split_command);
-				close(data->nodes[i]->fd_in);
-				close(data->nodes[i]->fd_out);
+					free(data->nodes[i]->split_command[b]);
+					b++;
 				}
-				free(data->nodes[i]);
-				i++;
+			free(data->nodes[i]->split_command);
+			close(data->nodes[i]->fd_in);
+			close(data->nodes[i]->fd_out);
 			}
-	if (pid == 0 || ((g_exit_status == 69 || g_exit_status == 420 || g_exit_status == 42069)))
+			free(data->nodes[i]);
+			i++;
+		unlink(".heredoc"); //I guess here is the best place to do it
+		}
+	free(data->nodes);
+	if (pid == 0 || (g_exit_status == 69))
 	{
 		close(data->original_fd_in);
 		close(data->original_fd_out);
-		free(data->nodes);
 		b = 0;
 		while(data->envp[b])
 		{
@@ -73,7 +74,6 @@ void free_and_close_data(t_data *data)
 		}
 		free(data->envp);
 		free(data);
-		if (pid == 0)
 		exit(EXIT_SUCCESS);
 	}
 }

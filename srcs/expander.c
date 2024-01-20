@@ -43,7 +43,7 @@ int	ft_strllen(char *str,int i)
 	return (i);
 }
 
-char *expand_env(char *str, char **env)
+char *expand_env(char *str, t_data *data)
 {
     int a;
     int i = 0;
@@ -55,21 +55,21 @@ char *expand_env(char *str, char **env)
     if ((dollar_index = find_char_from_index(str, '$', 0)) == -1)
         return (str);
     temp = dollar_baby(str);
-    a = find_var(temp,env);
+    a = find_var(temp,data->envp);
     if (a != -1)
     {
-        temp2 = ft_calloc(ft_strlen(str) - ft_strlen(temp) + ft_strllen(env[a],find_char_from_index(env[a],'=',0)) + 1, sizeof(char));
+        temp2 = ft_calloc(ft_strlen(str) - ft_strlen(temp) + ft_strllen(data->envp[a],find_char_from_index(data->envp[a],'=',0)) + 1, sizeof(char));
         while (i < dollar_index)
         {
             temp2[i] = str[i];
             i++;
         }
-        while (env[a][c] != '=')
+        while (data->envp[a][c] != '=')
             c++;
         c++;
-        while (env[a][c])
+        while (data->envp[a][c])
         {
-            temp2[i++] = env[a][c++];
+            temp2[i++] = data->envp[a][c++];
         }
         int j = dollar_index + ft_strlen(temp) + 1; // +1 to skip the $ character
         while (str[j])
@@ -88,6 +88,6 @@ char *expand_env(char *str, char **env)
     }
     free(temp);
 	if (ft_strcmp(temp2, "?") == 0)
-		temp2 = ft_strdup("ZEROBIATCH");
-    return temp2;
+		temp2 = ft_itoa(data->last_exit_status);
+    return (temp2);
 }

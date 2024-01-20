@@ -6,7 +6,7 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/01/19 15:21:11 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/01/20 10:14:03 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRCS =	Main.c				\
 		expander.c			\
 		executor.c			\
 		Error.c				\
+		signals.c			\
 		#lexer.c				\
 		parser_utils_1.c	\
 		#expander.c

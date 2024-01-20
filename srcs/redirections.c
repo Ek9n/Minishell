@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/17 16:37:19 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/20 10:13:27 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_heredoc(char * delimiter,t_data *data)
 		line = readline("> ");
 		if (ft_strchr(line, '$'))
 			while(ft_strchr(line, '$'))
-				line = expand_env(line,data->envp);
+				line = expand_env(line,data);
 		if (ft_strcmp(line, delimiter) == 0)
 			break;	//add variable expansion
 		write(fd, line, ft_strlen(line));
@@ -86,6 +86,7 @@ void get_fds(t_data *data,int i)
 				close(data->original_fd_in);
 				close(data->original_fd_out);
 				ft_putstr_fd("open failed\n", 1);
+				g_exit_status = 1;
 			}	
 			data->nodes[i]->split_command[a][0] = '\0';
 			data->nodes[i]->split_command[a + 1][0] = '\0';
@@ -103,6 +104,7 @@ void get_fds(t_data *data,int i)
 				close(data->original_fd_in);
 				close(data->original_fd_out);
 				ft_putstr_fd("open failed\n", 1);
+				g_exit_status = 1;
 			}	
 			data->nodes[i]->split_command[a][0] = '\0';
 			data->nodes[i]->split_command[a + 1][0] = '\0';
@@ -120,6 +122,7 @@ void get_fds(t_data *data,int i)
 				close(data->original_fd_in);
 				close(data->original_fd_out);
 				ft_putstr_fd("open failed, file doesnt exist probably\n", 1);
+				g_exit_status = 1;
 			}
 			data->nodes[i]->split_command[a][0] = '\0';
 			data->nodes[i]->split_command[a + 1][0] = '\0';
@@ -136,6 +139,7 @@ void get_fds(t_data *data,int i)
 				close(data->original_fd_in);
 				close(data->original_fd_out);
 				ft_putstr_fd("Heredoc failed to create a temp file.\n", 1);
+				g_exit_status = 1;
 			}
 			data->nodes[i]->split_command[a][0] = '\0';
 			data->nodes[i]->split_command[a + 1][0] = '\0';

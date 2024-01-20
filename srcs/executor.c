@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/19 18:04:14 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/20 09:56:07 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,19 @@ void	exec_cmd(char **split_command,t_data *data)
 			free_and_close_data(data); // this can go after we are done implementing
 			*/
 		}
-	}
-		printf("Command not found.\n");
-		if (command)
-			free(command);
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			g_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			g_exit_status = 128 + WIFSIGNALED(status);
-		free_and_close_data(data);
-
+		g_exit_status = 127 + WIFSIGNALED(status);
+	}
+	else 
+	{
+		printf("command not found\n");
+		g_exit_status = 127;
+	}
+	if (command)
+		free(command);
 }
 /*
 0 		Successful execution 	 
