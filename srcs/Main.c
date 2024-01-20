@@ -27,7 +27,7 @@ int	main(int argc, char **argv, char **envp)
 		if (input)
 			add_history(input);
 		data->nodes  = init_nodes(input,data);
-		get_fds(data,0);
+		get_fds(data, 0);
 		// print_nodes(data->nodes);
 		if (data->nodes != NULL)
 			Executor(data);

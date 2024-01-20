@@ -394,86 +394,58 @@ int	piperino8(t_words **nodes,t_data *data)
     pid_t	pids[100];
 	int		i;
 	int		j;
-	int		pipes_cnt;
 
-	// printf("FD IS>%d\n\n", INstruct[0]->redirection->fd_in);
-    pipes_cnt = 0;
-    pipe_fd = malloc(data->numb_of_pipes * sizeof(int *)); //make sure to cnt pipes here before
-    while (pipes_cnt < data->numb_of_pipes)
-    {
-        pipe_fd[pipes_cnt] = malloc(2 * sizeof(int));
-        if (pipe(pipe_fd[pipes_cnt]) == -1)
-            error_exit("(piperino6) Pipe creation failed\n");
-        pipes_cnt++;
-    }
-            printf("PIPES:%d, orignum:%d:\n", pipes_cnt, data->numb_of_pipes);
+    pipe_fd = malloc(data->numb_of_pipes * sizeof(int *));
+	i = -1;
+	while (++i < data->numb_of_pipes)
+	{
+		pipe_fd[i] = malloc(2 * sizeof(int));
+		if (pipe(pipe_fd[i]) == -1)
+			error_exit("(piperino6) Pipe creation failed\n");
+	}
+	printf("PIPES:%d\n", data->numb_of_pipes);
 
     i = 0;
-    // while (pipes_cnt >= 0)
     while (nodes[i] != NULL)
     {
-            printf("PEP2-NodesAddr:%p\n", nodes[i]);
-
         pids[i] = fork();
         if (pids[i] == 0)
         {
-            // if (nodes[i]->command != NULL)
-            // if (nodes[i]->fd_in != data->original_fd_in)
-			// {
-			// 	get_fds(data, i);
-			// 	nodes[i]->command = ft_join(nodes[i]->split_command); //free? .. do we need it like that?...
-			// 	// nodes[i]->command = ft_join(nodes[i]->split_command); //free? .. do we need it like that?...
-            // 	printf("PEP22:%s:\n", nodes[i]->command);
-				
-			// 	dup2(nodes[i]->fd_in, STDIN_FILENO); //may we have to undo the redirection later.. idk yet
-			// 	close(nodes[i]->fd_in);
-			// }
-            if (i != 0)
-            {
-                dup2(pipe_fd[i - 1][0], STDIN_FILENO);
-                close(pipe_fd[i - 1][0]);
-                close(pipe_fd[i - 1][1]);
-            }
-            	printf("PEP3:\n");
+			// Handle Pipes
+			if (i == 0 && nodes[0]->fd_in != STDIN_FILENO)
+				dup2(nodes[0]->fd_in, STDIN_FILENO);
+			if (i != 0)
+				dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+			if (i < data->numb_of_pipes)
+				dup2(pipe_fd[i][1], STDOUT_FILENO);
+			// if (i == data->numb_of_pipes && nodes[i]->fd_out != STDOUT_FILENO)
+			// 	dup2(nodes[i]->fd_out, STDOUT_FILENO);
 
-		        // if (nodes[i]->fd_out != data->original_fd_out)
-				// 	dup2(nodes[i]->fd_out, STDOUT_FILENO);
-				// else	
-			    	dup2(pipe_fd[i][1], STDOUT_FILENO);
-                close(pipe_fd[i][0]);
-                close(pipe_fd[i][1]);
-            // }
-			j = i;
-			// while (is_pipe(nodes, j))
-			while (j <= pipes_cnt)
+			// // Closing Pipearray:
+			j = 0;
+			while (j < data->numb_of_pipes)
 			{
-            	printf("PEP4:\n");
-
                 close(pipe_fd[j][0]);
                 close(pipe_fd[j][1]);	
 				j++;		
 			}
-            // cmd1 = ft_split(nodes[i]->command, ' ');
+            // Execve:
             cmd1 = nodes[i]->split_command;
         	path1 = ft_strjoin("/bin/", cmd1[0]);
 			execve(path1, cmd1, NULL);
             perror("(piperino6) Exec1 failed");
         }
-        else
-        {
-            if (i != 0)
-            {
-                close(pipe_fd[i - 1][0]);
-                close(pipe_fd[i - 1][1]);
-            }
-        }
+		if (i != 0)
+		{
+			close(pipe_fd[i - 1][0]);
+			close(pipe_fd[i - 1][1]);
+		}
+		i++;
 		//free_piperino2(INstruct[i], cmd1, path1);
-		pipes_cnt--;
-        i++;
     }
     for (int j = 0; j < i; j++)
     {
-        if (j < pipes_cnt)
+        if (j < data->numb_of_pipes)
         {
             close(pipe_fd[j][0]);
             close(pipe_fd[j][1]);
@@ -486,6 +458,73 @@ int	piperino8(t_words **nodes,t_data *data)
     return (i);
 }
 // */
+
+// int	piperino8(t_words **nodes,t_data *data)
+// {
+//     char	**cmd1;
+//     char	*path1;
+//     int		**pipe_fd;
+//     pid_t	pids[100];
+// 	int		i;
+// 	int		j;
+
+//     pipe_fd = malloc(data->numb_of_pipes * sizeof(int *));
+// 	i = -1;
+// 	while (++i < data->numb_of_pipes)
+// 	{
+// 		pipe_fd[i] = malloc(2 * sizeof(int));
+// 		if (pipe(pipe_fd[i]) == -1)
+// 			error_exit("(piperino6) Pipe creation failed\n");
+// 	}
+// 	printf("PIPES:%d\n", data->numb_of_pipes);
+
+//     i = 0;
+//     while (nodes[i] != NULL)
+//     {
+//         pids[i] = fork();
+//         if (pids[i] == 0)
+//         {
+// 			// Handle Pipes
+// 			if (i != 0)
+// 				dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+// 			if (i < data->numb_of_pipes)
+// 				dup2(pipe_fd[i][1], STDOUT_FILENO);
+// 			// Closing Pipearray:
+// 			j = 0;
+// 			while (j < data->numb_of_pipes)
+// 			{
+//                 close(pipe_fd[j][0]);
+//                 close(pipe_fd[j][1]);	
+// 				j++;		
+// 			}
+//             // Execve:
+//             cmd1 = nodes[i]->split_command;
+//         	path1 = ft_strjoin("/bin/", cmd1[0]);
+// 			execve(path1, cmd1, NULL);
+//             perror("(piperino6) Exec1 failed");
+//         }
+// 		if (i != 0)
+// 		{
+// 			close(pipe_fd[i - 1][0]);
+// 			close(pipe_fd[i - 1][1]);
+// 		}
+// 		i++;
+// 		//free_piperino2(INstruct[i], cmd1, path1);
+//     }
+//     for (int j = 0; j < i; j++)
+//     {
+//         if (j < data->numb_of_pipes)
+//         {
+//             close(pipe_fd[j][0]);
+//             close(pipe_fd[j][1]);
+//         }
+//     }
+//     for (int j = 0; j < i; j++)
+//     {
+//         waitpid(pids[j], NULL, 0);
+//     }
+//     return (i);
+// }
 int Executor(t_data *data)
 {
 	int	i;
@@ -502,7 +541,10 @@ int Executor(t_data *data)
 			break ;
 		}
 		else
+		{
+			printf("SINGLEONE\n");
 			single_command(data, i);
+		}
 		i++;
 	}
 	return (i);
