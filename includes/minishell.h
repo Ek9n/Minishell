@@ -28,7 +28,6 @@
 # include <errno.h>
 # include <fcntl.h>
 
-
 typedef struct s_words
 {
 	char	*command; //Hannes Parser
@@ -37,7 +36,7 @@ typedef struct s_words
 	int		fd_out;
 	int		fd_in;
 	//int		quotes_case;
-	//char	*token_after_word; //julius Lexer
+	// char	*token_after_word; //julius Lexer
  	char 	*output; // Hannes Parser
 }	t_words;
 
@@ -46,6 +45,7 @@ typedef struct s_data
 	char	**envp;
 	int	    original_fd_in;
 	int	    original_fd_out;
+	int	    numb_of_pipes;
 	t_words	**nodes;
 }	t_data;
 
@@ -59,7 +59,6 @@ void	puterr(int err);
 int		ft_strcmp(const char *s1, const char *s2);
 char 	*ft_join(char **arr);
 void 	free_and_close_data(t_data *data,int status);
-
 
 // ENVIROMENT
 char	**arrdup(char **enviroment);

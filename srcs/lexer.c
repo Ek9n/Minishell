@@ -229,7 +229,9 @@ t_words **init_nodes(char *input, t_data *data)
 			nodes[a]->split_command = ft_split(nodes[a]->command, ' ');
 			a++;
 		}
-		a = 0;
+		data->numb_of_pipes = a - 1;
+		printf("numofpipes:%d\n", data->numb_of_pipes);
+		// a = 0;
 		// fflush(0);			
 	return (nodes);
 }
