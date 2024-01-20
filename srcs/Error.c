@@ -44,7 +44,6 @@ void free_and_close_data(t_data *data)
 		while (data->nodes[i] != NULL)
 		{
 			free(data->nodes[i]->command);
-			// free(data->nodes[i]->token_after_word);
 			free(data->nodes[i]->output);
 			if(data->nodes[i]->split_command != NULL)
 			{

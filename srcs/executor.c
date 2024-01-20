@@ -32,7 +32,7 @@ void	exec_cmd(char **split_command,t_data *data)
 		}
 		else if (pid == 0 && g_exit_status == 0) 
 		{
-			// split_command++;
+			// split_command++; <- this made it bugging
 			// printf("cmd1:%s, path1:%s\n", split_command[0], command);
 			execve(command, split_command, data->envp);
 			/*free(command);

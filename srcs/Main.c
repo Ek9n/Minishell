@@ -43,7 +43,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 			free_and_close_data(data);
 		printf("After routine. (in main)\n");
-		// #bring back the spaces //for now testing.. first split and redirections..
 		// fflush(0);		
 	}
 }
