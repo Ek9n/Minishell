@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 				exit(0);
 		if (input[0] != '\0')		
 			add_history(input);
-		if ( input && input[0] != '\0')
+		if (input && input[0] != '\0')
 		{
 			assign_interactive_signals();
 			data->nodes  = init_nodes(input,data);

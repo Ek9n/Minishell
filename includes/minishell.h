@@ -38,7 +38,7 @@ typedef struct s_words
 	int		fd_out;
 	int		fd_in;
 	//int		quotes_case;
-	char	*token_after_word; //julius Lexer
+	// char	*token_after_word; //julius Lexer
  	char 	*output; // Hannes Parser
 }	t_words;
 
@@ -47,6 +47,7 @@ typedef struct s_data
 	char	**envp;
 	int	    original_fd_in;
 	int	    original_fd_out;
+	int	    numb_of_pipes;
 	int		last_exit_status;
 	t_words	**nodes;
 }	t_data;
