@@ -1,5 +1,5 @@
 
-#include "../includes/minishell.h"
+#include "minishell.h"
 
 int 	get_num_of_pipes(char * str)
 {

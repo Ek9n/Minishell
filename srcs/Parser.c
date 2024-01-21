@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
+/*   Updated: 2024/01/21 03:00:45 by hstein           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void error_exit(char *msg)
+void	error_exit(char *msg)
 {
 	perror(msg);
 	exit(EXIT_FAILURE);
@@ -33,8 +45,8 @@ void	piperino_allocater(t_data *data, int ***pipe_fd, pid_t **pids)
 {
 	int	i;
 
-    *pids = malloc((data->numb_of_pipes + 1) * sizeof(int));
-    *pipe_fd = malloc(data->numb_of_pipes * sizeof(int *));
+	*pids = malloc((data->numb_of_pipes + 1) * sizeof(int));
+	*pipe_fd = malloc(data->numb_of_pipes * sizeof(int *));
 	i = -1;
 	while (++i < data->numb_of_pipes)
 	{
@@ -44,23 +56,23 @@ void	piperino_allocater(t_data *data, int ***pipe_fd, pid_t **pids)
 	}
 }
 
-int	piperino9(t_words **nodes,t_data *data)
+int	piperino9(t_words **nodes, t_data *data)
 {
-    char	**cmd1;
-    char	*path1;
-    int		**pipe_fd;
-    pid_t	*pids;
+	char	**cmd1;
+	char	*path1;
+	int		**pipe_fd;
+	pid_t	*pids;
 	int		i;
 	int		j;
 
 	piperino_allocater(data, &pipe_fd, &pids);
 	// printf("PIPES:%d\n", data->numb_of_pipes);
-    i = 0;
-    while (nodes[i] != NULL)
-    {
-        pids[i] = fork();
-        if (pids[i] == 0)
-        {
+	i = 0;
+	while (nodes[i] != NULL)
+	{
+		pids[i] = fork();
+		if (pids[i] == 0)
+		{
 			if (data->numb_of_pipes > 0)
 			{
 				// Handle Pipes
@@ -76,23 +88,23 @@ int	piperino9(t_words **nodes,t_data *data)
 				// // Closing Pipearray:
 				close_pipes(pipe_fd, data->numb_of_pipes);
 			}
-            // Execve:
+			// Execve:
 			single_command(data, i);
 			exit(0); // here may we need some function to exit correct
-        }
+		}
 		if (i != 0)
 		{
 			close(pipe_fd[i - 1][0]);
 			close(pipe_fd[i - 1][1]);
 		}
 		i++;
-    }
+	}
 	close_pipes(pipe_fd, data->numb_of_pipes);
 	// Wait for pids (add exitstatus here :)
 	j = -1;
 	while (++j < i)
-    {
-        waitpid(pids[j], NULL, 0);
-    }
-    return (i);
+	{
+		waitpid(pids[j], NULL, 0);
+	}
+	return (0);
 }

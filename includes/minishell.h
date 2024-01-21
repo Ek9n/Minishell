@@ -38,7 +38,6 @@ typedef struct s_words
 	int		fd_out;
 	int		fd_in;
 	//int		quotes_case;
-	// char	*token_after_word; //julius Lexer
  	char 	*output; // Hannes Parser
 }	t_words;
 
@@ -69,7 +68,7 @@ void	assign_signals(void);
 void  	assign_interactive_backslash(int sig);
 void 	assign_interactive_C(int sig);
 void 	assign_empty_line(int sig);
-void 	 assign_interactive_signals(void);
+void 	assign_interactive_signals(void);
 // ENVIROMENT
 char	**arrdup(char **enviroment);
 int		cntenv(char **env);
@@ -88,9 +87,8 @@ int		ls(char *dir);
 char	*getpwd(void);
 		//make exit
 //builtin_utils
-int	correct_input(char **cmds);
+int		correct_input(char **cmds);
 void	purge_arr(char *cmds,char ***env);
-
 
 // REDIRECTIONS
 void 	get_fds(t_data *data,int index);
@@ -107,6 +105,13 @@ void 	replace_spaces_and_pipes_in_quotes(char *input);
 int 	get_num_of_pipes(char * str);
 t_words	**init_nodes(char *input,t_data *data);
 
+// expander
+int	find_char_from_index(char *str, char c, int index);
+char *dollar_baby(char *str);
+int find_var(char *str, char **envp);
+int	ft_strllen(char *str,int i);
+char *expand_env(char *str, t_data *data);
+
 // PARSER
 int	single_command(t_data *data,int i);
 int	piperino9(t_words **nodes,t_data *data);
@@ -114,14 +119,9 @@ int	piperino9(t_words **nodes,t_data *data);
 // EXECUTOR 
 void    exec_cmd(char **split_command,t_data *data);
 int		Executor(t_data *data);
-//DEBUG 
+
+// DEBUG 
 void 	print_nodes(t_words **nodes);
-//expander
-int	find_char_from_index(char *str, char c, int index);
-char *dollar_baby(char *str);
-int find_var(char *str, char **envp);
-int	ft_strllen(char *str,int i);
-char *expand_env(char *str, t_data *data);
 
 //utils_1.c
 void	redirection_space_extender(char **dirty_word);
