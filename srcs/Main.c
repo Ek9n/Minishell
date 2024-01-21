@@ -1,4 +1,5 @@
 # include "../includes/minishell.h"
+
 int g_exit_status = 0;
 
 t_data	*init_data(t_data *data, char **envp)
@@ -30,12 +31,12 @@ int	main(int argc, char **argv, char **envp)
 		if (input == NULL)
 			if (rl_end == 0)
 				exit(0);
-		if (input[0] != '\0')		
+		if (input[0] != '\0')
 			add_history(input);
 		if (input && input[0] != '\0')
 		{
 			assign_interactive_signals();
-			data->nodes  = init_nodes(input,data);
+			data->nodes = init_nodes(input,data);
 			get_fds(data,0); //move this to init_nodes
 			// print_nodes(data->nodes);
 			if (data->nodes != NULL)

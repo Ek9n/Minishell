@@ -151,7 +151,7 @@ void	clean_spaces_in_command(char **command)
 	int		i;
 	int		j;
 
-	tmp_clean = malloc(ft_strlen(*command));
+	tmp_clean = malloc(ft_strlen(*command) + 1);
 	i = 0;
 	j = 0;
 	i += skip_spaces(*command);

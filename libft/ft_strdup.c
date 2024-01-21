@@ -26,3 +26,24 @@ char	*ft_strdup(const char *s)
 	ptr = ft_memcpy(ptr, s, i);
 	return (ptr);
 }
+// char *ft_strdup(const char *s)
+// {
+//     size_t i;
+//     char *ptr;
+
+//     i = ft_strlen(s) + 1;
+//     ptr = (char *)malloc(sizeof(char) * i);
+//     if (!ptr) {
+//         // Fehlerbehandlung hier, falls die Speicherzuweisung fehlschlägt
+//         return NULL;
+//     }
+//     ptr = ft_memcpy(ptr, s, i);
+    
+//     if (!ptr) {
+//         // Fehlerbehandlung hier, falls ft_memcpy fehlschlägt
+//         free(ptr);
+//         return NULL;
+//     }
+
+//     return ptr;
+// }

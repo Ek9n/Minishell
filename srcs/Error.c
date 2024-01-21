@@ -17,7 +17,8 @@ void	puterr(int err)
 	if (err == ALLOCERR)
 		ft_putstr_fd("Memory allocation failed!", 2);
 	if (err == SYNERR)
-		ft_putstr_fd("Syntax is wrong, Sunny.", 2);/*
+		ft_putstr_fd("Syntax is wrong, Sunny.", 2);
+/*
 typedef struct t_words
 {
 	char	*word; //julius Lexer

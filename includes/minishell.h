@@ -66,10 +66,10 @@ void 	free_and_close_data(t_data *data);
 // SIGNALS
 void	sig_handler_c(int sig);
 void	assign_signals(void);
-void  assign_interactive_backslash(int sig);
-void assign_interactive_C(int sig);
-void assign_empty_line(int sig);
-void  assign_interactive_signals(void);
+void  	assign_interactive_backslash(int sig);
+void 	assign_interactive_C(int sig);
+void 	assign_empty_line(int sig);
+void 	 assign_interactive_signals(void);
 // ENVIROMENT
 char	**arrdup(char **enviroment);
 int		cntenv(char **env);
@@ -108,8 +108,9 @@ int 	get_num_of_pipes(char * str);
 t_words	**init_nodes(char *input,t_data *data);
 
 // PARSER
-int		parser(t_data *data, int i);
-void	routine(t_data	*data);
+int	single_command(t_data *data,int i);
+int	piperino9(t_words **nodes,t_data *data);
+
 // EXECUTOR 
 void    exec_cmd(char **split_command,t_data *data);
 int		Executor(t_data *data);
