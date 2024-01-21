@@ -38,8 +38,8 @@ void	piperino_allocater(t_data *data, int ***pipe_fd, pid_t **pids)
 	i = -1;
 	while (++i < data->numb_of_pipes)
 	{
-		*pipe_fd[i] = malloc(2 * sizeof(int));
-		if (pipe(*pipe_fd[i]) == -1)
+		(*pipe_fd)[i] = malloc(2 * sizeof(int));
+		if (pipe((*pipe_fd)[i]) == -1)
 			error_exit("(piperino6) Pipe creation failed\n");
 	}
 }
@@ -88,6 +88,7 @@ int	piperino9(t_words **nodes,t_data *data)
 		i++;
     }
 	close_pipes(pipe_fd, data->numb_of_pipes);
+	// Wait for pids (add exitstatus here :)
 	j = -1;
 	while (++j < i)
     {
