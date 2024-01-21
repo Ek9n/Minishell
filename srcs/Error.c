@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:17:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/21 02:58:18 by hstein           ###   ########.fr       */
+/*   Updated: 2024/01/21 12:30:37 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ void free_and_close_data(t_data *data)
 	b = 0;
 	printf("EXIT_ON_FREE: %d\n", g_exit_status);
 	if (data->nodes != NULL)
-		while (data->nodes[i] != NULL)
+		while (data->nodes[i])
 		{
 			free(data->nodes[i]->command);
 			free(data->nodes[i]->output);
-			if(data->nodes[i]->split_command != NULL)
+			if(data->nodes[i]->split_command)
 			{
 				while (data->nodes[i]->split_command[b])
 				{
@@ -57,11 +57,16 @@ void free_and_close_data(t_data *data)
 			close(data->nodes[i]->fd_in);
 			close(data->nodes[i]->fd_out);
 			}
-			free(data->nodes[i]);
+			if (data->nodes[i])
+			{
+				free(data->nodes[i]);
+				data->nodes[i] = NULL;
+			}
 			i++;
 		unlink(".heredoc"); //I guess here is the best place to do it
 		}
 	free(data->nodes);
+	data->nodes = NULL;
 	if (pid == 0 || (g_exit_status == 69))
 	{
 		close(data->original_fd_in);

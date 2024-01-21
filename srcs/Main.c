@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/01/21 02:58:50 by hstein           ###   ########.fr       */
+/*   Updated: 2024/01/21 12:48:01 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,18 @@ int	main(int argc, char **argv, char **envp)
 /* TODO
 echo < file1 "how are you" echo doesnt actually read standard in, it reads argument. does our work like that ? 
 exit codes redo them 
-echo $? doesnt work
-empty input after command segfaults, because nodes are still initialized
+only tabs dont get interpreted as command, fix
+clean quotes from input eg. echo "hello" "world" -> echo hello world
+exit doesnt exit lol, also, arguments ? 
+echo $? doesnt work (expr $? +$?)
+echo "cat lol.c | cat > lol.c" empty
+echo '$USER' = '|USER'
+export doesnt work
+unset doesnt work
+cd doesnt work
+after check unset path and command execution
+relative path ?
+
+
+
 */
