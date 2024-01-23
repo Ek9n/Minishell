@@ -36,28 +36,30 @@ char	*getpwd(void)
 	return (buf);
 }
 
-int	cd(char *dir, char ***env)
-{
-	char 	*pwd;
+// int	cd(char *dir, char ***env)
+// {
+// 	// ADD:srcs statt srcs/ 
+// 	char 	*pwd;
 
-	if (dir[2] == ' ')
-		dir += 3;
-	pwd = ft_strjoin("export OLDPWD=", getpwd());
-	if (ft_strcmp(dir, "~") == 0 || ft_strcmp(dir, "cd") == 0)
-		dir = ft_strdup(getenv("HOME"));
-	if (chdir(dir) != 0) 
-    {
-        perror("(cd) No valid pathname!");
-		free(pwd);
-		return (EXIT_FAILURE);
-    }
-	export(pwd,env);
-	free(pwd);
-	pwd = ft_strjoin("export PWD=", getpwd());
-	export(pwd,env);
-	free(pwd);
-	return (EXIT_SUCCESS);
-}
+// 	printf("CD_IN:%s\n", dir);
+// 	if (dir[2] == ' ')
+// 		dir += 3;
+// 	pwd = ft_strjoin("export OLDPWD=", getpwd());
+// 	if (ft_strcmp(dir, "~") == 0 || ft_strcmp(dir, "cd") == 0)
+// 		dir = ft_strdup(getenv("HOME"));
+// 	if (chdir(dir) != 0) 
+//     {
+//         perror("(cd) No valid pathname!");
+// 		free(pwd);
+// 		return (EXIT_FAILURE);
+//     }
+// 	export(pwd, env);
+// 	free(pwd);
+// 	pwd = ft_strjoin("export PWD=", getpwd());
+// 	export(pwd, env);
+// 	free(pwd);
+// 	return (EXIT_SUCCESS);
+// }
 
 int	ls(char *dir)
 {
@@ -78,9 +80,6 @@ int	ls(char *dir)
 	return 0;
 }
 
-
-
-
 void	unset(char *str, char ***env)
 {
 	char	**cmds;
@@ -97,18 +96,10 @@ void	unset(char *str, char ***env)
 	}
 }
 
-void	export(char *str, char ***env)
+void	export(char **cmds, char ***env)
 {
-	char	**cmds;
+	int	i;
 
-	int		i;
-
-	cmds = ft_split(str, ' ');
-	if (!correct_input(cmds))
-	{
-		free(cmds);
-		return ;
-	}
 	if (cmds[1] == NULL)
 	{
 		i = 0;
@@ -130,5 +121,4 @@ void	export(char *str, char ***env)
 			i++;
 		}
 	}
-	free(cmds);
 }

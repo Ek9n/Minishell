@@ -35,9 +35,24 @@ int	cmp_keyword(char *keyword, char *str)
 	return (0);
 }
 
-int	single_command(t_data *data,int i)
+
+int	cnt_bytes(char **arr)
 {
-	// printf("in single_command:%s\n", data->INstruct[i]->word_clean);
+	int	i;
+	int	bytes;
+
+	bytes = 0;
+	i = -1;
+	while (arr[++i])
+		bytes += ft_strlen(arr[i]) + 1;
+	bytes += (i + 1) * sizeof(char *);
+	return (bytes);
+}
+
+int	single_command(t_data *data, int i)
+{
+	printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
+
 	if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
 	{
 		data->nodes[i]->output = echo(data->nodes[i]->command);
@@ -48,15 +63,20 @@ int	single_command(t_data *data,int i)
 		data->nodes[i]->output = getpwd();
 		printf("%s\n", data->nodes[i]->output);
 	}
-	else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
-		cd(data->nodes[i]->split_command[1], &data->envp);
+	// else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
+	// 	cd(data->nodes[i]->split_command[1], &data->envp);
 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
-		unset(data->nodes[i]->command, &data->envp);
-		export(data->nodes[i]->command, &data->envp);
+
+		// unset(data->nodes[i]->split_command, &data->envp);
+		export(data->nodes[i]->split_command, &data->envp);
+
 	}
 	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
+	{
+
 		unset(data->nodes[i]->split_command[1], &data->envp);
+	}
 	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
 		printenv(data->envp);
 	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
@@ -69,6 +89,14 @@ int	single_command(t_data *data,int i)
 		printf("(single_command) - exec_cmd\n");
 		exec_cmd(data->nodes[i]->split_command, data);
 	}
+
+	// Send new envp to peperino
+	int	bytes = cnt_bytes(data->envp);
+	close(data->envp_pipe[0]);
+	write(data->envp_pipe[1], &bytes, sizeof(int));
+	write(data->envp_pipe[1], data->envp, bytes);
+	close(data->envp_pipe[1]);
+
 	return (0);
 }
 
@@ -101,7 +129,7 @@ void	exec_cmd(char **split_command,t_data *data)
 			free_and_close_data(data); // this can go after we are done implementing
 			*/
 		}
-			signal(SIGQUIT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			g_exit_status = WEXITSTATUS(status);

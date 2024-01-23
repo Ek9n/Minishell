@@ -110,10 +110,11 @@ void    delete_env_var(char *name, char ***env)
 
 void	add_env_var(char *name, char ***env)
 {
-	int		size = cntenv(*env) + 1; //phne +1 segfault... why?
+	int		size = cntenv(*env) + 1;
 	int		i;
 	char	**new_env;
 
+	// printf("ADDENV:%s\n", name);
 	new_env = ft_calloc(size + 1, sizeof(char *));
 	i = 0;
 	while (env[0][i] != NULL)
@@ -125,9 +126,6 @@ void	add_env_var(char *name, char ***env)
 	free(*env);
 	*env = new_env;
 }
-
-
-
 
 int	correct_input(char **cmds)
 {

@@ -41,7 +41,7 @@ void	close_pipes(int	**pipe_fd, int numb_of_pipes)
 	}
 }
 
-void	piperino_allocater(t_data *data, int ***pipe_fd, pid_t **pids)
+void	init_piperino(t_data *data, int ***pipe_fd, pid_t **pids)
 {
 	int	i;
 
@@ -52,7 +52,7 @@ void	piperino_allocater(t_data *data, int ***pipe_fd, pid_t **pids)
 	{
 		(*pipe_fd)[i] = malloc(2 * sizeof(int));
 		if (pipe((*pipe_fd)[i]) == -1)
-			error_exit("(piperino6) Pipe creation failed\n");
+			error_exit("(piperino) Pipe creation failed\n");
 	}
 }
 
@@ -65,8 +65,13 @@ int	piperino9(t_words **nodes, t_data *data)
 	int		i;
 	int		j;
 
-	piperino_allocater(data, &pipe_fd, &pids);
+	init_piperino(data, &pipe_fd, &pids);
 	// printf("PIPES:%d\n", data->numb_of_pipes);
+
+	// erstelle pipe für envp, evntl in main .. auch schließen in main?
+	if (pipe(data->envp_pipe) == -1)
+		error_exit("(piperino) envp_pipe creation failed\n");
+
 	i = 0;
 	while (nodes[i] != NULL)
 	{
@@ -85,10 +90,9 @@ int	piperino9(t_words **nodes, t_data *data)
 				// if (i == data->numb_of_pipes && nodes[i]->fd_out != STDOUT_FILENO)
 				// 	dup2(nodes[i]->fd_out, STDOUT_FILENO);
 
-				// // Closing Pipearray:
 				close_pipes(pipe_fd, data->numb_of_pipes);
 			}
-			// Execve:
+			// !!!The whole memory must be freed in every childprocess.. idk how to do it with the stuff we give to execve -.-
 			single_command(data, i);
 			exit(0); // here may we need some function to exit correct
 		}
@@ -97,10 +101,22 @@ int	piperino9(t_words **nodes, t_data *data)
 			close(pipe_fd[i - 1][0]);
 			close(pipe_fd[i - 1][1]);
 		}
+
+
+		int	bytes;
+		int	cnt = -1;
+
+		read(data->envp_pipe[0], &bytes, sizeof(int));
+		free(data->envp);
+		data->envp = malloc(bytes);
+		read(data->envp_pipe[0], data->envp, bytes);
+		// Have to test it with multi export cmds seperated by pipes..
+		// close(data->envp_pipe[0]);
+		// close(data->envp_pipe[1]);
 		i++;
 	}
 	close_pipes(pipe_fd, data->numb_of_pipes);
-	// Wait for pids (add exitstatus here :)
+	// Wait for pids (plz add exitstatus here (:
 	j = -1;
 	while (++j < i)
 	{
@@ -108,3 +124,59 @@ int	piperino9(t_words **nodes, t_data *data)
 	}
 	return (0);
 }
+
+
+// int	piperino9(t_words **nodes, t_data *data)
+// {
+// 	char	**cmd1;
+// 	char	*path1;
+// 	int		**pipe_fd;
+// 	pid_t	*pids;
+// 	int		i;
+// 	int		j;
+
+// 	piperino_mallocater(data, &pipe_fd, &pids);
+// 	// printf("PIPES:%d\n", data->numb_of_pipes);
+// 	i = 0;
+// 	while (nodes[i] != NULL)
+// 	{
+// 		pids[i] = fork();
+// 		if (pids[i] == 0)
+// 		{
+// 			if (data->numb_of_pipes > 0)
+// 			{
+// 				// Handle Pipes
+// 				if (i == 0 && nodes[0]->fd_in != STDIN_FILENO)
+// 					dup2(nodes[0]->fd_in, STDIN_FILENO);
+// 				if (i != 0)
+// 					dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+// 				if (i < data->numb_of_pipes)
+// 					dup2(pipe_fd[i][1], STDOUT_FILENO);
+// 				// if (i == data->numb_of_pipes && nodes[i]->fd_out != STDOUT_FILENO)
+// 				// 	dup2(nodes[i]->fd_out, STDOUT_FILENO);
+
+// 				// // Closing Pipearray:
+// 				close_pipes(pipe_fd, data->numb_of_pipes);
+// 			}
+// 			// Execve:
+// 			single_command(data, i);
+// 			exit(0); // here may we need some function to exit correct
+// 		}
+// 		if (i != 0)
+// 		{
+// 			close(pipe_fd[i - 1][0]);
+// 			close(pipe_fd[i - 1][1]);
+// 		}
+// 		i++;
+// 	}
+// 	printf("---ParserEADDedENV:%s\n", data->envp[30]);
+
+// 	close_pipes(pipe_fd, data->numb_of_pipes);
+// 	// Wait for pids (plz add exitstatus here :)
+// 	j = -1;
+// 	while (++j < i)
+// 	{
+// 		waitpid(pids[j], NULL, 0);
+// 	}
+// 	return (0);
+// }
