@@ -61,6 +61,85 @@ char	*getpwd(void)
 // 	return (EXIT_SUCCESS);
 // }
 
+// void	export(char **cmds, char ***env)
+// {
+// 	int	i;
+
+// 	if (cmds[1] == NULL)
+// 	{
+// 		i = 0;
+// 		while (env[0][i] != NULL)
+// 		{
+// 			ft_putstr_fd("declare -x ", 1);
+// 			ft_putstr_fd(env[0][i], 1);
+// 			printf("\n");
+// 			i++;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		i = 1;
+// 		while (cmds[i])
+// 		{
+// 			purge_arr(cmds[i], env);
+// 			add_env_var(cmds[i], env);
+// 			i++;
+// 		}
+// 	}
+// }
+
+int	cd(char **split_cmds, char ***env)
+{
+	// ADD:srcs statt srcs/ 
+	// char 	*pwd;
+	char 	**buffer;
+
+	printf("in cd:%s\n", split_cmds[1]);
+
+	buffer = calloc(3, sizeof(char *));
+	buffer[0] = ft_strdup("export");
+	buffer[1] = ft_strjoin("OLDPWD=", getpwd());
+
+	export(buffer, env);
+	// printf("CD_IN:%s\n", dir);
+	// if (dir[2] == ' ')
+	// 	dir += 3;
+	// pwd = ft_strjoin("export OLDPWD=", getpwd());
+	// if (ft_strcmp(dir, "~") == 0 || ft_strcmp(dir, "cd") == 0)
+	// 	dir = ft_strdup(getenv("HOME"));
+	// if (split_cmds[2] != 0)
+	// {
+
+	// }
+	if (chdir(split_cmds[1]) != 0) 
+    {
+        perror("(cd) No valid pathname!");
+		// free(buffer[0]);
+		// free(buffer[1]);
+		// free(buffer);
+		return (EXIT_FAILURE);
+    }
+
+	// export(pwd, env);
+
+	// free(pwd);
+	// free(buffer[1]);
+
+	// pwd = ft_strjoin("export PWD=", getpwd());
+	buffer[1] = ft_strjoin("PWD=", getpwd());
+
+
+	// export(pwd, env);
+	export(buffer, env);
+
+	// free(pwd);
+	// free(buffer[0]);
+	// free(buffer[1]);
+	// free(buffer);
+
+	return (EXIT_SUCCESS);
+}
+
 int	ls(char *dir)
 {
 	pid_t p = fork();

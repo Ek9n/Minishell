@@ -63,8 +63,9 @@ int	single_command(t_data *data, int i)
 		data->nodes[i]->output = getpwd();
 		printf("%s\n", data->nodes[i]->output);
 	}
-	// else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
-	// 	cd(data->nodes[i]->split_command[1], &data->envp);
+	else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
+		cd(data->nodes[i]->split_command, &data->envp);
+		>> in peperino statt forken if condition und checken ob inbuild... oder in execve auch pwd in pipe schreiben... eigentlich habe ich das doch mit export?... irgendwie wird der neue pfad nicht übernommen....
 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
 

@@ -85,6 +85,7 @@ void	unset(char *str, char ***env);
 void	export(char **cmds, char ***env);
 char	*echo(char *word);
 // int		cd(char *dir, char ***env);
+int	cd(char **split_cmds, char ***env);
 int		ls(char *dir);
 char	*getpwd(void);
 		//make exit
