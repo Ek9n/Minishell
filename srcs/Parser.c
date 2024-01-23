@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/01/21 03:00:45 by hstein           ###   ########.fr       */
+/*   Updated: 2024/01/23 18:38:02 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,8 @@ int	piperino9(t_words **nodes, t_data *data)
 					dup2(pipe_fd[i - 1][0], STDIN_FILENO);
 				if (i < data->numb_of_pipes)
 					dup2(pipe_fd[i][1], STDOUT_FILENO);
-				// if (i == data->numb_of_pipes && nodes[i]->fd_out != STDOUT_FILENO)
-				// 	dup2(nodes[i]->fd_out, STDOUT_FILENO);
+				 if (i == data->numb_of_pipes && nodes[i]->fd_out != STDOUT_FILENO)	
+				 	dup2(nodes[i]->fd_out, STDOUT_FILENO);
 
 				close_pipes(pipe_fd, data->numb_of_pipes);
 			}
@@ -102,6 +102,8 @@ int	piperino9(t_words **nodes, t_data *data)
 			close(pipe_fd[i - 1][1]);
 		}
 
+			//dup2(data->original_fd_in, 0);
+			//dup2(data->original_fd_out, 1);
 
 		int	bytes;
 		int	cnt = -1;

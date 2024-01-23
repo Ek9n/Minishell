@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/01/21 12:48:01 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/23 18:07:42 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,12 @@ int	main(int argc, char **argv, char **envp)
 		{
 			assign_interactive_signals();
 			data->nodes = init_nodes(input, data);
-			get_fds(data,0); //move this to init_nodes
 			// print_nodes(data->nodes);
 			if (data->nodes != NULL)
 				Executor(data);
 		}
 			// free_and_close_data(data);
-		printf("After routine. (in main)\n");
+		//printf("After routine. (in main)\n");
 		// fflush(0);		
 	}
 }

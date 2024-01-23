@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/21 12:06:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/23 18:28:24 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ int Executor(t_data *data)
 	int redir;
 
 	redir = 0;
+	i = 0;
+	while ( data->nodes[i])
+	{
+		get_fds(data,i);
+		i++;	
+	}
 	i = 0;
 	if (g_exit_status == 0)
 		piperino9(data->nodes, data);
@@ -51,7 +57,7 @@ int	cnt_bytes(char **arr)
 
 int	single_command(t_data *data, int i)
 {
-	printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
+	//printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
 
 	if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
 	{
@@ -86,7 +92,7 @@ int	single_command(t_data *data, int i)
 	}
 	else
 	{
-		printf("(single_command) - exec_cmd\n");
+		//printf("(single_command) - exec_cmd\n");
 		exec_cmd(data->nodes[i]->split_command, data);
 	}
 

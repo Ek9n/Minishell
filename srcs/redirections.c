@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/20 10:13:27 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/23 18:45:10 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void get_fds(t_data *data,int i)
 	int a;
 
 	a = 0;
+	data->nodes[i]->fd_in = data->original_fd_in;
+	data->nodes[i]->fd_out = data->original_fd_out;
 	while (data->nodes[i]->split_command[a])
 	{	
 		if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
@@ -74,8 +76,8 @@ void get_fds(t_data *data,int i)
 				a++;
 	}
 	a = 0;
-	while (data->nodes[i]->split_command[a])
-	{
+	while (data->nodes[i] -> split_command[a])
+	{	
 		if (check_token_syntax(data->nodes[i]->split_command[a]) == 3) // >
 		{
 			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -148,6 +150,7 @@ void get_fds(t_data *data,int i)
 		}
 		a++;
 	}
+
 		data->nodes[i]->command = ft_join(data->nodes[i]->split_command); //free not sure if we need it ? 
 		data->nodes[i]->split_command = ft_split(data->nodes[i]->command, ' ');
 }
