@@ -44,7 +44,6 @@ typedef struct s_words
 typedef struct s_data
 {
 	char	**envp;
-	// int		envp_pipe[2];
 	int	    original_fd_in;
 	int	    original_fd_out;
 	int	    numb_of_pipes;
