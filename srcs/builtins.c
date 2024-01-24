@@ -5,7 +5,7 @@ char	*echo(char *word)
 	bool	flag;
 	flag = false;
 	word += 5;
-	// printf("InEcho:%s\n", word);
+	printf("InEcho:%s\n", word);
 	if (ft_strcmp("-n ", word) == 0)
 	{
 		flag = true;
@@ -34,44 +34,61 @@ char	*getpwd(void)
 	return (buf);
 }
 
-int	cd(char **split_cmds, char ***env)
+// int	cd(char **split_cmds, char ***env)
+int	cd(t_words *node, t_data *data)
 {
+	char	*dir;
+	char	*pwd;
+	char	*oldpwd;
 	char 	**buffer;
+	int		i;
 
-	// printf("in cd:%s\n", split_cmds[1]);
+	if (node->num_of_elements > 2)
+	{
+		ft_putstr_fd("-minishell: cd: too many arguments\n", 1);
+		return (EXIT_FAILURE);
+	}
+	printf("CD: NUMS%d\n", node->num_of_elements);
+	if (node->num_of_elements == 2 && !ft_strcmp(node->split_command[1], ""))
+		return (EXIT_SUCCESS);
 
 	buffer = calloc(3, sizeof(char *));
 	buffer[0] = ft_strdup("export");
-	buffer[1] = ft_strjoin("OLDPWD=", getpwd());
 
-	export(buffer, env);
-	// printf("CD_IN:%s\n", dir);
-	// if (dir[2] == ' ')
-	// 	dir += 3;
-	// pwd = ft_strjoin("export OLDPWD=", getpwd());
-	// if (ft_strcmp(dir, "~") == 0 || ft_strcmp(dir, "cd") == 0)
-	// 	dir = ft_strdup(getenv("HOME"));
-	// if (split_cmds[2] != 0)
-	// {
+	oldpwd = ft_strjoin("OLDPWD=", getpwd());
 
-	// }
-	if (chdir(split_cmds[1]) != 0) 
+	if (node->split_command[1] == NULL || ft_strcmp(node->split_command[1], "~") == 0)
+		dir = ft_strdup(getenv("HOME"));
+	else
+		dir = ft_strdup(node->split_command[1]);
+
+	if (chdir(dir) != 0) 
     {
-        perror("(cd) No valid pathname!");
+        perror("(cd) No valid pathname");
+		free(dir);
+		free(oldpwd);
+		i = -1;
+		while (buffer[++i])
+			free(buffer[i]);
+		free(buffer);
+		return (EXIT_FAILURE);
+    }
+	else
+	{
+		pwd = ft_strjoin("OLDPWD=", getpwd());
+
+		// free(buffer[1]);
+
+		buffer[1] = ft_strjoin("PWD=", getpwd());
+		export(buffer, &data->envp);
+		export(buffer, &data->envp);
 		// free(buffer[0]);
 		// free(buffer[1]);
 		// free(buffer);
-		return (EXIT_FAILURE);
-    }
-
-	// free(buffer[1]);
-
-	buffer[1] = ft_strjoin("PWD=", getpwd());
-	export(buffer, env);
-	// free(buffer[0]);
-	// free(buffer[1]);
-	// free(buffer);
-
+		free(dir);
+		free(pwd);
+		free(oldpwd);
+	}
 	return (EXIT_SUCCESS);
 }
 

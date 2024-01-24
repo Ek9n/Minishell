@@ -272,7 +272,7 @@ t_words **init_nodes(char *input, t_data *data)
 	a = 0;
 	while (nodes[a] && nodes[a]->command)
 	{
-		while (ft_strchr(nodes[a]->command,'$'))
+		if (ft_strchr(nodes[a]->command, '$'))
 			nodes[a]->command = expand_env(nodes[a]->command, data);
 		nodes[a]->split_command = ft_split(nodes[a]->command, ' ');
 		i = -1;
@@ -280,15 +280,15 @@ t_words **init_nodes(char *input, t_data *data)
 		{
 			putback_spaces_and_pipes_in_quotes(nodes[a]->split_command[i]);
 			remove_quotes(&nodes[a]->split_command[i]);
-			// printf("split(%d):%s\n", i, nodes[a]->split_command[i]);
 		}
+		nodes[a]->num_of_elements = i;
 		putback_spaces_and_pipes_in_quotes(nodes[a]->command);
 		remove_quotes(&nodes[a]->command);
 		a++;
 	}
 	data->numb_of_pipes = a - 1;
 	a = 0;
-	// fflush(0);			
+	// fflush(0);
 	return (nodes);
 }
 

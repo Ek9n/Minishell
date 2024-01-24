@@ -79,13 +79,15 @@ int		find_char_from_index(char *str, char c, int index);
 char 	*dollar_baby(char *str);
 // BUILTINS
 void	printenv(char **env);
+void	export(char **cmds, char ***env);
 void	unset(char **split_cmds, char ***env);
 // void	unset(char *str, char ***env);
 // void	export(char *str, char ***env);
-void	export(char **cmds, char ***env);
+// char	*echo(char **split_cmd);
 char	*echo(char *word);
 // int		cd(char *dir, char ***env);
-int	cd(char **split_cmds, char ***env);
+// int		cd(char **split_cmds, char ***env);
+int		cd(t_words *node, t_data *data);
 int		ls(char *dir);
 char	*getpwd(void);
 		//make exit
@@ -107,6 +109,10 @@ char	*comb_extd_word(char **extd_words);
 void 	replace_spaces_and_pipes_in_quotes(char *input);
 int 	get_num_of_pipes(char * str);
 t_words	**init_nodes(char *input,t_data *data);
+
+// ERROR CHECKS
+int		valid_input(char *str);
+int		quote_error(char *str);
 
 // expander
 int		find_char_from_index(char *str, char c, int index);

@@ -35,6 +35,7 @@ SRCS =	Main.c				\
 		executor.c			\
 		Error.c				\
 		signals.c			\
+		error_checks.c		\
 		#lexer.c				\
 		parser_utils_1.c	\
 		#expander.c

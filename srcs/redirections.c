@@ -58,6 +58,7 @@ int	ft_heredoc(char * delimiter,t_data *data)
 	close(fd);
 	return (fd);
 }
+
 void get_fds(t_data *data,int i)
 {
 	int a;

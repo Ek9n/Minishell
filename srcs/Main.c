@@ -46,16 +46,22 @@ int	main(int argc, char **argv, char **envp)
 		if (input == NULL)
 			if (rl_end == 0)
 				exit(0);
-		if (input[0] != '\0')
-			add_history(input);
+		// if (input[0] != '\0')
 		if (input && input[0] != '\0')
 		{
-			assign_interactive_signals();
-			data->nodes = init_nodes(input, data);
-			get_fds(data,0); //move this to init_nodes
-			// print_nodes(data->nodes);
-			if (data->nodes != NULL)
-				Executor(data);
+			add_history(input);
+			if (valid_input(input))
+			{
+				assign_interactive_signals();
+				data->nodes = init_nodes(input, data);
+				// get_fds(data, 0); //move this to init_nodes
+				// print_nodes(data->nodes);
+				// printf("MAIN:%s\n", data->nodes[0]->split_command[1]);
+				if (data->nodes != NULL)
+					Executor(data);
+			}
+			else
+				printf("-minishell: %s: Invalid input\n", input);
 		}
 			// free_and_close_data(data);
 		printf("After routine. (in main)\n");
@@ -67,11 +73,10 @@ int	main(int argc, char **argv, char **envp)
 echo < file1 "how are you" echo doesnt actually read standard in, it reads argument. does our work like that ? 
 exit codes redo them 
 only tabs dont get interpreted as command, fix
-clean quotes from input eg. echo "hello" "world" -> echo hello world
 exit doesnt exit lol, also, arguments ? 
 echo $? doesnt work (expr $? +$?)
 echo "cat lol.c | cat > lol.c" empty
-echo '$USER' = '|USER'
+EXPANDER -> echo '$USER' = crap (dollarbaby)
 export doesnt work
 unset doesnt work
 cd doesnt work
@@ -90,4 +95,7 @@ cd srcs/ | cd ../.. ergibt auch keine Änderung in BASH
 
 // Minishell>>: "echo hallo du"
 // hallo du
+
+cd ""   in bash it will do nothing, in our case it don't make a node and will go to home.. like cd without arguments
+can we implement split_commands with empty strings? or will it fuckup something
 */
