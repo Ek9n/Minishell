@@ -13,13 +13,14 @@
 #include "minishell.h"
 
 int g_exit_status = 0;
+int cd_flag = 0;
 
 t_data	*init_data(t_data *data, char **envp)
 {
 	data = malloc(sizeof(t_data));
 	data->envp = arrdup(envp);
-	data->envp_pipe[0] = -1;
-	data->envp_pipe[1] = -1;
+	// data->envp_pipe[0] = -1;
+	// data->envp_pipe[1] = -1;
 	data -> original_fd_in = dup(STDIN_FILENO);
 	data -> original_fd_out = dup(STDOUT_FILENO);
 	return (data);
@@ -79,4 +80,14 @@ relative path ?
 
 Minishell>>: echo blabla sadad #asdda 'sad 'a"sd'
 	blabla sadad #asdda sad asd'
+
+	ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ export A= 32424
+-bash: export: `32424': not a valid identifier
+
+7:~/42Berlin/Github/Minishell$ export A=1 | export B=2
+	hier wird KEINE var gesetzt... entweder pipes stimmen nicht oder envp wird erst nach allen forks neu geladen? 
+cd srcs/ | cd ../.. ergibt auch keine Änderung in BASH
+
+// Minishell>>: "echo hallo du"
+// hallo du
 */

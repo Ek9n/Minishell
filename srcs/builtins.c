@@ -19,8 +19,6 @@ char	*echo(char *word)
 		return (ft_savef("%s",word));
 	return (ft_savef("%s\n", word));
 }
-// Minishell>>: "echo hallo du"
-// hallo du
 
 char	*getpwd(void)
 {
@@ -87,6 +85,37 @@ char	*getpwd(void)
 // 		}
 // 	}
 // }
+
+
+// void    new_pwd(char *name, char ***env)
+// {
+//     int size = cntenv(*env);
+//     char    **new_env = 0;
+//     int i;
+//     int j;
+//     new_env = ft_calloc(size + 1, sizeof(char *));
+//     i = 0;
+//     j = 0;
+//     while (env[0][i] != NULL)
+//     {
+//         if (ft_strcmp(name, env[0][i]) == 0 && (env[0][i][ft_strlen(name)] == '\0' || env[0][i][ft_strlen(name)] == '='))
+//         {
+//             // printf("HLLO:::%c\n", env[0][i][ft_strlen(env[0][i])]);
+//             // printf("LEN:::%zu\n", ft_strlen(env[0][i]));
+//             // printf("STR:::%s\n", env[0][i]);
+//             free(env[0][i]);
+//         }
+//         else
+//         {
+//             new_env[j] = env[0][i];
+//             j++;
+//         }
+//         i++;
+//     }
+//     free(*env);
+//     *env = new_env;
+// }
+
 
 int	cd(char **split_cmds, char ***env)
 {
@@ -159,18 +188,16 @@ int	ls(char *dir)
 	return 0;
 }
 
-void	unset(char *str, char ***env)
+void	unset(char **split_cmds, char ***env)
 {
-	char	**cmds;
 	int		i;
 
-	cmds = ft_split(str, ' ');
-	i = 0;
-	if (cmds[1] == NULL)
-		printf("something!\n");
-	while (cmds[i])
+	i = 1;
+	// if (split_cmds[1] == NULL)
+	// 	printf("something!\n");
+	while (split_cmds[i])
 	{
-		delete_env_var(cmds[i], env);
+		delete_env_var(split_cmds[i], env);
 		i++;
 	}
 }

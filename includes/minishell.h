@@ -44,7 +44,7 @@ typedef struct s_words
 typedef struct s_data
 {
 	char	**envp;
-	int		envp_pipe[2];
+	// int		envp_pipe[2];
 	int	    original_fd_in;
 	int	    original_fd_out;
 	int	    numb_of_pipes;
@@ -80,7 +80,8 @@ int		find_char_from_index(char *str, char c, int index);
 char 	*dollar_baby(char *str);
 // BUILTINS
 void	printenv(char **env);
-void	unset(char *str, char ***env);
+void	unset(char **split_cmds, char ***env);
+// void	unset(char *str, char ***env);
 // void	export(char *str, char ***env);
 void	export(char **cmds, char ***env);
 char	*echo(char *word);

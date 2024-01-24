@@ -14,14 +14,11 @@
 
 int Executor(t_data *data)
 {
-	int	i;
-	int redir;
-
-	redir = 0;
-	i = 0;
-	if (g_exit_status == 0)
+	if (data->numb_of_pipes == 0)
+		single_command(data, 0);
+	else if (data->numb_of_pipes != 0 && g_exit_status == 0)
 		piperino9(data->nodes, data);
-	return (i);
+	return (0);
 }
 
 int	cmp_keyword(char *keyword, char *str)
@@ -34,7 +31,6 @@ int	cmp_keyword(char *keyword, char *str)
 		return (1);
 	return (0);
 }
-
 
 int	cnt_bytes(char **arr)
 {
@@ -65,18 +61,17 @@ int	single_command(t_data *data, int i)
 	}
 	else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
 		cd(data->nodes[i]->split_command, &data->envp);
-		>> in peperino statt forken if condition und checken ob inbuild... oder in execve auch pwd in pipe schreiben... eigentlich habe ich das doch mit export?... irgendwie wird der neue pfad nicht übernommen....
+		// >> in peperino statt forken if condition und checken ob inbuild... oder in execve auch pwd in pipe schreiben... eigentlich habe ich das doch mit export?... irgendwie wird der neue pfad nicht übernommen....
 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
-
 		// unset(data->nodes[i]->split_command, &data->envp);
 		export(data->nodes[i]->split_command, &data->envp);
-
 	}
 	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
 	{
 
-		unset(data->nodes[i]->split_command[1], &data->envp);
+		unset(data->nodes[i]->split_command, &data->envp);
+		// unset(data->nodes[i]->split_command[1], &data->envp);
 	}
 	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
 		printenv(data->envp);
@@ -92,14 +87,66 @@ int	single_command(t_data *data, int i)
 	}
 
 	// Send new envp to peperino
-	int	bytes = cnt_bytes(data->envp);
-	close(data->envp_pipe[0]);
-	write(data->envp_pipe[1], &bytes, sizeof(int));
-	write(data->envp_pipe[1], data->envp, bytes);
-	close(data->envp_pipe[1]);
+	// int	bytes = cnt_bytes(data->envp);
+	// close(data->envp_pipe[0]);
+	// write(data->envp_pipe[1], &bytes, sizeof(int));
+	// write(data->envp_pipe[1], data->envp, bytes);
+	// close(data->envp_pipe[1]);
 
 	return (0);
 }
+
+
+// int	execute_command(t_data *data, int i)
+// {
+// 	printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
+
+// 	if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
+// 	{
+// 		data->nodes[i]->output = echo(data->nodes[i]->command);
+// 		printf("%s", data->nodes[i]->output);
+// 	}
+// 	else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
+// 	{
+// 		data->nodes[i]->output = getpwd();
+// 		printf("%s\n", data->nodes[i]->output);
+// 	}
+// 	else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
+// 		cd(data->nodes[i]->split_command, &data->envp);
+// 		// >> in peperino statt forken if condition und checken ob inbuild... oder in execve auch pwd in pipe schreiben... eigentlich habe ich das doch mit export?... irgendwie wird der neue pfad nicht übernommen....
+// 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
+// 	{
+// 		// unset(data->nodes[i]->split_command, &data->envp);
+// 		export(data->nodes[i]->split_command, &data->envp);
+// 	}
+// 	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
+// 	{
+
+// 		unset(data->nodes[i]->split_command, &data->envp);
+// 		// unset(data->nodes[i]->split_command[1], &data->envp);
+// 	}
+// 	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
+// 		printenv(data->envp);
+// 	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
+// 	{
+// 		g_exit_status = 69;
+// 		free_and_close_data(data);
+// 	}
+// 	else
+// 	{
+// 		printf("(single_command) - exec_cmd\n");
+// 		exec_cmd(data->nodes[i]->split_command, data);
+// 	}
+
+// 	// Send new envp to peperino
+// 	int	bytes = cnt_bytes(data->envp);
+// 	close(data->envp_pipe[0]);
+// 	write(data->envp_pipe[1], &bytes, sizeof(int));
+// 	write(data->envp_pipe[1], data->envp, bytes);
+// 	close(data->envp_pipe[1]);
+
+// 	return (0);
+// }
 
 void	exec_cmd(char **split_command,t_data *data)
 {

@@ -78,7 +78,6 @@ void	freeenv(char **env)
 	free(env);
 }
 
-
 void    delete_env_var(char *name, char ***env)
 {
     int size = cntenv(*env);
@@ -156,6 +155,7 @@ int	correct_input(char **cmds)
 	}
 	return (1);
 }
+
 void	purge_arr(char *cmds,char ***env)
 {
 	char **temp;
