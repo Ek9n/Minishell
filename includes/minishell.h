@@ -83,8 +83,8 @@ void	export(char **cmds, char ***env);
 void	unset(char **split_cmds, char ***env);
 // void	unset(char *str, char ***env);
 // void	export(char *str, char ***env);
-// char	*echo(char **split_cmd);
-char	*echo(char *word);
+// int		echo(t_words *node);
+int		echo(t_words *node);
 // int		cd(char *dir, char ***env);
 // int		cd(char **split_cmds, char ***env);
 int		cd(t_words *node, t_data *data);
@@ -128,7 +128,7 @@ int		piperino9(t_words **nodes,t_data *data);
 // EXECUTOR 
 void	exec_cmd(char **split_command,t_data *data);
 int		Executor(t_data *data);
-
+int		cmp_keyword(char *keyword, char *str);
 // DEBUG 
 void 	print_nodes(t_words **nodes);
 

@@ -53,10 +53,11 @@ int	single_command(t_data *data, int i)
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[1]);
 
-	if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
+	// if (!ft_strcmp("echo", data->nodes[i]->split_command[0]))
+	if (cmp_keyword("echo", data->nodes[i]->command))
 	{
-		data->nodes[i]->output = echo(data->nodes[i]->command);
-		printf("%s", data->nodes[i]->output);
+		// echo(data->nodes[i]);
+		echo(data->nodes[i]);
 	}
 	else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
 	{

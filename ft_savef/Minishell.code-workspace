@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../hackergame"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"new_lexer": "c",
+			"readline.h": "c"
+		}
+	}
+}

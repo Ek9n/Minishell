@@ -1,23 +1,74 @@
 #include "../includes/minishell.h"
 
-char	*echo(char *word)
+// ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo "" A
+// //  A
+// int	echo(t_words *node)
+// {
+// 	int		i;
+// 	char	*tmp;
+// 	bool	flag;
+
+// 	flag = false;
+// 	printf("InEcho:%s\n", node->split_command[0]);
+// 	if (node->num_of_elements == 1)
+// 	{
+// 		printf("\n");
+// 		return (0);
+// 	}
+// 	i = 0;
+// 	while (ft_strcmp(node->split_command[++i], "-n") == 0)
+// 	{
+// 		if (node->num_of_elements == 2)
+// 			return (0);
+// 		flag = true;
+// 	}
+// 	// if num > 3?
+// 	tmp = ft_strdup(node->split_command[i]);
+// 	while (node->split_command[++i])
+// 	{
+// 		tmp = ft_strjoinfree(tmp, node->split_command[i]);
+// 	}
+// 	if (flag)
+// 	{
+// 		printf("%s", tmp);
+// 	}
+// 	else
+// 		printf("%s\n", tmp);
+// 	free(tmp);
+// 	return (0);
+// }
+
+int	echo(t_words *node)
 {
+	char 	*tmp;
+	char 	*word;
 	bool	flag;
+
 	flag = false;
+	if (node->num_of_elements == 1 && cmp_keyword("echo", node->command))
+	{
+		printf("%s: command not found\n", node->command);
+		return (1);
+	}
+	tmp = ft_strdup(node->command);
+	word = tmp;
 	word += 5;
-	printf("InEcho:%s\n", word);
-	if (ft_strcmp("-n ", word) == 0)
+	while (ft_strcmp("-n ", word) == 0)
 	{
 		flag = true;
 		word += 3;
 	}
-	else if (*(word + 3) == '\0' && ft_strcmp("-n", word) == 0)
+	if (*(word + 3) == '\0' && ft_strcmp("-n", word) == 0)
 	{
-		printf("(echo) landed here somehow\n");
+		flag = true;
+		word += 2;
 	}
 	if (flag)
-		return (ft_savef("%s",word));
-	return (ft_savef("%s\n", word));
+		printf("%s", word);
+	else
+		printf("%s\n", word);
+	free(tmp);
+	return (0);
 }
 
 char	*getpwd(void)
