@@ -17,6 +17,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	}
 	return (0);
 }
+
 void 	print_nodes(t_words **nodes)
 {
 	int i;

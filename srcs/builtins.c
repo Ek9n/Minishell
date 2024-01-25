@@ -38,6 +38,35 @@
 // 	return (0);
 // }
 
+
+int	ft_strxcmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while ((i < n) && s2[i])
+	{
+		// printf("%d\n", s1[i]);
+		if (s1[i] == s2[i])
+			i++;
+		else
+			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	}
+	return (0);
+}
+
+
+int	cmp_keywordx(char *keyword, char *str)
+{
+	int	len;
+
+	len = abs(ft_strlen(keyword) - ft_strlen(str));
+	if ((ft_strcmp(keyword, str) == 0) && len == 0)
+		return (1);
+	return (0);
+}
+
+
 int	echo(t_words *node)
 {
 	char 	*tmp;
@@ -45,9 +74,11 @@ int	echo(t_words *node)
 	bool	flag;
 
 	flag = false;
-	if (node->num_of_elements == 1 && cmp_keyword("echo", node->command))
+
+		// printf("%s|\n", node->command);
+	if (node->num_of_elements == 1 && !cmp_keywordx("echo", node->command))
 	{
-		printf("%s: command not found\n", node->command);
+		printf("-minishell.c (echo) %s: command not found\n", node->command);
 		return (1);
 	}
 	tmp = ft_strdup(node->command);

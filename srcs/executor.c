@@ -52,13 +52,9 @@ int	single_command(t_data *data, int i)
 {
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[1]);
-
-	// if (!ft_strcmp("echo", data->nodes[i]->split_command[0]))
-	if (cmp_keyword("echo", data->nodes[i]->command))
-	{
-		// echo(data->nodes[i]);
+// enum for checking alll keywords before... if it doesnt match -> print error
+	if (!ft_strcmp("echo", data->nodes[i]->command))
 		echo(data->nodes[i]);
-	}
 	else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
 	{
 		data->nodes[i]->output = getpwd();
@@ -66,7 +62,6 @@ int	single_command(t_data *data, int i)
 	}
 	else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
 		cd(data->nodes[i], data);
-		// >> in peperino statt forken if condition und checken ob inbuild... oder in execve auch pwd in pipe schreiben... eigentlich habe ich das doch mit export?... irgendwie wird der neue pfad nicht übernommen....
 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
 		// unset(data->nodes[i]->split_command, &data->envp);
@@ -74,7 +69,6 @@ int	single_command(t_data *data, int i)
 	}
 	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
 	{
-
 		unset(data->nodes[i]->split_command, &data->envp);
 		// unset(data->nodes[i]->split_command[1], &data->envp);
 	}
@@ -93,7 +87,7 @@ int	single_command(t_data *data, int i)
 	return (0);
 }
 
-void	exec_cmd(char **split_command,t_data *data)
+void	exec_cmd(char **split_command, t_data *data)
 {
 
 	int pid;
@@ -114,7 +108,9 @@ void	exec_cmd(char **split_command,t_data *data)
 		else if (pid == 0 && g_exit_status == 0) 
 		{
 			// split_command++; <- this made it bugging
-			// printf("cmd1:%s, path1:%s\n", split_command[0], command);
+			printf("cmd1:%s, path1:%s\n", split_command[1], command);
+			printf("cmd1:%s, path1:%s\n", split_command[2], command);
+			printf("cmd1:%s, path1:%s\n", split_command[3], command);
 			execve(command, split_command, data->envp);
 			/*free(command);
 			printf("Return not expected. Must be an execve error.\n");

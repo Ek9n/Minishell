@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 				printf("-minishell: %s: Invalid input\n", input);
 		}
 			// free_and_close_data(data);
-		printf("After routine. (in main)\n");
+		// printf("After routine. (in main)\n");
 		// fflush(0);		
 	}
 }
@@ -98,4 +98,14 @@ cd srcs/ | cd ../.. ergibt auch keine Änderung in BASH
 
 cd ""   in bash it will do nothing, in our case it don't make a node and will go to home.. like cd without arguments
 can we implement split_commands with empty strings? or will it fuckup something
+
+ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ export A=hi
+ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo$Adu
+hallo
+ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo $Adu
+hallo
+ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo $A du
+hallo hi du
+ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo$A du
+hallohi du
 */
