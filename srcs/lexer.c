@@ -284,6 +284,8 @@ t_words **init_nodes(char *input, t_data *data)
 		nodes[a]->num_of_elements = i;
 		putback_spaces_and_pipes_in_quotes(nodes[a]->command);
 		remove_quotes(&nodes[a]->command);
+		nodes[a]->fd_in = dup2(data->original_fd_in, STDIN_FILENO);
+		nodes[a]->fd_out = dup2(data->original_fd_out, STDOUT_FILENO);
 		a++;
 	}
 	data->numb_of_pipes = a - 1;

@@ -15,6 +15,11 @@
 int Executor(t_data *data)
 {
 	// printf("nopipes:%d\n", data->numb_of_pipes);
+	int	i;
+
+	i = -1;
+	while (data->nodes[++i])
+		get_fds(data, i);
 	if (data->numb_of_pipes == 0)
 	{
 		single_command(data, 0);
@@ -81,7 +86,7 @@ int	single_command(t_data *data, int i)
 	}
 	else
 	{
-		printf("(single_command) - exec_cmd\n");
+		// printf("(single_command) - exec_cmd\n");
 		exec_cmd(data->nodes[i]->split_command, data);
 	}
 	return (0);

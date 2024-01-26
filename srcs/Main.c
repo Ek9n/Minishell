@@ -22,7 +22,9 @@ t_data	*init_data(t_data *data, char **envp)
 	// data->envp_pipe[0] = -1;
 	// data->envp_pipe[1] = -1;
 	data -> original_fd_in = dup(STDIN_FILENO);
+	// data -> original_fd_in = dup(STDIN_FILENO);
 	data -> original_fd_out = dup(STDOUT_FILENO);
+	// data -> original_fd_out = dup(STDOUT_FILENO);
 	return (data);
 }
 
@@ -54,7 +56,6 @@ int	main(int argc, char **argv, char **envp)
 			{
 				assign_interactive_signals();
 				data->nodes = init_nodes(input, data);
-				// get_fds(data, 0); //move this to init_nodes
 				// print_nodes(data->nodes);
 				// printf("MAIN:%s\n", data->nodes[0]->split_command[1]);
 				if (data->nodes != NULL)

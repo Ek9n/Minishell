@@ -75,14 +75,40 @@ int	piperino9(t_words **nodes, t_data *data)
 			if (data->numb_of_pipes > 0)
 			{
 				// Handle Pipes
-				if (i == 0 && nodes[0]->fd_in != STDIN_FILENO)
-					dup2(nodes[0]->fd_in, STDIN_FILENO);
-				if (i != 0)
-					dup2(pipe_fd[i - 1][0], STDIN_FILENO);
-				if (i < data->numb_of_pipes)
-					dup2(pipe_fd[i][1], STDOUT_FILENO);
-				// if (i == data->numb_of_pipes && nodes[i]->fd_out != STDOUT_FILENO)
-				// 	dup2(nodes[i]->fd_out, STDOUT_FILENO);
+				if (i == data->numb_of_pipes - 1 && nodes[i]->fd_out != data->original_fd_out)
+				{
+					dup2(nodes[i]->fd_out, STDOUT_FILENO);
+					// write()
+					// dup2(data->original_fd_out, STDOUT_FILENO);
+					// printf("1orignalfdout:%d\n", data->original_fd_out);
+				}
+				else if (i == data->numb_of_pipes && nodes[i - 1]->fd_out != data->original_fd_out)
+				{
+					dup2(data->original_fd_out, STDOUT_FILENO);
+
+				}
+
+					// if (i == data->numb_of_pipes && nodes[i]->fd_out != data->original_fd_out)
+					// {
+					// 	dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+					// 	write()
+					// 	dup2(data->original_fd_out, STDOUT_FILENO);
+					// 	printf("1orignalfdout:%d\n", data->original_fd_out);
+					// }
+				// else if (i == data->numb_of_pipes && nodes[i]->fd_out == data->original_fd_out)
+				// {
+				// 		dup2(data->original_fd_out, STDOUT_FILENO);
+
+				// }
+				else
+				{
+					if (i == 0 && nodes[0]->fd_in != STDIN_FILENO)
+						dup2(nodes[0]->fd_in, STDIN_FILENO);
+					if (i != 0)
+						dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+					if (i < data->numb_of_pipes)
+						dup2(pipe_fd[i][1], STDOUT_FILENO);
+				}
 
 				close_pipes(pipe_fd, data->numb_of_pipes);
 			}
