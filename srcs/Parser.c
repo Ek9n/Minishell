@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/01/26 21:09:41 by hstein           ###   ########.fr       */
+/*   Updated: 2024/01/27 16:57:27 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,22 @@ int	piperino9(t_words **nodes, t_data *data)
 			if (data->numb_of_pipes > 0)
 			{
 				// Handle Pipes
-				if (i == data->numb_of_pipes - 1 && nodes[i]->fd_out != data->original_fd_out)
+				// printf("origout:%d, fdout:%d\n", data->original_fd_out, nodes[i]->fd_out );
+				// if (i == data->numb_of_pipes - 1 && nodes[i]->fd_out != data->original_fd_out)
+				if (i == data->numb_of_pipes - 1 && nodes[i]->fd_out != STDOUT_FILENO)
 				{
 					dup2(nodes[i]->fd_out, STDOUT_FILENO);
 				}
-				else if (i == data->numb_of_pipes && nodes[i - 1]->fd_out != data->original_fd_out)
+				else if (i == data->numb_of_pipes && nodes[i - 1]->fd_out != STDOUT_FILENO)
 				{
-					if (nodes[i]->fd_out == data->original_fd_out)
+					if (nodes[i]->fd_out == STDOUT_FILENO)
+					{
 						dup2(data->original_fd_out, STDOUT_FILENO);
+					}
 					else
+					{
 						dup2(nodes[i]->fd_out, STDOUT_FILENO);
+					}
 				}
 				else
 				{

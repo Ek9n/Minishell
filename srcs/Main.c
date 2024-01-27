@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/01/21 12:48:01 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/27 16:54:46 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_data	*init_data(t_data *data, char **envp)
 	data->envp = arrdup(envp);
 	// data->envp_pipe[0] = -1;
 	// data->envp_pipe[1] = -1;
+	// data -> original_fd_in = STDIN_FILENO;
+	// data -> original_fd_out = STDOUT_FILENO;
 	data -> original_fd_in = dup(STDIN_FILENO);
 	// data -> original_fd_in = dup(STDIN_FILENO);
 	data -> original_fd_out = dup(STDOUT_FILENO);

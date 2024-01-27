@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/20 10:13:27 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/27 16:53:39 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void get_fds(t_data *data,int i)
 			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 			if (data->nodes[i]->fd_out == -1)
 			{
-				dup2(data->original_fd_in, 0);
-				dup2(data->original_fd_out, 1);
+				dup2(data->original_fd_in, STDIN_FILENO);
+				dup2(data->original_fd_out, STDOUT_FILENO);
 				close(data->original_fd_in);
 				close(data->original_fd_out);
 				ft_putstr_fd("open failed\n", 1);
@@ -100,8 +100,8 @@ void get_fds(t_data *data,int i)
 			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
 			if (data->nodes[i]->fd_out == -1)
 			{
-				dup2(data->original_fd_in, 0);
-				dup2(data->original_fd_out, 1);
+				dup2(data->original_fd_in, STDIN_FILENO);
+				dup2(data->original_fd_out, STDOUT_FILENO);
 				close(data->original_fd_in);
 				close(data->original_fd_out);
 				ft_putstr_fd("open failed\n", 1);
@@ -118,8 +118,8 @@ void get_fds(t_data *data,int i)
 			data->nodes[i]->fd_in = open(data->nodes[i]->split_command[a + 1], O_RDONLY);
 			if (data->nodes[i]->fd_in == -1)
 			{
-				dup2(data->original_fd_in, 0);
-				dup2(data->original_fd_out, 1);
+				dup2(data->original_fd_in, STDIN_FILENO);
+				dup2(data->original_fd_out, STDOUT_FILENO);
 				close(data->original_fd_in);
 				close(data->original_fd_out);
 				ft_putstr_fd("open failed, file doesnt exist probably\n", 1);
@@ -135,8 +135,8 @@ void get_fds(t_data *data,int i)
 			data->nodes[i]->fd_in = open(".heredoc", O_RDONLY);
 			if (data->nodes[i]->fd_in == -1)
 			{
-				dup2(data->original_fd_in, 0);
-				dup2(data->original_fd_out, 1);
+				dup2(data->original_fd_in, STDIN_FILENO);
+				dup2(data->original_fd_out, STDOUT_FILENO);
 				close(data->original_fd_in);
 				close(data->original_fd_out);
 				ft_putstr_fd("Heredoc failed to create a temp file.\n", 1);
