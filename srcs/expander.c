@@ -51,15 +51,18 @@ int	expand_vars(char **input, int i, t_data *data)
 	char	*left_str = NULL;
 	char	*tmp_var = NULL;
 	char	*right_str = NULL;
-	
+	char	*new_str;
+	int		cnt;
+
 	left_str = ft_strdup(input[0]);
 	left_str[i] = '\0';
 	tmp_var = put_var(input, i + 1, data->envp);
 	if (tmp_var != NULL)
 	{
-		int cnt = ft_strlen(ft_strchr(tmp_var, '=') + 1);
-		char	*new_str;
-		
+		cnt = ft_strchr(tmp_var, '=') - tmp_var + 1;
+		// printf("DIF:%ld\n", ft_strchr(tmp_var, '=') - tmp_var + 1);
+
+		// right_str = &input[0][i + cnt];
 		right_str = &input[0][i + cnt];
 		new_str = ft_savef("%s%s%s", left_str, ft_strchr(tmp_var, '=') + 1, right_str);
 		
