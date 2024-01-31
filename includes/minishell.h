@@ -99,7 +99,7 @@ void	purge_arr(char *cmds,char ***env);
 void 	get_fds(t_data *data,int index);
 
 // LEXER 
-void 	putback_spaces_and_pipes_in_quotes(char *input);
+void 	putback_spaces_and_pipes_in_quotes(char **input, t_data *data);
 void	clean_spaces_in_command(char **command);
 int		skip_spaces(char *str);
 void	redirection_space_extender(char **dirty_word);
@@ -115,11 +115,9 @@ int		valid_input(char *str);
 int		quote_error(char *str);
 
 // expander
-int		find_char_from_index(char *str, char c, int index);
-char	*dollar_baby(char *str);
-int		find_var(char *str, char **envp);
-int		ft_strllen(char *str,int i);
-char	*expand_env(char *str, t_data *data);
+int find_var(char *str, char **envp);
+char *put_var(char **str, int dollar_pos, char **envp);
+int	expand_vars(char **input, int i, t_data *data);
 
 // PARSER
 int		single_command(t_data *data,int i);

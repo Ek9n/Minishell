@@ -1,28 +1,6 @@
 #include "../includes/minishell.h"
 
-int	find_char_from_index(char *str, char c, int index)
-{
-	int	i;
 
-	i = index;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-char *dollar_baby(char *str)
-{
-	char	*temp;
-	int		i;
-
-	i = find_char_from_index(str, '$', 0) + 1;
-	temp = ft_substr(str, i,find_char_from_index(str, ' ', i) - i);
-	return(temp);
-}
 int find_var(char *str, char **envp)
 {
 	int i;
@@ -30,72 +8,74 @@ int find_var(char *str, char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (ft_strcmp(str, envp[i]) == 0)
+        if (ft_strcmp(str, envp[i]) == 0 && (envp[i][ft_strlen(str)] == '\0' || envp[i][ft_strlen(str)] == '='))
 			return (i);
 		i++;
 	}
 	return (-1);
 }
-int	ft_strllen(char *str,int i)
+
+char *put_var(char **str, int dollar_pos, char **envp)
 {
-	while (str[i])
+	char *tmp;
+	tmp = malloc(ft_strlen(*str));
+
+	int	i;
+	int	j;
+
+	i = dollar_pos;
+	j = 0;
+	while (ft_isalpha(str[0][i]) && str[0][i] != 26)
+	{
+		tmp[j] = str[0][i];
+		j++;
+		// if (ft_isalnum(str[0][i]) && str[0][i] != '$')
 		i++;
-	return (i);
+	}
+	tmp[j] = '\0';
+	int var_idx = find_var(tmp, envp);
+	free(tmp);
+	if (var_idx != -1)
+	{
+		tmp = envp[var_idx];
+		// printf("VARinENVP:%s\n", envp[var_idx]);
+		
+	}
+	else
+		tmp = NULL;
+	return (tmp);
 }
 
-char *expand_env(char *str, t_data *data)
+int	expand_vars(char **input, int i, t_data *data)
 {
-    int a;
-    int i = 0;
-    int c = 0;
-    int dollar_index;
-    char *temp;
-    char *temp2;
-// printf("(expand_env) str:%s\n", str);
-    if ((dollar_index = find_char_from_index(str, '$', 0)) == -1)
-        return (str);
-// printf("(expand_env) dollar_idx:%d\n", dollar_index);
-    temp = dollar_baby(str);
-// printf("(expand_env) temp:%s\n", temp);
-    a = find_var(temp,data->envp);
-    if (a != -1)
-    {
-
-        temp2 = ft_calloc(ft_strlen(str) - ft_strlen(temp) + ft_strllen(data->envp[a],find_char_from_index(data->envp[a],'=',0)) + 1, sizeof(char));
-        while (i < dollar_index)
-        {
-            temp2[i] = str[i];
-            i++;
-        }
-        while (data->envp[a][c] != '=')
-            c++;
-        c++;
-        while (data->envp[a][c])
-        {
-            temp2[i++] = data->envp[a][c++];
-        }
-        int j = dollar_index + ft_strlen(temp) + 1; // +1 to skip the $ character
-        while (str[j])
-        {
-            temp2[i++] = str[j++];
-        }
-// printf("(expand_env)11 strout:%s\n", temp2);
-    }
-    else
-    {
-
-        temp2 = ft_calloc(ft_strllen(str,find_char_from_index(str, '$', 0)) + 1, sizeof(char));
-        while (str[i] != '$' && str[i])
-        {
-            temp2[i] = str[i];
-            i++;
-        }
-// printf("(expand_env)22 strout:%s\n", temp2);
-    }
-    free(temp);
-	if (ft_strcmp(temp2, "?") == 0)
-		temp2 = ft_itoa(data->last_exit_status);
-// printf("(expand_env) strout:%s\n", temp2);
-
-    return (temp2);
+	char	*left_str = NULL;
+	char	*tmp_var = NULL;
+	char	*right_str = NULL;
+	
+	left_str = ft_strdup(input[0]);
+	left_str[i] = '\0';
+	tmp_var = put_var(input, i + 1, data->envp);
+	if (tmp_var != NULL)
+	{
+		int cnt = ft_strlen(ft_strchr(tmp_var, '=') + 1);
+		char	*new_str;
+		
+		right_str = &input[0][i + cnt];
+		new_str = ft_savef("%s%s%s", left_str, ft_strchr(tmp_var, '=') + 1, right_str);
+		
+	// printf("VAR:%s\n", ft_strchr(tmp_var, '=') + 1);
+	// printf("right:%s\n", right_str);
+	// printf("line:%s\n", input[0]);
+		// printf("left_str|%s|\n", left_str);
+		// printf("tmp_var|%s|\n", tmp_var);
+		// printf("input + cnt|%s|\n", &input[0][i + cnt]);
+		// printf("INPUT|%s|\n", input[0]);
+		// printf("OUTPUT|%s|\n", new_str);
+		free(input[0]);
+		input[0] = new_str;
+	}
+	else
+		input[0][i] = '$';
+	free(left_str);
+	return (0);
 }

@@ -75,7 +75,7 @@ int	echo(t_words *node)
 
 	flag = false;
 
-		// printf("%s|\n", node->command);
+		// printf("in echo|%s|\n", node->command);
 	if (node->num_of_elements == 1 && !cmp_keywordx("echo", node->command))
 	{
 		printf("-minishell.c (echo) %s: command not found\n", node->command);

@@ -111,4 +111,8 @@ ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo $A du
 hallo hi du
 ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo$A du
 hallohi du
+
+
+shell$ export d,1A=22;
+bash: export: `d,1A=22': not a valid identifier
 */

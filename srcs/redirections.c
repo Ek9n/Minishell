@@ -33,7 +33,8 @@ int check_token_syntax(char *str)
 	}
 	return(0);
 }
-int	ft_heredoc(char * delimiter,t_data *data)
+
+int	ft_heredoc(char *delimiter, t_data *data)
 {
 	char	*line;
 	int		fd;
@@ -47,9 +48,25 @@ int	ft_heredoc(char * delimiter,t_data *data)
 	while (true)
 	{
 		line = readline("> ");
-		if (ft_strchr(line, '$'))
-			while(ft_strchr(line, '$'))
-				line = expand_env(line,data);
+		// if (ft_strchr(line, '$'))
+		// 	while(ft_strchr(line, '$'))
+		// 		line = expand_env(line,data);
+		
+		i = -1;
+		while (line[++i] != '\0')
+		{
+			if (line[i] == '$')
+				line[i] = 26;
+		}
+	printf("line:%s\n", line);
+		i = -1;
+		while (line[++i] != '\0')
+		{
+			if (line[i] == 26)
+				expand_vars(&line, i, data);
+		}
+	printf("line2:%s\n", line);
+
 		if (ft_strcmp(line, delimiter) == 0)
 			break;	//add variable expansion
 		write(fd, line, ft_strlen(line));

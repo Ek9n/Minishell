@@ -38,7 +38,9 @@ void 	replace_spaces_and_pipes_in_quotes(char *input)
 		if (input[i] == ' ' && (quotes == 1 || quotes == 2))
 			input[i] = '@';
 		if (input[i] == '|' && (quotes == 1 || quotes == 2))
-			input[i] = '$';
+			input[i] = '*';
+		if (input[i] == '$' && quotes != 1)
+			input[i] = 26;
 		i++;
 	}
 }
@@ -180,33 +182,34 @@ void	clean_spaces_in_command(char **command)
 	free(tmp_clean);
 }
 
-void 	putback_spaces_and_pipes_in_quotes(char *input)
+void 	putback_spaces_and_pipes_in_quotes(char **input, t_data *data)
 {
 	int	quotes; 	// 0 no, 1 single, 2 double quotes
 	int	i;
 	int	j;
-
 	quotes = 0;
 	i = 0;
 	j = 0;
-	if (input)
+
+	while (*input && input[0][i] != '\0')
 	{
-		while (input[i] != '\0')
+		if (input[0][i] == '\'' && quotes == 0)
+			quotes = 1;
+		else if (input[0][i] == '\'' && quotes == 1)
+			quotes = 0;
+		if (input[0][i] == '\"' && quotes == 0)
+			quotes = 2;
+		else if (input[0][i] == '\"' && quotes == 2)
+			quotes = 0;
+		if (input[0][i] == '@' && (quotes == 1 || quotes == 2))
+			input[0][i] = ' ';
+		if (input[0][i] == '*' && (quotes == 1 || quotes == 2))
+			input[0][i] = '|';
+		if (input[0][i] == 26)
 		{
-			if (input[i] == '\'' && quotes == 0)
-				quotes = 1;
-			else if (input[i] == '\'' && quotes == 1)
-				quotes = 0;
-			if (input[i] == '\"' && quotes == 0)
-				quotes = 2;
-			else if (input[i] == '\"' && quotes == 2)
-				quotes = 0;
-			if (input[i] == '@' && (quotes == 1 || quotes == 2))
-				input[i] = ' ';
-			if (input[i] == '$' && (quotes == 1 || quotes == 2))
-				input[i] = '|';
-			i++;
+			expand_vars(input, i, data);
 		}
+		i++;
 	}
 }
 
@@ -272,17 +275,17 @@ t_words **init_nodes(char *input, t_data *data)
 	a = 0;
 	while (nodes[a] && nodes[a]->command)
 	{
-		if (ft_strchr(nodes[a]->command, '$'))
-			nodes[a]->command = expand_env(nodes[a]->command, data);
+		// if (ft_strchr(nodes[a]->command, '$'))
+		// 	nodes[a]->command = expand_env(nodes[a]->command, data);
 		nodes[a]->split_command = ft_split(nodes[a]->command, ' ');
 		i = -1;
 		while (nodes[a]->split_command[++i])
 		{
-			putback_spaces_and_pipes_in_quotes(nodes[a]->split_command[i]);
+			putback_spaces_and_pipes_in_quotes(&nodes[a]->split_command[i], data);
 			remove_quotes(&nodes[a]->split_command[i]);
 		}
 		nodes[a]->num_of_elements = i;
-		putback_spaces_and_pipes_in_quotes(nodes[a]->command);
+		putback_spaces_and_pipes_in_quotes(&nodes[a]->command, data);
 		remove_quotes(&nodes[a]->command);
 		nodes[a]->fd_in = dup2(data->original_fd_in, STDIN_FILENO);
 		nodes[a]->fd_out = dup2(data->original_fd_out, STDOUT_FILENO);
