@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/21 12:06:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/30 19:21:18 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,24 @@ void	exec_cmd(char **split_command, t_data *data)
 	int pid;
 	int status;
 	char	*command;
+	int i;
 
-	if (ft_strnstr(split_command[0], "/bin/", 5) != NULL)
+	i = 0;
+	if (ft_strnstr(split_command[0], "./", 2) != NULL)
+	{	
+		split_command++;
+		split_command = ft_split(split_command[0], '/');
+		while (split_command[i])
+			i++;
+		command = ft_strdup(split_command[i - 1]);
+	}
+	else if (ft_strnstr(split_command[0], "/bin/", 5) != NULL)
 		command = ft_strdup(split_command[0]);
-	else
+	else 
 		command = ft_strjoin("/bin/",split_command[0]);
-	if (access(command,F_OK) == 0)
-	{
+	
+	//if (access(command,F_OK) == 0)
+	//{
 		if ((pid = fork()) == -1)
 		{
 			g_exit_status = 1;
@@ -129,15 +140,15 @@ void	exec_cmd(char **split_command, t_data *data)
 			g_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			g_exit_status = 127 + WIFSIGNALED(status);
-	}
-	else
-	{
-		printf("command not found\n");
-		g_exit_status = 127;
-	}
+	//else
+	//{
+		//printf("command not found\n");
+		//g_exit_status = 127;
+	//}
 	if (command)
 		free(command);
-}
+	}
+
 /*
 0 		Successful execution 	 
 1 		Catch generic errors 	

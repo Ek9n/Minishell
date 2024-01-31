@@ -4,7 +4,6 @@ void	sig_handler_C(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_exit_status = 130;
 		ft_putstr_fd("\n",1);
 		rl_on_new_line();
 		rl_replace_line("", 0);

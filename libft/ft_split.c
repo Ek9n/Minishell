@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 18:44:02 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/09/27 13:03:12 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:39:39 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	ft_delicount(char const *s, char c)
 
 	switcharoony = 0;
 	a = 0;
+	if (!s)
+		return (-1);
 	while (*s)
 	{
 		if (*s != c && switcharoony == 0)
@@ -66,6 +68,8 @@ char	**ft_split(char const *s, char c)
 	i = 0;
 	f = -1;
 	a = ft_delicount(s, c);
+	if (a == -1)
+		return (NULL);
 	ptr = (char **)malloc((a + 1) * sizeof(char *));
 	if (!ptr)
 		return (NULL);

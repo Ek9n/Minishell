@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/01/27 16:54:46 by hstein           ###   ########.fr       */
+/*   Updated: 2024/01/30 17:46:54 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,12 @@ exit codes redo them
 only tabs dont get interpreted as command, fix
 exit doesnt exit lol, also, arguments ? 
 echo $? doesnt work (expr $? +$?)
-echo "cat lol.c | cat > lol.c" empty
+echo "cat lol.c | cat > lol.c" empty ALMOST
 EXPANDER -> echo '$USER' = crap (dollarbaby)
-export doesnt work
-unset doesnt work
-cd doesnt work
+export doesnt work FIXED
+unset doesnt work FIXED
+cd doesnt work FIXED
+command execution 
 after check unset path and command execution
 relative path ?
 
