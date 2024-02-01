@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/21 12:06:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/01 09:31:54 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,16 @@ void	exec_cmd(char **split_command, t_data *data)
 	int pid;
 	int status;
 	char	*command;
-
-	if (ft_strnstr(split_command[0], "/bin/", 5) != NULL)
+	//char	*path[]  = {"$PATH", NULL};
+	
+	
+	//expand_vars(path, 0, data);
+	//printf("path:%s\n", path[0]);
+	if (split_command[0][0] == '/' || (split_command[0][0] == '.' && split_command[0][1] == '/'))
 		command = ft_strdup(split_command[0]);
 	else
 		command = ft_strjoin("/bin/",split_command[0]);
+	// print_env_and_commands(data,split_command);
 	if (access(command,F_OK) == 0)
 	{
 		if ((pid = fork()) == -1)

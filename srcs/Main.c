@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/01/27 16:54:46 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/01 08:58:14 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,9 @@ int	main(int argc, char **argv, char **envp)
 }
 
 /* TODO
-echo < file1 "how are you" echo doesnt actually read standard in, it reads argument. does our work like that ? 
 exit codes redo them 
-only tabs dont get interpreted as command, fix
-exit doesnt exit lol, also, arguments ? 
 echo $? doesnt work (expr $? +$?)
-echo "cat lol.c | cat > lol.c" empty
 EXPANDER -> echo '$USER' = crap (dollarbaby)
-export doesnt work
-unset doesnt work
 cd doesnt work
 after check unset path and command execution
 relative path ?
