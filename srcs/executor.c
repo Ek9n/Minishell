@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/01 13:02:31 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/01 14:16:11 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ int	single_command(t_data *data, int i)
 	else
 	{
 		// printf("(single_command) - exec_cmd\n");
-		exec_cmd(data->nodes[i]->split_command, data);
+		if (data->nodes[i]->split_command[0])
+			exec_cmd(data->nodes[i]->split_command, data);
 	}
 	return (0);
 }
