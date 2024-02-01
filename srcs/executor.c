@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/01 09:31:54 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/01 12:59:59 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,19 +95,31 @@ int	single_command(t_data *data, int i)
 void	exec_cmd(char **split_command, t_data *data)
 {
 
-	int pid;
-	int status;
+	int 	pid;
+	int 	status;
 	char	*command;
-	//char	*path[]  = {"$PATH", NULL};
+	char	**path;
+	int 	i;
 	
-	
-	//expand_vars(path, 0, data);
-	//printf("path:%s\n", path[0]);
-	if (split_command[0][0] == '/' || (split_command[0][0] == '.' && split_command[0][1] == '/'))
-		command = ft_strdup(split_command[0]);
-	else
-		command = ft_strjoin("/bin/",split_command[0]);
-	// print_env_and_commands(data,split_command);
+	path = malloc(sizeof(char *) * 2);
+	path[0] = ft_strdup("$PATH");
+	path[1] = ft_strdup("\0");
+	expand_vars(path, 0, data);
+	path  = ft_split(path[0], ':');
+	i = 0;
+	while (path[i])
+	{
+		if (split_command[0][0] == '/' || (split_command[0][0] == '.' && split_command[0][1] == '/'))
+			{
+				command = ft_strdup(split_command[0]);
+				break;
+			}
+		command = ft_strjoin(path[i],"/");
+		command = ft_strjoin(command, split_command[0]);
+		if (access(command,F_OK) == 0)
+			break ;
+		i++;
+	}
 	if (access(command,F_OK) == 0)
 	{
 		if ((pid = fork()) == -1)
