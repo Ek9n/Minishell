@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/01 08:58:14 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/01 17:41:07 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,40 +73,10 @@ int	main(int argc, char **argv, char **envp)
 }
 
 /* TODO
-exit codes redo them 
-echo $? doesnt work (expr $? +$?)
-EXPANDER -> echo '$USER' = crap (dollarbaby)
-cd doesnt work
-after check unset path and command execution
-relative path ?
-
-Minishell>>: echo blabla sadad #asdda 'sad 'a"sd'
-	blabla sadad #asdda sad asd'
-
-	ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ export A= 32424
--bash: export: `32424': not a valid identifier
-
-7:~/42Berlin/Github/Minishell$ export A=1 | export B=2
-	hier wird KEINE var gesetzt... entweder pipes stimmen nicht oder envp wird erst nach allen forks neu geladen? 
-cd srcs/ | cd ../.. ergibt auch keine Änderung in BASH
-
-// Minishell>>: "echo hallo du"
-// hallo du
-
-cd ""   in bash it will do nothing, in our case it don't make a node and will go to home.. like cd without arguments
-can we implement split_commands with empty strings? or will it fuckup something
-
-ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ export A=hi
-ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo$Adu
-hallo
-ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo $Adu
-hallo
-ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo $A du
-hallo hi du
-ek1n@FlyingLamb7:~/42Berlin/Github/Minishell$ echo hallo$A du
-hallohi du
-
-
-shell$ export d,1A=22;
-bash: export: `d,1A=22': not a valid identifier
+exit codes check
+cd . 
+cd new_mini/ - diuble free
+export bii = 15 -> segfault
+debug info in HEREDOC
+debug info in CD
 */
