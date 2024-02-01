@@ -26,7 +26,7 @@ char *put_var(char **str, int dollar_pos, char **envp)
 	i = dollar_pos;
 	j = 0;
 
-	while (ft_isalpha(str[0][i]) && str[0][i] != 26)
+	while ((ft_isalpha(str[0][i]) || str[0][i] == '_') && str[0][i] != 26)
 	{
 		tmp[j] = str[0][i];
 		j++;
@@ -47,10 +47,27 @@ char *put_var(char **str, int dollar_pos, char **envp)
 	return (tmp);
 }
 
+int	cnt_var(char **str, int dollar_pos)
+{
+	int	i;
+	int	j;
+
+	i = dollar_pos + 1;
+	j = 0;
+
+	while ((ft_isalpha(str[0][i]) || str[0][i] == '_') && str[0][i] != 26)
+	{
+		j++;
+		i++;
+	}
+	return (j);
+}
+
 int	expand_vars(char **input, int i, t_data *data)
 {
 	char	*left_str = NULL;
 	char	*tmp_var = NULL;
+	char	*mid_str = NULL;
 	char	*right_str = NULL;
 	char	*new_str;
 	int		cnt;
@@ -58,20 +75,36 @@ int	expand_vars(char **input, int i, t_data *data)
 	left_str = ft_strdup(input[0]);
 	left_str[i] = '\0';
 	tmp_var = put_var(input, i + 1, data->envp);
-	//if (input[0][1] == '?' && ft_strlen(input[0]) == 2) //added by julius
-		//tmp_var = ft_strjoin("=",ft_itoa(g_exit_status)); // added by julius
-	// I tried to add this to the put_var function but it didnt work
-	//I made it so that it adds the = to the string because you look for '=', it almost works -> echo $? = echo 0? , so its almost there, I think you can fix it easily.
-	// HOW MUCH IS THE FISH?!
+
 	if (tmp_var != NULL)
 	{
 		cnt = ft_strchr(tmp_var, '=') - tmp_var + 1;
-		// printf("DIF:%ld\n", ft_strchr(tmp_var, '=') - tmp_var + 1);
+		mid_str = ft_strdup(ft_strchr(tmp_var, '=') + 1);
+	}
+	else
+	{
+		cnt = cnt_var(input, i);
+		// printf("CNT:%d\n", cnt);
+		// printf("HIER:%c\n", input[0][i + 1]);
+		if (cnt == 0 && input[0][i + 1] == '?')
+		{
+			mid_str = ft_itoa(g_exit_status);
+			cnt++;
+		}
+		else if (cnt == 0)
+			mid_str = ft_strdup("$");
+		else
+			mid_str = ft_strdup("");
+		cnt++;
+	}
+	right_str = &input[0][i + cnt];
+	new_str = ft_savef("%s%s%s", left_str, mid_str, right_str);
+	free(left_str);
+	free(mid_str);
+	free(input[0]);
+	input[0] = new_str;
 
-		// right_str = &input[0][i + cnt];
-		right_str = &input[0][i + cnt];
-		new_str = ft_savef("%s%s%s", left_str, ft_strchr(tmp_var, '=') + 1, right_str);
-		
+	// printf("CNT:%d\n", cnt);
 	// printf("VAR:%s\n", ft_strchr(tmp_var, '=') + 1);
 	// printf("right:%s\n", right_str);
 	// printf("line:%s\n", input[0]);
@@ -80,11 +113,6 @@ int	expand_vars(char **input, int i, t_data *data)
 		// printf("input + cnt|%s|\n", &input[0][i + cnt]);
 		// printf("INPUT|%s|\n", input[0]);
 		// printf("OUTPUT|%s|\n", new_str);
-		free(input[0]);
-		input[0] = new_str;
-	}
-	else
-		input[0][i] = '$';
-	free(left_str);
+		// printf("___len|%d|\n", ft_strlen(new_str));
 	return (0);
 }
