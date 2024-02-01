@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/01 09:31:54 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/01 13:02:31 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	cmp_keyword(char *keyword, char *str)
 	int	len;
 
 	len = ft_strlen(keyword);
-	if ((ft_strcmp(keyword, str) == 0) && \
+	// printf("HAHA,SOFUNNY;%zu\n", ft_strlen(str));
+	if (ft_strlen(str) > 0 && (ft_strcmp(keyword, str) == 0) && \
 			(*(str + len) == '\0' || *(str + len) == ' '))
 		return (1);
 	return (0);
