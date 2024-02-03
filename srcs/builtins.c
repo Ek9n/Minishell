@@ -38,7 +38,6 @@
 // 	return (0);
 // }
 
-
 int	ft_strxcmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
@@ -55,7 +54,6 @@ int	ft_strxcmp(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-
 int	cmp_keywordx(char *keyword, char *str)
 {
 	int	len;
@@ -65,7 +63,6 @@ int	cmp_keywordx(char *keyword, char *str)
 		return (1);
 	return (0);
 }
-
 
 int	echo(t_words *node)
 {
@@ -205,11 +202,27 @@ void	unset(char **split_cmds, char ***env)
 	}
 }
 
-void	export(char **cmds, char ***env)
+// int	vars_are_valid(char *cmd)
+// {
+// 	int	i;
+
+// 	i = -1;
+// 	while (cmd[++i])
+// 	{
+// 		if (cmd[i] == ' ')
+// 			space =
+// 		if (cmd[i] == '=' && i != 0)
+// 			equals = true;
+// 	}
+// 	if (cnt )
+// 	return (0);
+// }
+
+void	export(char **split_cmds, char ***env)
 {
 	int	i;
 
-	if (cmds[1] == NULL)
+	if (split_cmds[1] == NULL)
 	{
 		i = 0;
 		while (env[0][i] != NULL)
@@ -223,11 +236,13 @@ void	export(char **cmds, char ***env)
 	else
 	{
 		i = 1;
-		while (cmds[i])
+		while (split_cmds[i])
 		{
-			purge_arr(cmds[i], env);
-			add_env_var(cmds[i], env);
+			purge_arr(split_cmds[i], env);
+			add_env_var(split_cmds[i], env);
 			i++;
 		}
 	}
 }
+// A = 23 should not work
+
