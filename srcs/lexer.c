@@ -220,7 +220,7 @@ void	remove_quotes(char **word)
 	int		i;
 	int		j;
 
-	tmp_clean = malloc(ft_strlen(*word));
+	tmp_clean = malloc(ft_strlen(* word));
 	quotes = 0;
 	i = 0;
 	j = 0;
@@ -249,7 +249,7 @@ void	remove_quotes(char **word)
 	free(tmp_clean);
 }
 
-t_words **init_nodes(char *input, t_data *data)
+t_words	**init_nodes(char *input, t_data *data)
 {
 	t_words	**nodes;
 	char 	**buffer;
@@ -286,7 +286,9 @@ t_words **init_nodes(char *input, t_data *data)
 		}
 		nodes[a]->num_of_elements = i;
 		putback_spaces_and_pipes_in_quotes(&nodes[a]->command, data);
+		printf("INIT1:%s\n", nodes[a]->command);
 		remove_quotes(&nodes[a]->command);
+		printf("INIT2:%s\n", nodes[a]->command);
 		nodes[a]->fd_in = dup2(data->original_fd_in, STDIN_FILENO);
 		nodes[a]->fd_out = dup2(data->original_fd_out, STDOUT_FILENO);
 		a++;

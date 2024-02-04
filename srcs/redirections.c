@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/27 16:53:39 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/04 22:25:08 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_heredoc(char *delimiter, t_data *data)
 	return (fd);
 }
 
-void get_fds(t_data *data,int i)
+void	get_fds(t_data *data,int i)
 {
 	int a;
 

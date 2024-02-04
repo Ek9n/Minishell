@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/03 16:12:51 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/04 21:19:19 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int Executor(t_data *data)
 		get_fds(data, i);
 	if (data->numb_of_pipes == 0)
 	{
+
 		single_command(data, 0);
 	}
 	else if (data->numb_of_pipes != 0 && g_exit_status == 0)

@@ -37,19 +37,49 @@ void 	print_nodes(t_words **nodes)
 	}
 	
 }
+
+// char *ft_join(char **arr)
+// {
+//     int 	i;
+// 	char 	*str;
+
+// 	str = NULL;
+//     // size_t current_length = 0;
+// 	printf("foin_in:%s\n", arr[0]);
+// 	printf("foin_in:%s\n", arr[1]);
+// 	printf("foin_in:%s\n", arr[2]);
+
+// 	i = -1;
+// 	while (arr[++i])
+// 	{
+// 		// if (arr[i][0] == '\0')
+// 		// 	str = ft_strjoinfree(str, " ");
+
+// 		str = ft_strjoinfree(str, arr[i]);
+// 		// if (arr[i + 1] != NULL)
+// 		// 	str = ft_strjoinfree(str, " ");
+// 	}
+
+// 	printf("foin_out:%s\n", str);
+
+//     return (str);
+// }
+
 char *ft_join(char **arr)
 {
     int i = 0;
     int total_length = 0;
     size_t current_length = 0;
-
+	printf("foin_in:%s\n", arr[0]);
+	printf("foin_in:%s\n", arr[1]);
+	printf("foin_in:%s\n", arr[2]);
     while (arr[i] != NULL)
     {
         total_length += ft_strlen(arr[i]);
         i++;
     }
 
-    char *str = (char *)malloc((total_length + i + 1) * sizeof(char));
+    char *str = (char *)malloc(total_length * sizeof(char) + 1);
     if (!str)
         return NULL;
 
@@ -58,10 +88,12 @@ char *ft_join(char **arr)
     while (arr[i] != NULL)
     {
         current_length += ft_strlcat(str, arr[i], total_length + i + 1);
+        // if (arr[i + 1] && arr[i + 1][0] != '\0')
         if (arr[i + 1] && arr[i + 1][0] != '\0')
             current_length += ft_strlcat(str, " ", total_length + i + 1);
         i++;
     }
+	printf("foin_out:%s\n", str);
 
     return str;
 }
