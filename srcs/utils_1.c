@@ -78,8 +78,7 @@ char *ft_join(char **arr)
         total_length += ft_strlen(arr[i]);
         i++;
     }
-
-    char *str = (char *)malloc(total_length * sizeof(char) + 1);
+	char *str = (char *)malloc(total_length * sizeof(char) + 1);
     if (!str)
         return NULL;
 
@@ -87,11 +86,16 @@ char *ft_join(char **arr)
     i = 0;
     while (arr[i] != NULL)
     {
+		if (arr[i][0] != 6)
+		{
+		if (arr[i][0] == '\0')
+			arr[i] = ft_strdup(" ");
         current_length += ft_strlcat(str, arr[i], total_length + i + 1);
         // if (arr[i + 1] && arr[i + 1][0] != '\0')
         if (arr[i + 1] && arr[i + 1][0] != '\0')
             current_length += ft_strlcat(str, " ", total_length + i + 1);
-        i++;
+		}
+		i++;
     }
 	printf("foin_out:%s\n", str);
 
