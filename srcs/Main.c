@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/04 21:16:40 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/05 18:10:33 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 			{
 				assign_interactive_signals();
 				data->nodes = init_nodes(input, data);
-	printf("INITmain:%s\n", data->nodes[0]->command);
+	// printf("INITmain:%s\n", data->nodes[0]->command);
 				// print_nodes(data->nodes);
 				// printf("MAIN:%s\n", data->nodes[0]->split_command[1]);
 				if (data->nodes != NULL)

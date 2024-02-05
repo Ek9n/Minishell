@@ -110,23 +110,22 @@ void    delete_env_var(char *name, char ***env)
 int	valid_var(char *name)
 {
 	int	i;
-
+			// printf("exportIN: '%s':\n", name);
 	i = -1;
 	while (name[++i])
 	{
 		if (i == 0 && !(ft_isalpha(name[i]) || name[i] == '_'))
 		{
-			printf("-minishell: export: '%s': not a valid identifier\n" ,name);
+			printf("-minishell: export: '%s': not a valid identifier\n", name);
 			return (0);
 		}
 		else if (i > 0 && name[i] == '=')
 			break ;
 		else if (i > 0 && !(ft_isalpha(name[i]) || name[i] == '_' || ft_isdigit(name[i])))
 		{
-			printf("-minishell: export: '%s': not a valid identifier\n" ,name);
+			printf("-minishell: export: '%s': not a valid identifier\n", name);
 			return (0);
 		}
-		i++;
 	}
 	return (1);
 }
@@ -146,9 +145,7 @@ void	add_env_var(char *name, char ***env)
 			new_env[i] = env[0][i];
 			i++;
 		}
-		new_env[i] = name;
-
-
+		new_env[i] = ft_strdup(name);
 		free(*env);
 		*env = new_env;
 	}

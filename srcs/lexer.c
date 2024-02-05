@@ -286,9 +286,9 @@ t_words	**init_nodes(char *input, t_data *data)
 		}
 		nodes[a]->num_of_elements = i;
 		putback_spaces_and_pipes_in_quotes(&nodes[a]->command, data);
-		printf("INIT1:%s\n", nodes[a]->command);
+		// printf("INIT1:%s\n", nodes[a]->command);
 		remove_quotes(&nodes[a]->command);
-		printf("INIT2:%s\n", nodes[a]->command);
+		// printf("INIT2:%s\n", nodes[a]->command);
 		nodes[a]->fd_in = dup2(data->original_fd_in, STDIN_FILENO);
 		nodes[a]->fd_out = dup2(data->original_fd_out, STDOUT_FILENO);
 		a++;

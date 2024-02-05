@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/05 16:18:44 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/05 18:11:38 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ int	cmp_keywordx(char *keyword, char *str)
 {
 	int	len;
 
-	len = abs(ft_strlen(keyword) - ft_strlen(str));
+	len = ft_strlen(keyword) - ft_strlen(str);
+	if (len < 0)
+		len *= -1;
 	if ((ft_strcmp(keyword, str) == 0) && len == 0)
 		return (1);
 	return (0);
@@ -133,19 +135,17 @@ int	cd(t_words *node, t_data *data)
 	char	*oldpwd;
 	char 	**buffer;
 	int		i;
-
+// printf("cdIN:%s\n", node->split_command[1]);
 	if (node->num_of_elements > 2)
 	{
 		ft_putstr_fd("-minishell: cd: too many arguments\n", 1);
 		return (EXIT_FAILURE);
 	}
-	printf("CD: NUMS%d\n", node->num_of_elements);
+	// printf("CD: NUMS%d\n", node->num_of_elements);
 	if (node->num_of_elements == 2 && !ft_strcmp(node->split_command[1], ""))
 		return (EXIT_SUCCESS);
 
-	buffer = calloc(3, sizeof(char *));
-	buffer[0] = ft_strdup("export");
-
+	
 	oldpwd = ft_strjoin("OLDPWD=", getpwd());
 
 	if (node->split_command[1] == NULL || ft_strcmp(node->split_command[1], "~") == 0)
@@ -159,27 +159,21 @@ int	cd(t_words *node, t_data *data)
 		free(dir);
 		free(oldpwd);
 		i = -1;
-		while (buffer[++i])
-			free(buffer[i]);
-		free(buffer);
 		return (EXIT_FAILURE);
     }
-	else
-	{
-		pwd = ft_strjoin("OLDPWD=", getpwd());
 
-		// free(buffer[1]);
-
-		buffer[1] = ft_strjoin("PWD=", getpwd());
-		export(buffer, &data->envp);
-		export(buffer, &data->envp);
-		// free(buffer[0]);
-		// free(buffer[1]);
-		// free(buffer);
-		free(dir);
-		free(pwd);
-		free(oldpwd);
-	}
+	pwd = ft_strjoin("PWD=", getpwd());
+	buffer = calloc(4, sizeof(char *));
+	buffer[0] = ft_strdup("export");
+	buffer[1] = oldpwd;
+	buffer[2] = pwd;
+	export(buffer, &data->envp);
+	free(buffer[0]);
+	free(buffer[1]);
+	free(buffer[2]);
+	free(buffer);
+	free(dir);
+	
 	return (EXIT_SUCCESS);
 }
 
