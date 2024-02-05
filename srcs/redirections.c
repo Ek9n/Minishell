@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/05 14:50:00 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/05 23:59:02 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_heredoc(char *delimiter, t_data *data)
 	return (fd);
 }
 
-void	get_fds(t_data *data,int i)
+void	get_fds(t_data *data, int i)
 {
 	int a;
 

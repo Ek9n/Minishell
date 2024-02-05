@@ -201,14 +201,21 @@ void 	putback_spaces_and_pipes_in_quotes(char **input, t_data *data)
 			quotes = 2;
 		else if (input[0][i] == '\"' && quotes == 2)
 			quotes = 0;
-		if (input[0][i] == '1' && (quotes == 1 || quotes == 2))
+		if (input[0][i] == 1 && (quotes == 1 || quotes == 2))
 			input[0][i] = ' ';
-		if (input[0][i] == '2' && (quotes == 1 || quotes == 2))
+		if (input[0][i] == 2 && (quotes == 1 || quotes == 2))
 			input[0][i] = '|';
 		if (input[0][i] == 26)
 			expand_vars(input, i, data);
 		i++;
 	}
+	// printf("input:%s\n", input[0]);
+		// if (input[i] == ' ' && (quotes == 1 || quotes == 2))
+		// 	input[i] = 1;
+		// if (input[i] == '|' && (quotes == 1 || quotes == 2))
+		// 	input[i] = 2;
+		// if (input[i] == '$' && quotes != 1)
+		// 	input[i] = 26;
 }
 
 void	remove_quotes(char **word)
@@ -254,11 +261,12 @@ t_words	**init_nodes(char *input, t_data *data)
 	int		i;
 	int		a;
 
-printf("LEXER000:%s\n", input);
+// printf("LEXER000:%s\n", input);
+// printf("LEXER000:%d\n", ft_strlen(input));
 	replace_spaces_and_pipes_in_quotes(input);
-printf("LEXER001:%s\n", input);
+// printf("LEXER001:%s\n", input);
+// printf("LEXER001:%d\n", ft_strlen(input));
 	redirection_space_extender(&input);
-printf("LEXER002:%s\n", input);
 	nodes = ft_calloc(get_num_of_pipes(input) + 2, sizeof(t_words *));
 	if (!nodes)
 		g_exit_status = 1;
@@ -270,7 +278,12 @@ printf("LEXER002:%s\n", input);
 	{
 		nodes[a] = ft_calloc(1, sizeof(t_words)); // protect
 		nodes[a]->command = ft_strdup(buffer[i]);
+
+// printf("LEXER002:%s\n", nodes[a]->command);
+// printf("LEXER002:%d\n", ft_strlen(nodes[a]->command));
 		clean_spaces_in_command(&nodes[a]->command);
+// printf("LEXER003:%s\n", nodes[a]->command);
+// printf("LEXER003:%d\n", ft_strlen(nodes[a]->command));
 		a++;
 		i++;
 	}
@@ -295,6 +308,10 @@ printf("LEXER002:%s\n", input);
 		nodes[a]->fd_out = dup2(data->original_fd_out, STDOUT_FILENO);
 		a++;
 	}
+
+
+// printf("LEXER002_out:%s\n", nodes[0]->command);
+
 	data->numb_of_pipes = a - 1;
 	a = 0;
 	// fflush(0);

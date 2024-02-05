@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/05 19:29:49 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/06 00:19:26 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,17 @@ int Executor(t_data *data)
 	int	i;
 
 	i = -1;
+
+	int	j = -1;
 	while (data->nodes[++i])
+	{
+		while (data->nodes[i]->split_command[j++])
+			replace_spaces_and_pipes_in_quotes(data->nodes[i]->split_command[j]);
 		get_fds(data, i);
+		j = -1;
+		while (data->nodes[i]->split_command[j++])
+			putback_spaces_and_pipes_in_quotes(&data->nodes[i]->split_command[j], data);
+	}
 	if (data->numb_of_pipes == 0)
 	{
 
