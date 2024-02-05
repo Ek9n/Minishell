@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/05 19:07:47 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/05 20:00:19 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ int	main(int argc, char **argv, char **envp)
 }
 
 /* TODO
-only tabs are still interpreted as commands // JULIUS
-only spaces provide pwd??? //HANNES
-exit with n as argument //JULIUS
+only tabs are still interpreted as commands // JULIUS FIXED
+only spaces provide pwd??? //HANNES FIXED
+exit with n as argument //JULIUS I guess fixed
 exho h 			g with tabs //HANNES
-cat ctrlc exit code is 131 instead of 130 //JULIUS
+cat ctrlc exit code is 131 instead of 130 //JULIUS FIXED
 ----
 Minishell>>: export baa="env | grep PWD"
 executerEnvVars1:47|
@@ -79,12 +79,12 @@ executerEnvVars2:49|
 EXIT_ON_FREE: 0 //HANNES
 ----
 Minishell>>: ./home/jfoltan/Desktop/test/a.out 
-command not found should be no such file or directory // JULIUS
+command not found should be no such file or directory // JULIUS FIXED
 
 Minishell>>: cat < file2 > file3 | wc < file3
 0 0 0 //HANNES
 
-debug info in heredoc, maybe add variable expansion? //JULIUS
+debug info in heredoc, maybe add variable expansion? //JULIUS FIXED
 
 Minishell>>: echo bla | wc < file3
       2       4      22//HANNES

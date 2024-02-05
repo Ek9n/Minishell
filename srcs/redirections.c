@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/05 14:50:00 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/05 19:59:45 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,19 @@ int	ft_heredoc(char *delimiter, t_data *data)
 	while (true)
 	{
 		line = readline("> ");
-		// if (ft_strchr(line, '$'))
-		// 	while(ft_strchr(line, '$'))
-		// 		line = expand_env(line,data);
-		
+		expand_vars(&line,0,data);
 		i = -1;
 		while (line[++i] != '\0')
 		{
 			if (line[i] == '$')
 				line[i] = 26;
 		}
-	printf("line:%s\n", line);
 		i = -1;
 		while (line[++i] != '\0')
 		{
 			if (line[i] == 26)
 				expand_vars(&line, i, data);
 		}
-	printf("line2:%s\n", line);
-
 		if (ft_strcmp(line, delimiter) == 0)
 			break;	//add variable expansion
 		write(fd, line, ft_strlen(line));
