@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/04 22:23:08 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:18:44 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,10 @@ void	unset(char **split_cmds, char ***env)
 void	export(char **split_cmds, char ***env)
 {
 	int	i;
-
+	// printf("exportIn:%s\n", split_cmds[0]);
+	// printf("exportIn:%s\n", split_cmds[1]);
+	// printf("exportIn:%s\n", split_cmds[2]);
+	// printf("exportIn:%s\n", split_cmds[3]);
 	if (split_cmds[1] == NULL)
 	{
 		i = 0;

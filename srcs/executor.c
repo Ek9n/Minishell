@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/04 21:19:19 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/05 16:17:15 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,15 @@ int	single_command(t_data *data, int i)
 		cd(data->nodes[i], data);
 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
-		// unset(data->nodes[i]->split_command, &data->envp);
+		int b = -1;
+		while (data->envp[++b]);
+		printf("executerEnvVars1:%d|\n", b);
+
 		export(data->nodes[i]->split_command, &data->envp);
+
+		b = -1;
+		while (data->envp[++b]);
+		printf("executerEnvVars2:%d|\n", b);
 	}
 	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
 	{
@@ -81,7 +88,10 @@ int	single_command(t_data *data, int i)
 		// unset(data->nodes[i]->split_command[1], &data->envp);
 	}
 	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
+	{
+		printf("single_command//env\n");
 		printenv(data->envp);
+	}
 	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
 	{
 		g_exit_status = 69;
@@ -98,66 +108,66 @@ int	single_command(t_data *data, int i)
 
 void	exec_cmd(char **split_command, t_data *data)
 {
-		int status;
-		int		pid;
-		char    *command;
-        char    **path;
-        int     i;
-        
-        path = malloc(sizeof(char *) * 2);
-        command = NULL;
-		path[0] = ft_strdup("$PATH");
-        path[1] = ft_strdup("\0");
-        expand_vars(path, 0, data);
-        path  = ft_split(path[0], ':');
-        i = 0;
-        while (path[i])
-        {
-                if (split_command[0][0] == '/' || (split_command[0][0] == '.' && split_command[0][1] == '/'))
-                        {
-                                command = ft_strdup(split_command[0]);
-								break;
-                        }
-                command = ft_strjoin(path[i],"/");
-                command = ft_strjoin(command, split_command[0]);
-                if (access(command,F_OK) == 0)
-                        break ;
-                i++;
-        }
-        if (access(command,F_OK) == 0)
-        {
-                if ((pid = fork()) == -1)
-                {
-                        g_exit_status = 1;
-                        perror("fork error");
-                }
-                else if (pid == 0 && g_exit_status == 0)
-                {
-                        // split_command++; <- this made it bugging
-                        // printf("cmd1:%s, path1:%s\n", split_command[1], command);
-                        // printf("cmd1:%s, path1:%s\n", split_command[2], command);
-                        // printf("cmd1:%s, path1:%s\n", split_command[3], command);
-                        execve(command, split_command, data->envp);
-                        /*free(command);
-                        printf("Return not expected. Must be an execve error.\n");
-                        g_exit_status = 420;
-                        free_and_close_data(data); // this can go after we are done implementing
-                        */
-                }
-                signal(SIGQUIT, SIG_IGN);
-                waitpid(pid, &status, 0);
-                if (WIFEXITED(status))
-                        g_exit_status = WEXITSTATUS(status);
-                else if (WIFSIGNALED(status))
-                        g_exit_status = 127 + WIFSIGNALED(status);
-        }
-        else
-        {
-                printf("command not found\n");
-                g_exit_status = 127;
-        }
-        if (command)
-                free(command);
+	int		status;
+	int		pid;
+	char    *command;
+	char    **path;
+	int     i;
+	
+	path = malloc(sizeof(char *) * 2);
+	command = NULL;
+	path[0] = ft_strdup("$PATH");
+	path[1] = ft_strdup("\0");
+	expand_vars(path, 0, data);
+	path  = ft_split(path[0], ':');
+	i = 0;
+	while (path[i])
+	{
+		if (split_command[0][0] == '/' || (split_command[0][0] == '.' && split_command[0][1] == '/'))
+				{
+						command = ft_strdup(split_command[0]);
+						break;
+				}
+		command = ft_strjoin(path[i],"/");
+		command = ft_strjoin(command, split_command[0]);
+		if (access(command,F_OK) == 0)
+				break ;
+		i++;
+	}
+	if (access(command,F_OK) == 0)
+	{
+		if ((pid = fork()) == -1)
+		{
+				g_exit_status = 1;
+				perror("fork error");
+		}
+		else if (pid == 0 && g_exit_status == 0)
+		{
+				// split_command++; <- this made it bugging
+				// printf("cmd1:%s, path1:%s\n", split_command[1], command);
+				// printf("cmd1:%s, path1:%s\n", split_command[2], command);
+				// printf("cmd1:%s, path1:%s\n", split_command[3], command);
+				execve(command, split_command, data->envp);
+				/*free(command);
+				printf("Return not expected. Must be an execve error.\n");
+				g_exit_status = 420;
+				free_and_close_data(data); // this can go after we are done implementing
+				*/
+		}
+		signal(SIGQUIT, SIG_IGN);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+				g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+				g_exit_status = 127 + WIFSIGNALED(status);
+	}
+	else
+	{
+		printf("command not found\n");
+		g_exit_status = 127;
+	}
+	if (command)
+		free(command);
 }
 /*
 0 		Successful execution 	 
