@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/04 21:19:19 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/05 18:16:11 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	exec_cmd(char **split_command, t_data *data)
         char    **path;
         int     i;
         
-        path = malloc(sizeof(char *) * 2);
+		path = malloc(sizeof(char *) * 2);
         command = NULL;
 		path[0] = ft_strdup("$PATH");
         path[1] = ft_strdup("\0");
@@ -118,39 +118,52 @@ void	exec_cmd(char **split_command, t_data *data)
                                 command = ft_strdup(split_command[0]);
 								break;
                         }
+				if (split_command[0][0] == '.' && split_command[0][1] == '.' && split_command[0][2] == '/')
+				{	
+					command = ft_strdup(split_command[0]);
+					break;
+				}
                 command = ft_strjoin(path[i],"/");
                 command = ft_strjoin(command, split_command[0]);
                 if (access(command,F_OK) == 0)
                         break ;
                 i++;
         }
-        if (access(command,F_OK) == 0)
-        {
-                if ((pid = fork()) == -1)
-                {
-                        g_exit_status = 1;
-                        perror("fork error");
-                }
-                else if (pid == 0 && g_exit_status == 0)
-                {
-                        // split_command++; <- this made it bugging
-                        // printf("cmd1:%s, path1:%s\n", split_command[1], command);
-                        // printf("cmd1:%s, path1:%s\n", split_command[2], command);
-                        // printf("cmd1:%s, path1:%s\n", split_command[3], command);
-                        execve(command, split_command, data->envp);
-                        /*free(command);
-                        printf("Return not expected. Must be an execve error.\n");
-                        g_exit_status = 420;
-                        free_and_close_data(data); // this can go after we are done implementing
-                        */
-                }
-                signal(SIGQUIT, SIG_IGN);
-                waitpid(pid, &status, 0);
-                if (WIFEXITED(status))
-                        g_exit_status = WEXITSTATUS(status);
-                else if (WIFSIGNALED(status))
-                        g_exit_status = 127 + WIFSIGNALED(status);
-        }
+		if (access(command, F_OK) == 0)
+        	while (true)
+			{
+           	     if (access(command, X_OK))
+					{
+							g_exit_status = 126;
+							printf("Permission denied\n");
+							break;
+					}
+               	 if ((pid = fork()) == -1)
+               	 {
+               	         g_exit_status = 1;
+               	         perror("fork error");
+							break;
+					}
+					else if (pid == 0 && g_exit_status == 0)
+               	 {	
+						// split_command++; <- this made it bugging
+               	         // printf("cmd1:%s, path1:%s\n", split_command[1], command);
+               	         // printf("cmd1:%s, path1:%s\n", split_command[2], command);
+               	         // printf("cmd1:%s, path1:%s\n", split_command[3], command);
+               	         execve(command, split_command, data->envp);
+               	         /*free(command);
+               	         printf("Return not expected. Must be an execve error.\n");
+               	         g_exit_status = 420;
+               	         free_and_close_data(data); // this can go after we are done implementing
+               	         */
+               	 }
+               	 waitpid(pid, &status, 0);
+               	 if (WIFEXITED(status))
+               	         g_exit_status = WEXITSTATUS(status);
+               	 else if (WIFSIGNALED(status))
+               	         g_exit_status = 130 + WIFSIGNALED(status);
+				break;
+			}
         else
         {
                 printf("command not found\n");

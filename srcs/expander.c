@@ -88,7 +88,7 @@ int	expand_vars(char **input, int i, t_data *data)
 		// printf("HIER:%c\n", input[0][i + 1]);
 		if (cnt == 0 && input[0][i + 1] == '?')
 		{
-			mid_str = ft_itoa(g_exit_status);
+			mid_str = ft_itoa(data->last_exit_status);
 			cnt++;
 		}
 		else if (cnt == 0)

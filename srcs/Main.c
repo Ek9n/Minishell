@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/04 21:16:40 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/05 17:59:20 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	main(int argc, char **argv, char **envp)
 			{
 				assign_interactive_signals();
 				data->nodes = init_nodes(input, data);
-	printf("INITmain:%s\n", data->nodes[0]->command);
 				// print_nodes(data->nodes);
 				// printf("MAIN:%s\n", data->nodes[0]->split_command[1]);
 				if (data->nodes != NULL)
@@ -60,7 +59,7 @@ int	main(int argc, char **argv, char **envp)
 			else
 				printf("-minishell: %s: Invalid input\n", input);
 		}
-			// free_and_close_data(data);
+			 free_and_close_data(data);
 		// printf("After routine. (in main)\n");
 	}
 }

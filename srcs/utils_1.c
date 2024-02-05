@@ -70,9 +70,7 @@ char *ft_join(char **arr)
     int i = 0;
     int total_length = 0;
     size_t current_length = 0;
-	printf("foin_in:%s\n", arr[0]);
-	printf("foin_in:%s\n", arr[1]);
-	printf("foin_in:%s\n", arr[2]);
+
     while (arr[i] != NULL)
     {
         total_length += ft_strlen(arr[i]);
@@ -97,7 +95,5 @@ char *ft_join(char **arr)
 		}
 		i++;
     }
-	printf("foin_out:%s\n", str);
-
     return str;
 }
