@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/05 18:26:29 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/05 19:29:49 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ int Executor(t_data *data)
 int	cmp_keyword(char *keyword, char *str)
 {
 	int	len;
-
+	// printf("STRING>%s\n", str);
 	if (!keyword || !str)
-		return (-1);
+		return (0);
 	len = ft_strlen(keyword);
 	if (ft_strlen(str) > 0 && (ft_strcmp(keyword, str) == 0) && \
 			(*(str + len) == '\0' || *(str + len) == ' '))
@@ -58,8 +58,8 @@ int	cnt_bytes(char **arr)
 
 int	single_command(t_data *data, int i)
 {
-	// printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
-	// printf("in single_command:%s\n", data->nodes[i]->split_command[1]);
+	printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
+	printf("in single_command:%s\n", data->nodes[i]->split_command[1]);
 // enum for checking alll keywords before... if it doesnt match -> print error
 	if (!ft_strcmp("echo", data->nodes[i]->command))
 		echo(data->nodes[i]);
@@ -72,15 +72,15 @@ int	single_command(t_data *data, int i)
 		cd(data->nodes[i], data);
 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
-		int b = -1;
-		while (data->envp[++b]);
-		printf("executerEnvVars1:%d|\n", b);
+		// int b = -1;
+		// while (data->envp[++b]);
+		// printf("executerEnvVars1:%d|\n", b);
 
 		export(data->nodes[i]->split_command, &data->envp);
 
-		b = -1;
-		while (data->envp[++b]);
-		printf("executerEnvVars2:%d|\n", b);
+		// b = -1;
+		// while (data->envp[++b]);
+		// printf("executerEnvVars2:%d|\n", b);
 	}
 	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
 	{

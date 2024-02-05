@@ -36,9 +36,9 @@ void 	replace_spaces_and_pipes_in_quotes(char *input)
 		else if (input[i] == '\"' && quotes == 2)
 			quotes = 0;
 		if (input[i] == ' ' && (quotes == 1 || quotes == 2))
-			input[i] = '@';
+			input[i] = 1;
 		if (input[i] == '|' && (quotes == 1 || quotes == 2))
-			input[i] = '*';
+			input[i] = 2;
 		if (input[i] == '$' && quotes != 1)
 			input[i] = 26;
 		i++;
@@ -187,10 +187,10 @@ void 	putback_spaces_and_pipes_in_quotes(char **input, t_data *data)
 	int	quotes; 	// 0 no, 1 single, 2 double quotes
 	int	i;
 	int	j;
+
 	quotes = 0;
 	i = 0;
 	j = 0;
-
 	while (*input && input[0][i] != '\0')
 	{
 		if (input[0][i] == '\'' && quotes == 0)
@@ -201,14 +201,12 @@ void 	putback_spaces_and_pipes_in_quotes(char **input, t_data *data)
 			quotes = 2;
 		else if (input[0][i] == '\"' && quotes == 2)
 			quotes = 0;
-		if (input[0][i] == '@' && (quotes == 1 || quotes == 2))
+		if (input[0][i] == '1' && (quotes == 1 || quotes == 2))
 			input[0][i] = ' ';
-		if (input[0][i] == '*' && (quotes == 1 || quotes == 2))
+		if (input[0][i] == '2' && (quotes == 1 || quotes == 2))
 			input[0][i] = '|';
 		if (input[0][i] == 26)
-		{
 			expand_vars(input, i, data);
-		}
 		i++;
 	}
 }
@@ -256,12 +254,16 @@ t_words	**init_nodes(char *input, t_data *data)
 	int		i;
 	int		a;
 
+printf("LEXER000:%s\n", input);
 	replace_spaces_and_pipes_in_quotes(input);
+printf("LEXER001:%s\n", input);
 	redirection_space_extender(&input);
+printf("LEXER002:%s\n", input);
 	nodes = ft_calloc(get_num_of_pipes(input) + 2, sizeof(t_words *));
 	if (!nodes)
 		g_exit_status = 1;
 	buffer = ft_split(input, '|');
+
 	a = 0;
 	i = 0;
 	while (buffer[i] != NULL)
@@ -281,7 +283,9 @@ t_words	**init_nodes(char *input, t_data *data)
 		i = -1;
 		while (nodes[a]->split_command[++i])
 		{
+			printf("LEXERO:%s\n", nodes[a]->split_command[i]);
 			putback_spaces_and_pipes_in_quotes(&nodes[a]->split_command[i], data);
+			printf("LEXERO:%s\n", nodes[a]->split_command[i]);
 			remove_quotes(&nodes[a]->split_command[i]);
 		}
 		nodes[a]->num_of_elements = i;

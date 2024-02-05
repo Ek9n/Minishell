@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/05 19:07:47 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/05 19:25:23 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main(int argc, char **argv, char **envp)
 
 /* TODO
 only tabs are still interpreted as commands // JULIUS
-only spaces provide pwd??? //HANNES
+FIXED only spaces provide pwd??? //HANNES
 exit with n as argument //JULIUS
 exho h 			g with tabs //HANNES
 cat ctrlc exit code is 131 instead of 130 //JULIUS
