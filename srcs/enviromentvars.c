@@ -107,53 +107,48 @@ void    delete_env_var(char *name, char ***env)
     *env = new_env;
 }
 
+int	valid_var(char *name)
+{
+	int	i;
+			// printf("exportIN: '%s':\n", name);
+	i = -1;
+	while (name[++i])
+	{
+		if (i == 0 && !(ft_isalpha(name[i]) || name[i] == '_'))
+		{
+			printf("-minishell: export: '%s': not a valid identifier\n", name);
+			return (0);
+		}
+		else if (i > 0 && name[i] == '=')
+			break ;
+		else if (i > 0 && !(ft_isalpha(name[i]) || name[i] == '_' || ft_isdigit(name[i])))
+		{
+			printf("-minishell: export: '%s': not a valid identifier\n", name);
+			return (0);
+		}
+	}
+	return (1);
+}
+
 void	add_env_var(char *name, char ***env)
 {
 	int		size = cntenv(*env) + 1;
 	int		i;
 	char	**new_env;
 
-	// printf("ADDENV:%s\n", name);
-	new_env = ft_calloc(size + 1, sizeof(char *));
-	i = 0;
-	while (env[0][i] != NULL)
+	if (valid_var(name))
 	{
-		new_env[i] = env[0][i];
-		i++;
-	}
-	new_env[i] = name;
-	free(*env);
-	*env = new_env;
-}
-
-int	correct_input(char **cmds)
-{
-	int	i;
-	int	j;
-	int	flag;
-
-	flag = 0;
-	i = 1;
-	while (cmds[i])
-	{
-		j = 0;
-		while (cmds[i][j])
+		new_env = ft_calloc(size + 1, sizeof(char *));
+		i = 0;
+		while (env[0][i] != NULL)
 		{
-			if ((cmds[i][0] >= '0' && cmds[i][0] <= '9') || !((cmds[i][j] >= 'a' && cmds[i][j] <= 'z') || \
-				(cmds[i][j] >= 'A' && cmds[i][j] <= 'Z') || \
-				cmds[i][j] == '_' || (cmds[i][j] >= '0' && cmds[i][j] <= '9')) && !flag)
-			{
-				printf("%c\n", cmds[i][j]);
-				printf("minishell: export: `%s': not a valid identifier\n" ,cmds[i]);
-				return (0);
-			}
-			j++;
-			if (cmds[i][j] == '=')
-				flag = 1;
+			new_env[i] = env[0][i];
+			i++;
 		}
-		i++;
+		new_env[i] = ft_strdup(name);
+		free(*env);
+		*env = new_env;
 	}
-	return (1);
 }
 
 void	purge_arr(char *cmds,char ***env)
@@ -161,13 +156,13 @@ void	purge_arr(char *cmds,char ***env)
 	char **temp;
 	int a;
 	a = 0;
-
-			temp = ft_split(cmds, '=');
-			delete_env_var(temp[0], env);
-			while(temp[a])
-			{
-				free(temp[a]);
-				a++;
-			}
-			free(temp);
+	// printf("PURGE:%s\n", cmds);
+	temp = ft_split(cmds, '=');
+	delete_env_var(temp[0], env);
+	while(temp[a])
+	{
+		free(temp[a]);
+		a++;
+	}
+	free(temp);
 }

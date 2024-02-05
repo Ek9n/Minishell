@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/05 17:59:20 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/05 19:07:47 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	main(int argc, char **argv, char **envp)
 			{
 				assign_interactive_signals();
 				data->nodes = init_nodes(input, data);
+	// printf("INITmain:%s\n", data->nodes[0]->command);
 				// print_nodes(data->nodes);
 				// printf("MAIN:%s\n", data->nodes[0]->split_command[1]);
 				if (data->nodes != NULL)
@@ -65,10 +66,28 @@ int	main(int argc, char **argv, char **envp)
 }
 
 /* TODO
-exit codes check
-cd . 
-cd new_mini/ - diuble free
-export bii = 15 -> segfault
-debug info in HEREDOC
-debug info in CD
+only tabs are still interpreted as commands // JULIUS
+only spaces provide pwd??? //HANNES
+exit with n as argument //JULIUS
+exho h 			g with tabs //HANNES
+cat ctrlc exit code is 131 instead of 130 //JULIUS
+----
+Minishell>>: export baa="env | grep PWD"
+executerEnvVars1:47|
+-minishell: export: '|': not a valid identifier
+executerEnvVars2:49|
+EXIT_ON_FREE: 0 //HANNES
+----
+Minishell>>: ./home/jfoltan/Desktop/test/a.out 
+command not found should be no such file or directory // JULIUS
+
+Minishell>>: cat < file2 > file3 | wc < file3
+0 0 0 //HANNES
+
+debug info in heredoc, maybe add variable expansion? //JULIUS
+
+Minishell>>: echo bla | wc < file3
+      2       4      22//HANNES
+EXIT_ON_FREE: 0 
+
 */

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/05 18:16:11 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/05 18:26:29 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,15 @@ int	single_command(t_data *data, int i)
 		cd(data->nodes[i], data);
 	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 	{
-		// unset(data->nodes[i]->split_command, &data->envp);
+		int b = -1;
+		while (data->envp[++b]);
+		printf("executerEnvVars1:%d|\n", b);
+
 		export(data->nodes[i]->split_command, &data->envp);
+
+		b = -1;
+		while (data->envp[++b]);
+		printf("executerEnvVars2:%d|\n", b);
 	}
 	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
 	{
@@ -81,7 +88,10 @@ int	single_command(t_data *data, int i)
 		// unset(data->nodes[i]->split_command[1], &data->envp);
 	}
 	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
+	{
+		printf("single_command//env\n");
 		printenv(data->envp);
+	}
 	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
 	{
 		g_exit_status = 69;
