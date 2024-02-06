@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/21 12:06:45 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/06 21:40:34 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,9 @@ int		valid_input(char *str);
 int		quote_error(char *str);
 
 // expander
-int find_var(char *str, char **envp);
-char *put_var(char **str, int dollar_pos, char **envp);
-int	expand_vars(char **input, int i, t_data *data);
+int		find_var(char *str, char **envp);
+char	*put_var(char **str, int dollar_pos, char **envp);
+int		expand_vars(char **input, int i, t_data *data);
 
 // PARSER
 int		single_command(t_data *data,int i);

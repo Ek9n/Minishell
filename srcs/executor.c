@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/05 18:26:29 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/06 21:38:30 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,47 +61,50 @@ int	single_command(t_data *data, int i)
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[1]);
 // enum for checking alll keywords before... if it doesnt match -> print error
-	if (!ft_strcmp("echo", data->nodes[i]->command))
-		echo(data->nodes[i]);
-	else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
+	if (data->nodes[i] && data->nodes[i]->split_command[0])
 	{
-		data->nodes[i]->output = getpwd();
-		printf("%s\n", data->nodes[i]->output);
-	}
-	else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
-		cd(data->nodes[i], data);
-	else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
-	{
-		int b = -1;
-		while (data->envp[++b]);
-		printf("executerEnvVars1:%d|\n", b);
+		if (!ft_strcmp("echo", data->nodes[i]->command))
+			echo(data->nodes[i]);
+		else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
+		{
+			data->nodes[i]->output = getpwd();
+			printf("%s\n", data->nodes[i]->output);
+		}
+		else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
+			cd(data->nodes[i], data);
+		else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
+		{
+			int b = -1;
+			while (data->envp[++b]);
+			printf("executerEnvVars1:%d|\n", b);
 
-		export(data->nodes[i]->split_command, &data->envp);
+			export(data->nodes[i]->split_command, &data->envp);
 
-		b = -1;
-		while (data->envp[++b]);
-		printf("executerEnvVars2:%d|\n", b);
-	}
-	else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
-	{
-		unset(data->nodes[i]->split_command, &data->envp);
-		// unset(data->nodes[i]->split_command[1], &data->envp);
-	}
-	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
-	{
-		printf("single_command//env\n");
-		printenv(data->envp);
-	}
-	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
-	{
-		g_exit_status = 69;
-		free_and_close_data(data);
-	}
-	else
-	{
-		// printf("(single_command) - exec_cmd\n");
-		if (data->nodes[i]->split_command[0])
-			exec_cmd(data->nodes[i]->split_command, data);
+			b = -1;
+			while (data->envp[++b]);
+			printf("executerEnvVars2:%d|\n", b);
+		}
+		else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
+		{
+			unset(data->nodes[i]->split_command, &data->envp);
+			// unset(data->nodes[i]->split_command[1], &data->envp);
+		}
+		else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
+		{
+			printf("single_command//env\n");
+			printenv(data->envp);
+		}
+		else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
+		{
+			g_exit_status = 69;
+			free_and_close_data(data);
+		}
+		else
+		{
+			// printf("(single_command) - exec_cmd\n");
+			if (data->nodes[i]->split_command[0])
+				exec_cmd(data->nodes[i]->split_command, data);
+		}
 	}
 	return (0);
 }

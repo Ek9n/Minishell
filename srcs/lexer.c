@@ -18,7 +18,7 @@ int 	get_num_of_pipes(char * str)
 	return(i);
 }
 
-void 	replace_spaces_and_pipes_in_quotes(char *input)
+void	replace_spaces_and_pipes_in_quotes(char *input)
 {
 	int		quotes; 	// 0 no, 1 single, 2 double quotes
 	int		i, j;
@@ -37,6 +37,8 @@ void 	replace_spaces_and_pipes_in_quotes(char *input)
 			quotes = 0;
 		if (input[i] == ' ' && (quotes == 1 || quotes == 2))
 			input[i] = '@';
+		if (input[i] == '\t' && (quotes == 1 || quotes == 2))
+			input[i] = '&';
 		if (input[i] == '|' && (quotes == 1 || quotes == 2))
 			input[i] = '*';
 		if (input[i] == '$' && quotes != 1)
@@ -72,7 +74,7 @@ char	*comb_extd_word(char **extd_words)
 	return (comb_word);
 }
 
-int		redir_case(char *c)
+int	redir_case(char *c)
 {
 	if ((*c == '<' && *(c + 1) == '<') || (*c == '>' && *(c + 1) == '>'))
 		return (2);
@@ -150,11 +152,37 @@ int		skip_spaces(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] == ' ')
+	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	return (i);
 }
 
+// void	clean_spaces_in_command(char **command)
+// {
+// 	char	*tmp_clean;
+// 	int		i;
+// 	int		j;
+
+// 	tmp_clean = malloc(ft_strlen(*command) + 1);
+// 	i = 0;
+// 	j = 0;
+// 	i += skip_spaces(*command);
+// 	while (command[0][i] != '\0')
+// 	{
+// 		if (command[0][i] == ' ')
+// 		{
+// 			i += skip_spaces(&command[0][i]);
+// 			tmp_clean[j++] = ' ';
+// 		}
+// 		else
+// 			tmp_clean[j++] = command[0][i++];
+// 	}
+// 	while (tmp_clean[--j] == ' ');
+// 	tmp_clean[j + 1] = '\0';
+// 	free(*command);
+// 	*command = ft_strdup(tmp_clean);
+// 	free(tmp_clean);
+// }
 void	clean_spaces_in_command(char **command)
 {
 	char	*tmp_clean;
@@ -167,7 +195,7 @@ void	clean_spaces_in_command(char **command)
 	i += skip_spaces(*command);
 	while (command[0][i] != '\0')
 	{
-		if (command[0][i] == ' ')
+		if (command[0][i] == ' ' || command[0][i] == '\t')
 		{
 			i += skip_spaces(&command[0][i]);
 			tmp_clean[j++] = ' ';
@@ -203,6 +231,8 @@ void 	putback_spaces_and_pipes_in_quotes(char **input, t_data *data)
 			quotes = 0;
 		if (input[0][i] == '@' && (quotes == 1 || quotes == 2))
 			input[0][i] = ' ';
+		if (input[0][i] == '&' && (quotes == 1 || quotes == 2))
+			input[0][i] = '\t';
 		if (input[0][i] == '*' && (quotes == 1 || quotes == 2))
 			input[0][i] = '|';
 		if (input[0][i] == 26)

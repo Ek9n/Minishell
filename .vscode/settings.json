@@ -3,6 +3,7 @@
 		"new_lexer": "c",
 		"readline.h": "c",
 		"random": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"fcntl.h": "c"
 	}
 }

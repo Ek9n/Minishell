@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/05 19:07:47 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/06 21:57:40 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_data	*init_data(t_data *data, char **envp)
 {
 	data = malloc(sizeof(t_data));
 	data->envp = arrdup(envp);
-	data -> original_fd_in = dup(STDIN_FILENO);
-	data -> original_fd_out = dup(STDOUT_FILENO);
+	data->original_fd_in = dup(STDIN_FILENO);
+	data->original_fd_out = dup(STDOUT_FILENO);
 	return (data);
 }
 
@@ -60,16 +60,16 @@ int	main(int argc, char **argv, char **envp)
 			else
 				printf("-minishell: %s: Invalid input\n", input);
 		}
-			 free_and_close_data(data);
+		free_and_close_data(data);
 		// printf("After routine. (in main)\n");
 	}
 }
 
 /* TODO
 only tabs are still interpreted as commands // JULIUS
-only spaces provide pwd??? //HANNES
+fixed-only spaces provide pwd??? //HANNES
 exit with n as argument //JULIUS
-exho h 			g with tabs //HANNES
+fixed-exho h 			g with tabs //HANNES
 cat ctrlc exit code is 131 instead of 130 //JULIUS
 ----
 Minishell>>: export baa="env | grep PWD"
