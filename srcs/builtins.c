@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/05 18:11:38 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/07 17:20:31 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	echo(t_words *node)
 
 	flag = false;
 
-		printf("in echo|%s|\n", node->command);
+		// printf("in echo|%s|\n", node->command);
 	if (node->num_of_elements == 1 && !cmp_keywordx("echo", node->command))
 	{
 		printf("-minishell.c (echo) %s: command not found\n", node->command);

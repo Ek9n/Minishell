@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/07 16:09:30 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/07 20:48:46 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 int Executor(t_data *data)
 {
 	// printf("nopipes:%d\n", data->numb_of_pipes);
-	// printf("ExecutorIn:%s\n", data->nodes[0]->split_command[0]);
+	printf("Executor1In:|%s|\n", data->nodes[0]->split_command[0]);
+	printf("Executor2In:|%s|\n", data->nodes[0]->split_command[1]);
 	int	i;
 
 	i = -1;

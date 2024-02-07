@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/07 17:04:00 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/07 20:45:34 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ semi-FIXED for now... removed the last split in getfd for it.. may it makes new 
 		executerEnvVars2:49|
 ----
 ----------------------------------------------
+Minishell>>: echo blaa > f1 | wc < f1
+1 1 6 
+es wird in f1 "blaa " gespeichert, space muss hier getrimmt werden
+
 
 only spaces provide pwd??? //HANNES FIXED
 
@@ -110,5 +114,26 @@ Minishell>>: cat < file2 > file3 | wc < file3
 // 1 1 3
 // hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ echo bla | wc < f3
 // 1 1 5
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ 
+
+
+bullshit cuz of vscode-terminal:
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ rm f2
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ cat < f1 > f2 | wc < f2
+// bash: f2: No such file or directory
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ cat < f1 > f2 | wc < f2
+// 0 0 0
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ cat < f1 > f2 | wc < f2
+// 0 0 0
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ cat f2
+// blaa 
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ cat f2
+// blaa 
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ cat f1
+// blaa 
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ wc < f2
+// 1 1 6
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ cat < f1 > f2 | wc < f2
+// 1 1 6
 // hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ 
 */

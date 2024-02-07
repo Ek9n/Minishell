@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/07 16:44:52 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/07 20:05:51 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,14 @@ int	piperino9(t_words **nodes, t_data *data)
 				// Handle Pipes
 				// printf("origout:%d, fdout:%d\n", data->original_fd_out, nodes[i]->fd_out );
 				// if (i == data->numb_of_pipes - 1 && nodes[i]->fd_out != data->original_fd_out)
+				if (i == 0 && nodes[0]->fd_in != STDIN_FILENO)
+					dup2(nodes[0]->fd_in, STDIN_FILENO);
+				if (i > 0)
+					dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+				if (i == data->numb_of_pipes && nodes[i]->fd_in != STDIN_FILENO)
+				{
+					dup2(nodes[i]->fd_in, STDIN_FILENO);
+				}
 				if (i == data->numb_of_pipes - 1 && nodes[i]->fd_out != STDOUT_FILENO)
 				{
 					dup2(nodes[i]->fd_out, STDOUT_FILENO);
@@ -92,20 +100,20 @@ int	piperino9(t_words **nodes, t_data *data)
 						dup2(nodes[i]->fd_out, STDOUT_FILENO);
 					}
 				}
-				///new for fixing "echo bla | wc < f1" ->
-				else if (i == data->numb_of_pipes && nodes[i]->fd_in != STDIN_FILENO)
-				{
-					dup2(nodes[i]->fd_in, STDIN_FILENO);
-				}
 				else
 				{
-					if (i == 0 && nodes[0]->fd_in != STDIN_FILENO)
-						dup2(nodes[0]->fd_in, STDIN_FILENO);
-					if (i != 0)
-						dup2(pipe_fd[i - 1][0], STDIN_FILENO);
+					// if (i == 0 && nodes[0]->fd_in != STDIN_FILENO)
+					// 	dup2(nodes[0]->fd_in, STDIN_FILENO);
+					// if (i != 0)
+					// 	dup2(pipe_fd[i - 1][0], STDIN_FILENO);
 					if (i < data->numb_of_pipes)
 						dup2(pipe_fd[i][1], STDOUT_FILENO);
 				}
+				///new for fixing "echo bla | wc < f1" ->
+				// if (i == data->numb_of_pipes && nodes[i]->fd_in != STDIN_FILENO)
+				// {
+				// 	dup2(nodes[i]->fd_in, STDIN_FILENO);
+				// }
 
 				close_pipes(pipe_fd, data->numb_of_pipes);
 			}
