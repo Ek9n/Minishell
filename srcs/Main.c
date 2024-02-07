@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/07 17:04:00 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/07 20:57:31 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,31 @@ semi-FIXED for now... removed the last split in getfd for it.. may it makes new 
 	-minishell: export: '|': not a valid identifier
 		executerEnvVars2:49|
 ----
+###########
+JULIUS WEDNESDAY:
+
+Minishell>>: echo "cunt" > file3
+Minishell>>: echo -n "cunt" > file3
+two different outputs, one with -n doestn output to file. 
+echo cunt >file3 | grep cunt infinite loop ? 
+--
+Minishell>>: export baa="env | grep $USER > file3"
+Minishell>>: $baa //quite broken
+---
+
+
+When I comment out the last split in getfds: 
+
+ env | grep $USER >file3 no longer works, basically all redirections without spaces: "cat<file2>file3>file4"... all break. 
+
+
+
+#################
+=====================
+when I remove 
+
+
+============
 ----------------------------------------------
 
 only spaces provide pwd??? //HANNES FIXED

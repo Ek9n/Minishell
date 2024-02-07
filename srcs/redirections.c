@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/07 16:15:39 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/07 21:13:38 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ void	get_fds(t_data *data,int i)
 				ft_putstr_fd("open failed\n", 1);
 				g_exit_status = 1;
 			}	
-			data->nodes[i]->split_command[a][0] = 6;
-			data->nodes[i]->split_command[a + 1][0] = 6;
+			data->nodes[i]->split_command[a][0] = 0;
+			data->nodes[i]->split_command[a + 1][0] = 0;
 			data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
 			dup2(data->nodes[i]->fd_out, STDOUT_FILENO);	
 			//close(data->nodes->redirection->fd_out);
@@ -118,8 +118,8 @@ void	get_fds(t_data *data,int i)
 				ft_putstr_fd("open failed\n", 1);
 				g_exit_status = 1;
 			}	
-			data->nodes[i]->split_command[a][0] = 6;
-			data->nodes[i]->split_command[a + 1][0] = 6;
+			data->nodes[i]->split_command[a][0] = 0;
+			data->nodes[i]->split_command[a + 1][0] = 0;
 			data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
 			dup2(data->nodes[i]->fd_out, STDOUT_FILENO);
 			//close(data->nodes->redirection->fd_out);
@@ -136,8 +136,8 @@ void	get_fds(t_data *data,int i)
 				ft_putstr_fd("open failed, file doesnt exist probably\n", 1);
 				g_exit_status = 1;
 			}
-			data->nodes[i]->split_command[a][0] = 6;
-			data->nodes[i]->split_command[a + 1][0] = 6;
+			data->nodes[i]->split_command[a][0] = 0;
+			data->nodes[i]->split_command[a + 1][0] = 0;
 			data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
 			dup2(data->nodes[i]->fd_in, STDIN_FILENO);
 		}
@@ -153,8 +153,8 @@ void	get_fds(t_data *data,int i)
 				ft_putstr_fd("Heredoc failed to create a temp file.\n", 1);
 				g_exit_status = 1;
 			}
-			data->nodes[i]->split_command[a][0] = 6;
-			data->nodes[i]->split_command[a + 1][0] = 6;
+			data->nodes[i]->split_command[a][0] = 0;
+			data->nodes[i]->split_command[a + 1][0] = 0;
 			data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
 			dup2(data->nodes[i]->fd_in, STDIN_FILENO);
 		}
