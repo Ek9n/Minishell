@@ -252,19 +252,7 @@ void	remove_quotes(char **word)
 	*word = ft_strdup(tmp_clean);
 	free(tmp_clean);
 }
-// int		check_for_only_tab_or_space(char *str) we don't need i think, it makes just a problem with echo bla"tab"blub
-// {
-// 	int	i;
 
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] != ' ' && str[i] != '\t')
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (-1);
-// }
 t_words	**init_nodes(char *input, t_data *data)
 {
 	t_words	**nodes;
@@ -272,8 +260,6 @@ t_words	**init_nodes(char *input, t_data *data)
 	int		i;
 	int		a;
 
-	// if (check_for_only_tab_or_space(input) == -1)
-	// 	return (NULL);
 	replace_spaces_and_pipes_in_quotes(input);
 	redirection_space_extender(&input);
 	nodes = ft_calloc(get_num_of_pipes(input) + 2, sizeof(t_words *));
