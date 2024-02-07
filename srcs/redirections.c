@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/05 19:59:45 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/07 16:15:39 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	ft_heredoc(char *delimiter, t_data *data)
 void	get_fds(t_data *data,int i)
 {
 	int a;
-
+// printf("getfdIn:%s\n", data->nodes[i]->split_command[0]);
 	a = 0;
 	while (data->nodes[i]->split_command[a])
 	{	
@@ -161,6 +161,8 @@ void	get_fds(t_data *data,int i)
 		a++;
 	}
 		data->nodes[i]->command = ft_join(data->nodes[i]->split_command); //free not sure if we need it ? 
+// printf("getfdOut1:%s\n", data->nodes[i]->split_command[0]);
 		data->nodes[i]->split_command = ft_split(data->nodes[i]->command, ' ');
+// printf("getfdOut2:%s\n", data->nodes[i]->split_command[0]);
 }
 

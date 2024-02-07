@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:17:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/21 12:30:37 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/07 16:30:42 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void free_and_close_data(t_data *data)
 	pid = getpid();
 	i = 0;
 	b = 0;
-	printf("EXIT_ON_FREE: %d\n", g_exit_status);
+	// printf("EXIT_ON_FREE: %d\n", g_exit_status);
 	if (data->nodes != NULL)
 		while (data->nodes[i])
 		{

@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/01 16:50:38 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/07 16:44:52 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,11 @@ int	piperino9(t_words **nodes, t_data *data)
 					{
 						dup2(nodes[i]->fd_out, STDOUT_FILENO);
 					}
+				}
+				///new for fixing "echo bla | wc < f1" ->
+				else if (i == data->numb_of_pipes && nodes[i]->fd_in != STDIN_FILENO)
+				{
+					dup2(nodes[i]->fd_in, STDIN_FILENO);
 				}
 				else
 				{

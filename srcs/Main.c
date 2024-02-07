@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/05 20:00:19 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:04:00 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,49 @@ int	main(int argc, char **argv, char **envp)
 }
 
 /* TODO
+Different output than bash.. but may not important: // JULIUS
+	Minishell>>: cat file3 | wv
+	/snap/bin/wv : No such file or directory
+
 only tabs are still interpreted as commands // JULIUS FIXED
-only spaces provide pwd??? //HANNES FIXED
-exit with n as argument //JULIUS I guess fixed
-exho h 			g with tabs //HANNES
-cat ctrlc exit code is 131 instead of 130 //JULIUS FIXED
-----
-Minishell>>: export baa="env | grep PWD"
-executerEnvVars1:47|
--minishell: export: '|': not a valid identifier
-executerEnvVars2:49|
-EXIT_ON_FREE: 0 //HANNES
-----
+
 Minishell>>: ./home/jfoltan/Desktop/test/a.out 
 command not found should be no such file or directory // JULIUS FIXED
 
-Minishell>>: cat < file2 > file3 | wc < file3
-0 0 0 //HANNES
-
 debug info in heredoc, maybe add variable expansion? //JULIUS FIXED
 
-Minishell>>: echo bla | wc < file3
-      2       4      22//HANNES
-EXIT_ON_FREE: 0 
+cat ctrlc exit code is 131 instead of 130 //JULIUS FIXED
 
+exit with n as argument //JULIUS I guess fixed
+
+----
+semi-FIXED for now... removed the last split in getfd for it.. may it makes new problems
+	Minishell>>: export baa="env | grep PWD"
+		executerEnvVars1:47|
+	-minishell: export: '|': not a valid identifier
+		executerEnvVars2:49|
+----
+----------------------------------------------
+
+only spaces provide pwd??? //HANNES FIXED
+
+exho h 			g with tabs //HANNES FIXED
+
+Minishell>>: echo bla | wc < file3
+      2       4      22		//HANNES FIXED
+
+Minishell>>: cat < file2 > file3 | wc < file3
+0 0 0 						//HANNES FIXED
+// Minishell>>: cat f1 > f2 | wc < f2
+// 1 1 3
+// Minishell>>: echo bla | wc < f3
+// 1 1 5
+// Minishell>>: cat f1 > f2 | wc < f2
+// 1 1 3
+// Minishell>>: 
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ cat f1 > f2 | wc < f2
+// 1 1 3
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ echo bla | wc < f3
+// 1 1 5
+// hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ 
 */

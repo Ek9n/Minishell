@@ -18,7 +18,7 @@ int 	get_num_of_pipes(char * str)
 	return(i);
 }
 
-void 	replace_spaces_and_pipes_in_quotes(char *input)
+void	replace_spaces_and_pipes_in_quotes(char *input)
 {
 	int		quotes; 	// 0 no, 1 single, 2 double quotes
 	int		i, j;
@@ -37,6 +37,8 @@ void 	replace_spaces_and_pipes_in_quotes(char *input)
 			quotes = 0;
 		if (input[i] == ' ' && (quotes == 1 || quotes == 2))
 			input[i] = '@';
+		if (input[i] == '\t' && (quotes == 1 || quotes == 2))
+			input[i] = '&';
 		if (input[i] == '|' && (quotes == 1 || quotes == 2))
 			input[i] = '*';
 		if (input[i] == '$' && quotes != 1)
@@ -150,7 +152,7 @@ int		skip_spaces(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] == ' ')
+	while (str[i] == ' ' || str[i] == '\t')
 		i++;
 	return (i);
 }
@@ -167,7 +169,7 @@ void	clean_spaces_in_command(char **command)
 	i += skip_spaces(*command);
 	while (command[0][i] != '\0')
 	{
-		if (command[0][i] == ' ')
+		if (command[0][i] == ' ' || command[0][i] == '\t')
 		{
 			i += skip_spaces(&command[0][i]);
 			tmp_clean[j++] = ' ';
@@ -203,6 +205,8 @@ void 	putback_spaces_and_pipes_in_quotes(char **input, t_data *data)
 			quotes = 0;
 		if (input[0][i] == '@' && (quotes == 1 || quotes == 2))
 			input[0][i] = ' ';
+		if (input[0][i] == '&' && (quotes == 1 || quotes == 2))
+			input[0][i] = '\t';
 		if (input[0][i] == '*' && (quotes == 1 || quotes == 2))
 			input[0][i] = '|';
 		if (input[0][i] == 26)
@@ -248,19 +252,19 @@ void	remove_quotes(char **word)
 	*word = ft_strdup(tmp_clean);
 	free(tmp_clean);
 }
-int		check_for_only_tab_or_space(char *str)
-{
-	int	i;
+// int		check_for_only_tab_or_space(char *str) we don't need i think, it makes just a problem with echo bla"tab"blub
+// {
+// 	int	i;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != ' ' && str[i] != '\t')
-			return (0);
-		i++;
-	}
-	return (-1);
-}
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] != ' ' && str[i] != '\t')
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (-1);
+// }
 t_words	**init_nodes(char *input, t_data *data)
 {
 	t_words	**nodes;
@@ -268,8 +272,8 @@ t_words	**init_nodes(char *input, t_data *data)
 	int		i;
 	int		a;
 
-	if (check_for_only_tab_or_space(input) == -1)
-		return (NULL);
+	// if (check_for_only_tab_or_space(input) == -1)
+	// 	return (NULL);
 	replace_spaces_and_pipes_in_quotes(input);
 	redirection_space_extender(&input);
 	nodes = ft_calloc(get_num_of_pipes(input) + 2, sizeof(t_words *));
