@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/07 21:13:38 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/09 15:12:22 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,110 @@ int	ft_heredoc(char *delimiter, t_data *data)
 	close(fd);
 	return (fd);
 }
+void	get_fds(t_data *data,int i)
+{
+	int a;
+	int counter;
+// printf("getfdIn:%s\n", data->nodes[i]->split_command[0]);
+	int begin;
 
+	begin = 0;
+	counter = 0;
+	a = 0;
+	while (data->nodes[i]->split_command[a])
+	{	
+		if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
+			{
+				ft_heredoc(data->nodes[i]->split_command[a + 1],data);
+				break;
+			}
+			else
+				a++;
+	}
+	a = 0;
+	while (data->nodes[i]->split_command[a] != NULL )
+	{
+		if (check_token_syntax(data->nodes[i]->split_command[a]) == 3) // >
+		{
+			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			if (data->nodes[i]->fd_out == -1)
+			{
+				dup2(data->original_fd_in, STDIN_FILENO);
+				dup2(data->original_fd_out, STDOUT_FILENO);
+				close(data->original_fd_in);
+				close(data->original_fd_out);
+				ft_putstr_fd("open failed\n", 1);
+				g_exit_status = 1;
+			}
+			begin = 1;
+			dup2(data->nodes[i]->fd_out, STDOUT_FILENO);	
+			//close(data->nodes->redirection->fd_out);
+		}
+		else if (check_token_syntax(data->nodes[i]->split_command[a]) == 5) // >
+		{
+			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
+			if (data->nodes[i]->fd_out == -1)
+			{
+				dup2(data->original_fd_in, STDIN_FILENO);
+				dup2(data->original_fd_out, STDOUT_FILENO);
+				close(data->original_fd_in);
+				close(data->original_fd_out);
+				ft_putstr_fd("open failed\n", 1);
+				g_exit_status = 1;
+			}
+			begin = 1;
+			dup2(data->nodes[i]->fd_out, STDOUT_FILENO);
+			//close(data->nodes->redirection->fd_out);
+		}
+		else if (check_token_syntax(data->nodes[i]->split_command[a]) == 2) // <
+		{
+			data->nodes[i]->fd_in = open(data->nodes[i]->split_command[a + 1], O_RDONLY);
+			if (data->nodes[i]->fd_in == -1)
+			{
+				dup2(data->original_fd_in, STDIN_FILENO);
+				dup2(data->original_fd_out, STDOUT_FILENO);
+				close(data->original_fd_in);
+				close(data->original_fd_out);
+				ft_putstr_fd("open failed, file doesnt exist probably\n", 1);
+				g_exit_status = 1;
+			}
+			begin = 1;
+			dup2(data->nodes[i]->fd_in, STDIN_FILENO);
+		}
+		else if (check_token_syntax(data->nodes[i]->split_command[a]) == 4) // <<
+		{ 
+			data->nodes[i]->fd_in = open(".heredoc", O_RDONLY);
+			if (data->nodes[i]->fd_in == -1)
+			{
+				dup2(data->original_fd_in, STDIN_FILENO);
+				dup2(data->original_fd_out, STDOUT_FILENO);
+				close(data->original_fd_in);
+				close(data->original_fd_out);
+				ft_putstr_fd("Heredoc failed to create a temp file.\n", 1);
+				g_exit_status = 1;
+			}
+			begin = 1;
+			dup2(data->nodes[i]->fd_in, STDIN_FILENO);
+		}
+		else if (begin != 1) 
+			counter++;
+		a++;
+	}
+	a = counter;
+	while (data->nodes[i]->split_command[a] && begin == 1)
+	{
+		 free (data->nodes[i]->split_command[a]);
+	 	data->nodes[i]->split_command[a] = NULL;
+		a++;
+	}
+		data->nodes[i]->command = ft_join(data->nodes[i]->split_command); //free not sure if we need it ? 
+
+// printf("getfdOut1:%s\n", data->nodes[i]->split_command[0]);
+		//data->nodes[i]->split_command = ft_split(data->nodes[i]->command, ' ');
+// printf("getfdOut2:%s\n", data->nodes[i]->split_command[0]);
+}
+
+/*
 void	get_fds(t_data *data,int i)
 {
 	int a;
@@ -162,7 +265,8 @@ void	get_fds(t_data *data,int i)
 	}
 		data->nodes[i]->command = ft_join(data->nodes[i]->split_command); //free not sure if we need it ? 
 // printf("getfdOut1:%s\n", data->nodes[i]->split_command[0]);
-		data->nodes[i]->split_command = ft_split(data->nodes[i]->command, ' ');
+		//data->nodes[i]->split_command = ft_split(data->nodes[i]->command, ' ');
 // printf("getfdOut2:%s\n", data->nodes[i]->split_command[0]);
 }
 
+*/

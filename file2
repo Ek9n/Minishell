@@ -1,1 +1,3 @@
-cunt
+in single_command:echo -n butchi cunt hehe
+in echo|echo -n butchi cunt hehe|
+in echo|24|

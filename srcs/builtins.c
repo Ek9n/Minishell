@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/05 18:11:38 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/09 15:03:49 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	echo(t_words *node)
 	flag = false;
 
 		printf("in echo|%s|\n", node->command);
+		printf("in echo|%d|\n", ft_strlen(node->command));
 	if (node->num_of_elements == 1 && !cmp_keywordx("echo", node->command))
 	{
 		printf("-minishell.c (echo) %s: command not found\n", node->command);
@@ -112,6 +113,7 @@ int	echo(t_words *node)
 	free(tmp);
 	return (0);
 }
+
 
 char	*getpwd(void)
 {

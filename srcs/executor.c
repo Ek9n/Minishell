@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/07 16:09:30 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/09 15:24:25 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,19 @@ int Executor(t_data *data)
 	int	i;
 
 	i = -1;
+	int a = 0;
 	while (data->nodes[++i])
+	{
 		get_fds(data, i);
-	// printf("ExecutorOut:%s\n", data->nodes[0]->split_command[0]);
+		//while (data->nodes[i]->split_command[a])
+		//{	
+		//	ft_putstr_fd(data->nodes[i]->split_command[a],STDOUT_FILENO);
+		//	a++;
+		//}
+		//a = 0;	
+	}
+	
+		// printf("ExecutorOut:%s\n", data->nodes[0]->split_command[0]);
 	if (data->numb_of_pipes == 0)
 	{
 		single_command(data, 0);
@@ -59,6 +69,7 @@ int	cnt_bytes(char **arr)
 
 int	single_command(t_data *data, int i)
 {
+	printf("in single_command:%s\n", data->nodes[i]->command);
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[1]);
 // enum for checking alll keywords before... if it doesnt match -> print error
@@ -109,7 +120,6 @@ int	single_command(t_data *data, int i)
 	}
 	return (0);
 }
-
 void	exec_cmd(char **split_command, t_data *data)
 {
 		int status;
@@ -118,6 +128,7 @@ void	exec_cmd(char **split_command, t_data *data)
         char    **path;
         int     i;
         
+		//split_command = ft_split
 		path = malloc(sizeof(char *) * 2);
         command = ft_strdup(split_command[0]);
 		path[0] = ft_strdup("$PATH");

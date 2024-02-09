@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/07 20:58:15 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/09 15:02:38 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	init_piperino(t_data *data, int ***pipe_fd, pid_t **pids)
 			error_exit("(piperino) Pipe creation failed\n");
 	}
 }
+
 
 int	piperino9(t_words **nodes, t_data *data)
 {
@@ -137,7 +138,6 @@ int	piperino9(t_words **nodes, t_data *data)
 	}
 	return (0);
 }
-
 /*
 int	piperino9(t_words **nodes, t_data *data)
 {

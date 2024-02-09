@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/07 20:57:31 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/09 15:20:20 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,14 @@ int	main(int argc, char **argv, char **envp)
 }
 
 /* TODO
+
+Minishell>>: cat < file2 > file ls
+put error for bs 
+echo -n is FUCKED
+when baa is ls -l its empty in executor.
+
+
+
 Different output than bash.. but may not important: // JULIUS
 	Minishell>>: cat file3 | wv
 	/snap/bin/wv : No such file or directory
@@ -94,7 +102,7 @@ JULIUS WEDNESDAY:
 Minishell>>: echo "cunt" > file3
 Minishell>>: echo -n "cunt" > file3
 two different outputs, one with -n doestn output to file. 
-echo cunt >file3 | grep cunt infinite loop ? 
+echo cunt >file3 | grep cunt infinite loop ? FIXED
 --
 Minishell>>: export baa="env | grep $USER > file3"
 Minishell>>: $baa //quite broken
@@ -105,6 +113,10 @@ When I comment out the last split in getfds:
 
  env | grep $USER >file3 no longer works, basically all redirections without spaces: "cat<file2>file3>file4"... all break. 
 
+
+
+
+echoi cunt
 
 
 #################
