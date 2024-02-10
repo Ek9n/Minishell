@@ -1,4 +1,4 @@
-in single_command:echo cunt
-in echo|echo cunt|
-in echo|9|
-cunt
+in single_command:echo cunt >fuck
+in echo|echo cunt >fuck|
+in echo|15|
+cunt >fuck

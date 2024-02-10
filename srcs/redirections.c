@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/09 15:12:22 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/09 16:32:34 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,14 @@ int	ft_heredoc(char *delimiter, t_data *data)
 	close(fd);
 	return (fd);
 }
+int is_in_quotes(char *string)
+{
+	if (string[0] == '\"' && string[ft_strlen(string)] == '\'')
+		return (1);
+	if (string[0] == '\'' && string[ft_strlen(string)] == '\'')
+		return (1);
+	return (0);
+}
 void	get_fds(t_data *data,int i)
 {
 	int a;
@@ -81,17 +89,19 @@ void	get_fds(t_data *data,int i)
 	a = 0;
 	while (data->nodes[i]->split_command[a])
 	{	
-		if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
-			{
-				ft_heredoc(data->nodes[i]->split_command[a + 1],data);
-				break;
-			}
-			else
-				a++;
+		if (is_in_quotes(data->nodes[i]->split_command[a]) == 0)
+			if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
+				{
+					ft_heredoc(data->nodes[i]->split_command[a + 1],data);
+					break;
+				}	
+		a++;
 	}
 	a = 0;
 	while (data->nodes[i]->split_command[a] != NULL )
 	{
+		if (is_in_quotes(data->nodes[i]->split_command[a]) == 0)
+		{
 		if (check_token_syntax(data->nodes[i]->split_command[a]) == 3) // >
 		{
 			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -156,6 +166,7 @@ void	get_fds(t_data *data,int i)
 		}
 		else if (begin != 1) 
 			counter++;
+		}
 		a++;
 	}
 	a = counter;
