@@ -6,7 +6,7 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/01/20 10:14:03 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/02/10 19:09:05 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,10 +27,12 @@ VPATH			=	$(SRC_FOLDER)
 SRCS =	Main.c				\
 		lexer.c				\
 		enviromentvars.c	\
+		enviromentvars_2.c	\
 		utils_1.c			\
 		redirections.c		\
 		Parser.c			\
 		builtins.c			\
+		builtins_2.c		\
 		expander.c			\
 		executor.c			\
 		Error.c				\

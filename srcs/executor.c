@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/10 17:05:07 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 20:20:51 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,12 @@
 
 int Executor(t_data *data)
 {
-	// printf("nopipes:%d\n", data->numb_of_pipes);
-	// printf("ExecutorIn:%s\n", data->nodes[0]->split_command[0]);
 	int	i;
 
 	i = -1;
 	int a = 0;
 	while (data->nodes[++i])
-	{
 		get_fds(data, i);
-		//while (data->nodes[i]->split_command[a])
-		//{	
-		//	ft_putstr_fd(data->nodes[i]->split_command[a],STDOUT_FILENO);
-		//	a++;
-		//}
-		//a = 0;	
-	}
-	
-		// printf("ExecutorOut:%s\n", data->nodes[0]->split_command[0]);
 	if (data->numb_of_pipes == 0)
 	{
 		single_command(data, 0);
@@ -69,17 +57,10 @@ int	cnt_bytes(char **arr)
 
 int	single_command(t_data *data, int i)
 {
-	// printf("in single_command:%s\n", data->nodes[i]->command);
-	// printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
-	// printf("in single_command:%s\n", data->nodes[i]->split_command[1]);
-// enum for checking alll keywords before... if it doesnt match -> print error
 	if (data->nodes[i] && data->nodes[i]->split_command[0])
 	{	
 		if (cmp_keyword("echo", data->nodes[i]->command))
-		{
-			// printf("singlecommand -> echo\n");
 			echo(data->nodes[i]);
-		}
 		else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
 		{
 			data->nodes[i]->output = getpwd();
@@ -91,19 +72,12 @@ int	single_command(t_data *data, int i)
 		{
 			int b = -1;
 			while (data->envp[++b]);
-			printf("executerEnvVars1:%d|\n", b);
-
 			export(data->nodes[i]->split_command, &data->envp);
-
 			b = -1;
 			while (data->envp[++b]);
-			printf("executerEnvVars2:%d|\n", b);
 		}
 		else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
-		{
 			unset(data->nodes[i]->split_command, &data->envp);
-			// unset(data->nodes[i]->split_command[1], &data->envp);
-		}
 		else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
 		{
 			printf("single_command//env\n");
@@ -114,12 +88,8 @@ int	single_command(t_data *data, int i)
 			g_exit_status = 69;
 			free_and_close_data(data);
 		}
-		else
-		{
-			// printf("(single_command) - exec_cmd\n");
-			if (data->nodes[i]->split_command[0])
+		else if (data->nodes[i]->split_command[0])
 				exec_cmd(data->nodes[i]->split_command, data);
-		}
 	}
 	return (0);
 }
@@ -237,18 +207,7 @@ void	exec_cmd(char **split_command, t_data *data)
 							break;
 					}
 					else if (pid == 0 && g_exit_status == 0)
-               	 {	
-						// split_command++; <- this made it bugging
-               	         // printf("cmd1:%s, path1:%s\n", split_command[1], command);
-               	         // printf("cmd1:%s, path1:%s\n", split_command[2], command);
-               	         // printf("cmd1:%s, path1:%s\n", split_command[3], command);
                	         execve(command, split_command, data->envp);
-               	         /*free(command);
-               	         printf("Return not expected. Must be an execve error.\n");
-               	         g_exit_status = 420;
-               	         free_and_close_data(data); // this can go after we are done implementing
-               	         */
-               	 }
                	 waitpid(pid, &status, 0);
                	 if (WIFEXITED(status))
                	         g_exit_status = WEXITSTATUS(status);

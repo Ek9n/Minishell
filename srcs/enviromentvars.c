@@ -1,10 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   enviromentvars.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
+/*   Created: 2024/02/10 19:03:32 by jfoltan           #+#    #+#             */
+/*   Updated: 2024/02/10 19:03:32 by jfoltan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	**arrdup(char **enviroment)
 {
-	int		rows;
-	int		i;
-	char	**dup;
+	int			rows;
+	int			i;
+	char		**dup;
 
 	rows = 0;
 	while (enviroment[rows])
@@ -27,7 +42,7 @@ char	**arrdup(char **enviroment)
 
 int	emptyvar(char *str)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (str[i])
@@ -41,7 +56,7 @@ int	emptyvar(char *str)
 
 void	printenv(char **env)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (env[i] != NULL)
@@ -55,111 +70,15 @@ void	printenv(char **env)
 	}
 }
 
-int	cntenv(char **env)
+void	purge_arr(char *cmds, char ***env)
 {
-	int	i;
+	char	**temp;
+	int		a;
 
-	i = 0;
-	while (env[i] != NULL)
-		i++;
-	return (i);
-}
-
-void	freeenv(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i] != NULL)
-	{
-		free(env[i]);
-		i++;
-	}
-	free(env);
-}
-
-void    delete_env_var(char *name, char ***env)
-{
-    int size = cntenv(*env);
-    char    **new_env = 0;
-    int i;
-    int j;
-    new_env = ft_calloc(size + 1, sizeof(char *));
-    i = 0;
-    j = 0;
-    while (env[0][i] != NULL)
-    {
-        if (ft_strcmp(name, env[0][i]) == 0 && (env[0][i][ft_strlen(name)] == '\0' || env[0][i][ft_strlen(name)] == '='))
-        {
-            // printf("HLLO:::%c\n", env[0][i][ft_strlen(env[0][i])]);
-            // printf("LEN:::%zu\n", ft_strlen(env[0][i]));
-            // printf("STR:::%s\n", env[0][i]);
-            free(env[0][i]);
-        }
-        else
-        {
-            new_env[j] = env[0][i];
-            j++;
-        }
-        i++;
-    }
-    free(*env);
-    *env = new_env;
-}
-
-int	valid_var(char *name)
-{
-	int	i;
-			// printf("exportIN: '%s':\n", name);
-	i = -1;
-	while (name[++i])
-	{
-		if (i == 0 && !(ft_isalpha(name[i]) || name[i] == '_'))
-		{
-			printf("-minishell: export: '%s': not a valid identifier\n", name);
-			return (0);
-		}
-		else if (i > 0 && name[i] == '=')
-			break ;
-		else if (i > 0 && !(ft_isalpha(name[i]) || name[i] == '_' || ft_isdigit(name[i])))
-		{
-			printf("-minishell: export: '%s': not a valid identifier\n", name);
-			return (0);
-		}
-	}
-	return (1);
-}
-
-void	add_env_var(char *name, char ***env)
-{
-	int		size = cntenv(*env) + 1;
-	int		i;
-	char	**new_env;
-
-	if (valid_var(name))
-	{
-		new_env = ft_calloc(size + 1, sizeof(char *));
-		i = 0;
-		while (env[0][i] != NULL)
-		{
-			new_env[i] = env[0][i];
-			i++;
-		}
-		new_env[i] = ft_strdup(name);
-		free(*env);
-		*env = new_env;
-	}
-}
-
-void	purge_arr(char *cmds,char ***env)
-{
-	char **temp;
-	int a;
 	a = 0;
-	// printf("PURGE:%s\n", cmds);
 	temp = ft_split(cmds, '=');
 	delete_env_var(temp[0], env);
-	while(temp[a])
+	while (temp[a])
 	{
 		free(temp[a]);
 		a++;
