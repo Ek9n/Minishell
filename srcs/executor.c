@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/10 13:01:04 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 16:48:29 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,17 @@ int	cnt_bytes(char **arr)
 
 int	single_command(t_data *data, int i)
 {
-	printf("in single_command:%s\n", data->nodes[i]->command);
+	// printf("in single_command:%s\n", data->nodes[i]->command);
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[0]);
 	// printf("in single_command:%s\n", data->nodes[i]->split_command[1]);
 // enum for checking alll keywords before... if it doesnt match -> print error
 	if (data->nodes[i] && data->nodes[i]->split_command[0])
 	{	
-		if (!ft_strcmp("echo", data->nodes[i]->command))
+		if (cmp_keyword("echo", data->nodes[i]->command))
+		{
+			// printf("singlecommand -> echo\n");
 			echo(data->nodes[i]);
+		}
 		else if (cmp_keyword("pwd",data->nodes[i]->split_command[0]))
 		{
 			data->nodes[i]->output = getpwd();
@@ -120,6 +123,21 @@ int	single_command(t_data *data, int i)
 	}
 	return (0);
 }
+
+ int		check_for_only_tab_or_space(char *str)
+ {
+ 	int	i;
+
+ 	i = 0;
+ 	while (str[i])
+ 	{
+ 		if (str[i] != ' ' && str[i] != '\t')
+ 			return (0);
+ 		i++;
+ 	}
+ 	return (-1);
+ }
+
 char **FIX_ME(char **split_command)
 {
     char *temp_not_split;
@@ -130,7 +148,8 @@ char **FIX_ME(char **split_command)
     int i;
     int a;
     int j;
-
+	if (check_for_only_tab_or_space(split_command[0]) == -1)
+		return (NULL);
     old_split = arrdup(split_command);
     temp_not_split = ft_strdup(split_command[0]);
     temp_split_one = ft_split(temp_not_split, ' ');
@@ -251,3 +270,4 @@ void	exec_cmd(char **split_command, t_data *data)
 130 	Fatal error 	When interrupted by Ctrl+C
 255 	Out of range 	When the exit code exceeds 255
 */
+

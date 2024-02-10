@@ -1,4 +1,3 @@
-in single_command:echo cunt >fuck
-in echo|echo cunt >fuck|
-in echo|15|
-cunt >fuck
+origout:4, fdout:6
+origout:4, fdout:1
+HEEEYX

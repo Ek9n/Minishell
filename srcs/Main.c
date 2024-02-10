@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/09 15:20:20 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 16:48:48 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,4 +148,37 @@ Minishell>>: cat < file2 > file3 | wc < file3
 // hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ echo bla | wc < f3
 // 1 1 5
 // hstein@c4b1c1:~/Repositories/Minishell_NewMerged$ 
+
+
+Minishell>>: cat
+^\Quit: (core is dumped,yo)
+Minishell>>: echo $?
+130 should be 131
+
+
+=======
+Minishell>>: export baa=15
+executerEnvVars1:47|
+executerEnvVars2:48|
+Minishell>>: $baa
+/snap/bin/15 : No such file or directory
+Minishell>>: export baa= 15
+executerEnvVars1:48|
+-minishell: export: '15': not a valid identifier
+executerEnvVars2:48|
+Minishell>>: export 3baa=15
+executerEnvVars1:48|
+-minishell: export: '3baa=15': not a valid identifier
+executerEnvVars2:48|
+Minishell>>: $baa
+zsh: segmentation fault (core dumped)  ./Minishell
+its because of empty variable
+
+======
+
+Minishell>>: file 3 << HERE
+> 
+> 
+> ds
+3: cannot open `3' (No such file or directory) // julius
 */
