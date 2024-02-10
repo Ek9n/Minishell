@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:50:24 by jfoltan           #+#    #+#             */
-/*   Updated: 2023/08/03 21:21:57 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 19:42:01 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,24 +26,3 @@ char	*ft_strdup(const char *s)
 	ptr = ft_memcpy(ptr, s, i);
 	return (ptr);
 }
-// char *ft_strdup(const char *s)
-// {
-//     size_t i;
-//     char *ptr;
-
-//     i = ft_strlen(s) + 1;
-//     ptr = (char *)malloc(sizeof(char) * i);
-//     if (!ptr) {
-//         // Fehlerbehandlung hier, falls die Speicherzuweisung fehlschlägt
-//         return NULL;
-//     }
-//     ptr = ft_memcpy(ptr, s, i);
-    
-//     if (!ptr) {
-//         // Fehlerbehandlung hier, falls ft_memcpy fehlschlägt
-//         free(ptr);
-//         return NULL;
-//     }
-
-//     return ptr;
-// }

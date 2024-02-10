@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/01/21 12:06:45 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 18:18:57 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,18 @@ void 	print_nodes(t_words **nodes);
 
 //utils_1.c
 // void	redirection_space_extender(char **dirty_word);
+
+// Piperino
+// piperino_1.c
+void	error_exit(char *msg);
+void	free_peperino(int **pipe_fd, pid_t *pids, int numb_of_pipes);
+void	close_pipes(int	**pipe_fd, int numb_of_pipes);
+void	close_prepipes(int *ij, int **pipe_fd);
+// piperino_2.c
+
+void	init_piperino(t_data *data, int ***pipe_fd, pid_t **pids);
+void	terminate_piperino(int *ij, int **pipe_fd, pid_t *pids, t_data *data);
+void	handle_cases(int *ij, int **pipe_fd, t_data *data);
+int		piperino9(t_words **nodes, t_data *data);
 
 #endif
