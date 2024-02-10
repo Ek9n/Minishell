@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/10 17:04:18 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:27:29 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,26 @@ int check_token_syntax(char *str)
 	}
 	return(0);
 }
+int	find_char_from_index(char *str, char c, int index)
+{
+	int	i;
+
+	i = index;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
 
 int	ft_heredoc(char *delimiter, t_data *data)
 {
 	char	*line;
 	int		fd;
 	int		i;
+	int 	dollar;
 
 	i = 0;
 	fd = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -48,6 +62,11 @@ int	ft_heredoc(char *delimiter, t_data *data)
 	while (true)
 	{
 		line = readline("> ");
+		if (ft_strchr(line, '$') != NULL)
+		{
+			dollar = find_char_from_index(line,'$',0);
+			expand_vars(&line,dollar,data);
+		}
 		i = -1;
 		while (line[++i] != '\0')
 		{
