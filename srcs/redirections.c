@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/09 16:32:34 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:04:18 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	ft_heredoc(char *delimiter, t_data *data)
 	while (true)
 	{
 		line = readline("> ");
-		expand_vars(&line,0,data);
 		i = -1;
 		while (line[++i] != '\0')
 		{

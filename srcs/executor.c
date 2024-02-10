@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/10 16:48:29 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:05:07 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,8 @@ void	exec_cmd(char **split_command, t_data *data)
 		path = malloc(sizeof(char *) * 2);
 		if (ft_strchr(split_command[0],' '))
 			split_command = FIX_ME(split_command);
+		if (split_command == NULL)
+			return ;
 		command = ft_strdup(split_command[0]);
 		path[0] = ft_strdup("$PATH");
         path[1] = ft_strdup("\0");
@@ -251,12 +253,12 @@ void	exec_cmd(char **split_command, t_data *data)
                	 if (WIFEXITED(status))
                	         g_exit_status = WEXITSTATUS(status);
                	 else if (WIFSIGNALED(status))
-               	         g_exit_status = 129 + WIFSIGNALED(status);
+               	         g_exit_status = 130 + WIFSIGNALED(status);
 				break;
 			}
         else
         {
-                printf("%s : No such file or directory\n",command);
+                printf("%s : No such file or directory\n",split_command[0]);
                 g_exit_status = 127;
         }
         if (command)

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/10 16:48:48 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 17:02:56 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ Minishell>>: cat < file2 > file3 | wc < file3
 Minishell>>: cat
 ^\Quit: (core is dumped,yo)
 Minishell>>: echo $?
-130 should be 131
+130 should be 131 //fixed
 
 
 =======
@@ -172,7 +172,7 @@ executerEnvVars1:48|
 executerEnvVars2:48|
 Minishell>>: $baa
 zsh: segmentation fault (core dumped)  ./Minishell
-its because of empty variable
+its because of empty variable FIXED
 
 ======
 

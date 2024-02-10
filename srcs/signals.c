@@ -25,8 +25,9 @@ void  assign_interactive_backslash(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-		g_exit_status = 131;
 		ft_putstr_fd("Quit: (core is dumped,yo)\n",1);
+		g_exit_status = 131;
+		
 	}
 }
 void assign_interactive_C(int sig)
