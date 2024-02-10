@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: hstein <hstein@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/01/20 10:14:03 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/02/10 18:20:25 by hstein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ SRCS =	Main.c				\
 		enviromentvars.c	\
 		utils_1.c			\
 		redirections.c		\
-		Parser.c			\
+		piperino_1.c			\
+		piperino_2.c			\
 		builtins.c			\
 		expander.c			\
 		executor.c			\
