@@ -10,11 +10,13 @@ void	sig_handler_C(int sig)
 		rl_redisplay();
 	}
 }
+
 void	assign_signals(void)
 {
 	signal(SIGINT, sig_handler_C);
 	signal(SIGQUIT, SIG_IGN);
 }
+
 void  assign_interactive_signals(void)
 {
 	signal(SIGINT, assign_interactive_C);

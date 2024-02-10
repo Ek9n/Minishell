@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/10 18:29:14 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/10 19:48:43 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,11 @@ int	cmp_keywordx(char *keyword, char *str)
 
 int	echo(t_words *node)
 {
-	char 	*tmp;
-	char 	*word;
+	char	*tmp;
+	char	*word;
 	bool	flag;
 
 	flag = false;
-	if (node->num_of_elements == 1 && !cmp_keywordx("echo", node->command))
-	{
-		printf("-minishell.c (echo) %s: command not found\n", node->command);
-		return (1);
-	}
 	tmp = ft_strdup(node->command);
 	word = tmp;
 	word += 5;
@@ -91,7 +86,7 @@ int	cd(t_words *node, t_data *data)
 	char	*dir;
 	char	*pwd;
 	char	*oldpwd;
-	char 	**buffer;
+	char	**buffer;
 	int		i;
 
 	if (node->num_of_elements > 2)
@@ -102,7 +97,8 @@ int	cd(t_words *node, t_data *data)
 	if (node->num_of_elements == 2 && !ft_strcmp(node->split_command[1], ""))
 		return (EXIT_SUCCESS);
 	oldpwd = ft_strjoin("OLDPWD=", getpwd());
-	if (node->split_command[1] == NULL || ft_strcmp(node->split_command[1], "~") == 0)
+	if (node->split_command[1] == NULL || \
+		ft_strcmp(node->split_command[1], "~") == 0)
 		dir = ft_strdup(getenv("HOME"));
 	else
 		dir = ft_strdup(node->split_command[1]);
@@ -130,21 +126,22 @@ int	cd(t_words *node, t_data *data)
 
 int	ls(char *dir)
 {
-	pid_t p = fork();
+	pid_t	p;
 
-	if(p < 0)
+	p = fork();
+	if (p < 0)
 	{
 		perror("fork fail");
 		exit(1);
 	}
 	if (p == 0)
 	{
-		char *ls_argv[] = {"ls", dir, NULL};
+		char	*ls_argv[] = {"ls", dir, NULL};
 		execv("/bin/ls", ls_argv);
 		perror("execv failed");
 		exit(1);
 	}
-	return 0;
+	return (0);
 }
 
 void	unset(char **split_cmds, char ***env)
