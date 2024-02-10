@@ -1,4 +1,5 @@
-in single_command:echo cunt >fuck
-in echo|echo cunt >fuck|
-in echo|15|
-cunt >fuck
+in single_command:echo -n-n blaasdsada
+singlecommand -> echo
+in echo|echo -n-n blaasdsada|
+in echo|20|
+-n-n blaasdsada

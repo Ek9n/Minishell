@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/09 15:02:38 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 15:21:29 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	piperino9(t_words **nodes, t_data *data)
 			if (data->numb_of_pipes > 0)
 			{
 				// Handle Pipes
-				// printf("origout:%d, fdout:%d\n", data->original_fd_out, nodes[i]->fd_out );
+				printf("origout:%d, fdout:%d\n", data->original_fd_out, nodes[i]->fd_out );
 				// if (i == data->numb_of_pipes - 1 && nodes[i]->fd_out != data->original_fd_out)
 				if (i == 0 && nodes[0]->fd_in != STDIN_FILENO)
 					dup2(nodes[0]->fd_in, STDIN_FILENO);
