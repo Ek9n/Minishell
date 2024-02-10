@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/09 15:24:25 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/10 13:01:04 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,50 @@ int	single_command(t_data *data, int i)
 	}
 	return (0);
 }
+char **FIX_ME(char **split_command)
+{
+    char *temp_not_split;
+    char **temp_split_one;
+    char **old_split;
+    char **new_split;
+    int deli;
+    int i;
+    int a;
+    int j;
+
+    old_split = arrdup(split_command);
+    temp_not_split = ft_strdup(split_command[0]);
+    temp_split_one = ft_split(temp_not_split, ' ');
+    deli = 0;
+    i = 0;
+    a = 0;
+    while (split_command[0][i])
+    {
+        if (split_command[0][i] == ' ')
+            deli++;
+        i++;
+    }
+    i = 0;
+    while (split_command[i])
+        i++;
+    new_split = malloc(sizeof(char *) * (i + deli + 1));
+    i = 0;
+    j = 0;
+    while (temp_split_one[j])
+    {
+        new_split[i] = ft_strdup(temp_split_one[j]);
+        i++;
+        j++;
+    }
+    a = 1;
+    while (old_split[a]) {
+        new_split[i] = ft_strdup(old_split[a]);
+        i++;
+        a++;
+    }
+    new_split[i] = NULL;
+    return new_split;
+}
 void	exec_cmd(char **split_command, t_data *data)
 {
 		int status;
@@ -130,7 +174,9 @@ void	exec_cmd(char **split_command, t_data *data)
         
 		//split_command = ft_split
 		path = malloc(sizeof(char *) * 2);
-        command = ft_strdup(split_command[0]);
+		if (ft_strchr(split_command[0],' '))
+			split_command = FIX_ME(split_command);
+		command = ft_strdup(split_command[0]);
 		path[0] = ft_strdup("$PATH");
         path[1] = ft_strdup("\0");
         expand_vars(path, 0, data);
