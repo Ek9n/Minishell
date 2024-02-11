@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/10 18:18:57 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/11 13:27:37 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int		piperino9(t_words **nodes,t_data *data);
 
 // EXECUTOR 
 void	exec_cmd(char **split_command,t_data *data);
-int		Executor(t_data *data);
+int		executor(t_data *data);
 int		cmp_keyword(char *keyword, char *str);
 // DEBUG 
 void 	print_nodes(t_words **nodes);
