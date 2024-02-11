@@ -48,36 +48,3 @@ char	*ft_savef(const char *formatstr, ...)
 	va_end(args);
 	return (ret_line);
 }
-
-/*
-int	main(void)
-{	
-	// ft_printf("I Think About You my Girl\n");
-	// printf("%s, %p", NULL, NULL);
-	// ft_printf("%s", NULL);
-	// printf("%s", NULL);
-	// printf("%%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %c%%", 'A', "42", 42, 42 ,42 , 42, 42, 'B', "-42", -42, -42 ,-42 ,-42, 42, 'C', "0", 0, 0 ,0 ,0, 42, 0);
-	// printf("\n\n");
-
-	int c;
-	ft_printf("\nft_printf:\n");
-	c = ft_printf("| %c %c %c |", '2', '1', 0);
-	printf("\nReturn:%i\n", c);
-
-	ft_printf("\nprintf:\n");
-	c = printf("| %c %c %c |", '2', '1', 0);
-	printf("\nReturn:%i\n", c);
-
-	// printf("Hal%clo\n", '\0');
-
-	// ft_putchar_fd('H', 1);
-	// ft_putchar_fd('\0', 1);
-	// ft_putchar_fd('H', 1);
-
-
-	// ft_printf(" %c %c %c ", '0', 0, '1');
-
-
-	return (0);
-}
-*/
