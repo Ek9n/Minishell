@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 19:08:30 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/10 19:08:34 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/12 19:38:09 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,7 @@ void	delete_env_var(char *name, char ***env)
 		if (ft_strcmp(name, env[0][i]) == 0
 			&& (env[0][i][ft_strlen(name)] == '\0'
 				|| env[0][i][ft_strlen(name)] == '='))
-		{
 			free(env[0][i]);
-		}
 		else
 		{
 			new_env[j] = env[0][i];

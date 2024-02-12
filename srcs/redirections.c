@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 10:43:23 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/12 19:49:06 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,9 @@ void	get_fds(t_data *data, int i)
 
 	begin = 0;
 	counter = 0;
-	a = 0;
+	a = -1;
 	handle_heredoc(data, i);
-	while (data->nodes[i]->split_command[a] != NULL)
+	while (data->nodes[i]->split_command[++a] != NULL)
 	{
 		if (is_in_quotes(data->nodes[i]->split_command[a]) == 0)
 		{
@@ -107,10 +107,9 @@ void	get_fds(t_data *data, int i)
 				do_input(data, i, a, &begin);
 			else if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
 				do_heredoc(data, i, a, &begin);
-		else if (begin != 1)
-			counter++;
+			else if (begin != 1)
+				counter++;
 		}
-		a++;
 	}
 	a = counter;
 	cleanup(data, i, a, begin);

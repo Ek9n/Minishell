@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:17:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/10 20:16:55 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/12 20:18:15 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ void	free_split_commands(t_words *nodes)
 
 	b = -1;
 	while (nodes->split_command[++b])
-	{
 		free(nodes->split_command[b]);
-		free(nodes->split_command);
-		close(nodes->fd_in);
-		close(nodes->fd_out);
-	}
+	free(nodes->split_command);
+	close(nodes->fd_in);
+	close(nodes->fd_out);
 }
 
 void	kill_the_child(t_data *data)
@@ -58,6 +56,7 @@ void	free_and_close_data(t_data *data)
 	i = -1;
 	b = -1;
 	if (data->nodes != NULL)
+	{
 		while (data->nodes[++i])
 		{
 			free(data->nodes[i]->command);
@@ -65,11 +64,9 @@ void	free_and_close_data(t_data *data)
 			if (data->nodes[i]->split_command)
 				free_split_commands(data->nodes[i]);
 			if (data->nodes[i])
-			{
 				free(data->nodes[i]);
-				data->nodes[i] = NULL;
-			}
 		}
+	}
 	unlink(".heredoc");
 	free(data->nodes);
 	data->nodes = NULL;

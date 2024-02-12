@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/12 19:47:24 by jfoltan           #+#    #+#             */
+/*   Updated: 2024/02/12 20:05:32 by jfoltan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
@@ -29,28 +40,20 @@ int	cnt_bytes(char **arr)
 
 int	single_command(t_data *data, int i)
 {
-	int	b;
-
 	if (data->nodes[i] && data->nodes[i]->split_command[0])
 	{
 		if (cmp_keyword("echo", data->nodes[i]->command))
 			echo(data->nodes[i]);
 		else if (cmp_keyword("pwd", data->nodes[i]->split_command[0]))
-		{
 			data->nodes[i]->output = getpwd();
-			printf("%s\n", data->nodes[i]->output);
-		}
 		else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
 			cd(data->nodes[i], data);
 		else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
-				export(data->nodes[i]->split_command, &data->envp);
+			export(data->nodes[i]->split_command, &data->envp);
 		else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
 			unset(data->nodes[i]->split_command, &data->envp);
 		else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
-		{
-			printf("single_command//env\n");
 			printenv(data->envp);
-		}
 		else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
 		{
 			g_exit_status = 69;

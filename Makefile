@@ -6,7 +6,7 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/02/12 10:07:28 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/02/12 20:07:54 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ VPATH			=	$(SRC_FOLDER)
 
 SRCS =	Main.c				\
 		lexer.c				\
+		lexer_utils.c		\
+		lexer_utils_2.c		\
 		enviromentvars.c	\
 		enviromentvars_2.c	\
 		utils_1.c			\
