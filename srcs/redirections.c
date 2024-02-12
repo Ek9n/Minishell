@@ -6,33 +6,33 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/10 17:27:29 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/12 10:43:23 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../includes/minishell.h"
 
-int check_token_syntax(char *str)
+int	check_token_syntax(char *str)
 {
 	if (ft_strlen(str) == 1)
 	{
-		if ( str[0] == '|')
-			return(1);
-		if (str[0] == '<') 
-			return(2);		
+		if (str[0] == '|')
+			return (1);
+		if (str[0] == '<')
+			return (2);
 		if (str[0] == '>')
-			return(3);
+			return (3);
 	}
 	else if (ft_strlen(str) == 2)
 	{
-	if (str[0] == '<' && str[1] == '<')
-		return (4);
-	if (str[0] == '>' && str[1] == '>')
-		return (5);
+		if (str[0] == '<' && str[1] == '<')
+			return (4);
+		if (str[0] == '>' && str[1] == '>')
+			return (5);
 	}
-	return(0);
+	return (0);
 }
+
 int	find_char_from_index(char *str, char c, int index)
 {
 	int	i;
@@ -52,7 +52,7 @@ int	ft_heredoc(char *delimiter, t_data *data)
 	char	*line;
 	int		fd;
 	int		i;
-	int 	dollar;
+	int		dollar;
 
 	i = 0;
 	fd = open(".heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -64,30 +64,19 @@ int	ft_heredoc(char *delimiter, t_data *data)
 		line = readline("> ");
 		if (ft_strchr(line, '$') != NULL)
 		{
-			dollar = find_char_from_index(line,'$',0);
-			expand_vars(&line,dollar,data);
-		}
-		i = -1;
-		while (line[++i] != '\0')
-		{
-			if (line[i] == '$')
-				line[i] = 26;
-		}
-		i = -1;
-		while (line[++i] != '\0')
-		{
-			if (line[i] == 26)
-				expand_vars(&line, i, data);
+			dollar = find_char_from_index(line, '$', 0);
+			expand_vars(&line, dollar, data);
 		}
 		if (ft_strcmp(line, delimiter) == 0)
-			break;	//add variable expansion
+			break ;
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 	}
 	close(fd);
 	return (fd);
 }
-int is_in_quotes(char *string)
+
+int	is_in_quotes(char *string)
 {
 	if (string[0] == '\"' && string[ft_strlen(string)] == '\'')
 		return (1);
@@ -95,207 +84,34 @@ int is_in_quotes(char *string)
 		return (1);
 	return (0);
 }
-void	get_fds(t_data *data,int i)
+
+void	get_fds(t_data *data, int i)
 {
-	int a;
-	int counter;
-// printf("getfdIn:%s\n", data->nodes[i]->split_command[0]);
-	int begin;
+	int	a;
+	int	counter;
+	int	begin;
 
 	begin = 0;
 	counter = 0;
 	a = 0;
-	while (data->nodes[i]->split_command[a])
-	{	
-		if (is_in_quotes(data->nodes[i]->split_command[a]) == 0)
-			if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
-				{
-					ft_heredoc(data->nodes[i]->split_command[a + 1],data);
-					break;
-				}	
-		a++;
-	}
-	a = 0;
-	while (data->nodes[i]->split_command[a] != NULL )
+	handle_heredoc(data, i);
+	while (data->nodes[i]->split_command[a] != NULL)
 	{
 		if (is_in_quotes(data->nodes[i]->split_command[a]) == 0)
 		{
-		if (check_token_syntax(data->nodes[i]->split_command[a]) == 3) // >
-		{
-			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (data->nodes[i]->fd_out == -1)
-			{
-				dup2(data->original_fd_in, STDIN_FILENO);
-				dup2(data->original_fd_out, STDOUT_FILENO);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed\n", 1);
-				g_exit_status = 1;
-			}
-			begin = 1;
-			dup2(data->nodes[i]->fd_out, STDOUT_FILENO);	
-			//close(data->nodes->redirection->fd_out);
-		}
-		else if (check_token_syntax(data->nodes[i]->split_command[a]) == 5) // >
-		{
-			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
-			if (data->nodes[i]->fd_out == -1)
-			{
-				dup2(data->original_fd_in, STDIN_FILENO);
-				dup2(data->original_fd_out, STDOUT_FILENO);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed\n", 1);
-				g_exit_status = 1;
-			}
-			begin = 1;
-			dup2(data->nodes[i]->fd_out, STDOUT_FILENO);
-			//close(data->nodes->redirection->fd_out);
-		}
-		else if (check_token_syntax(data->nodes[i]->split_command[a]) == 2) // <
-		{
-			data->nodes[i]->fd_in = open(data->nodes[i]->split_command[a + 1], O_RDONLY);
-			if (data->nodes[i]->fd_in == -1)
-			{
-				dup2(data->original_fd_in, STDIN_FILENO);
-				dup2(data->original_fd_out, STDOUT_FILENO);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed, file doesnt exist probably\n", 1);
-				g_exit_status = 1;
-			}
-			begin = 1;
-			dup2(data->nodes[i]->fd_in, STDIN_FILENO);
-		}
-		else if (check_token_syntax(data->nodes[i]->split_command[a]) == 4) // <<
-		{ 
-			data->nodes[i]->fd_in = open(".heredoc", O_RDONLY);
-			if (data->nodes[i]->fd_in == -1)
-			{
-				dup2(data->original_fd_in, STDIN_FILENO);
-				dup2(data->original_fd_out, STDOUT_FILENO);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("Heredoc failed to create a temp file.\n", 1);
-				g_exit_status = 1;
-			}
-			begin = 1;
-			dup2(data->nodes[i]->fd_in, STDIN_FILENO);
-		}
-		else if (begin != 1) 
+			if (check_token_syntax(data->nodes[i]->split_command[a]) == 3)
+				do_output_truncate(data, i, a, &begin);
+			else if (check_token_syntax(data->nodes[i]->split_command[a]) == 5)
+				do_output_append(data, i, a, &begin);
+			else if (check_token_syntax(data->nodes[i]->split_command[a]) == 2)
+				do_input(data, i, a, &begin);
+			else if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
+				do_heredoc(data, i, a, &begin);
+		else if (begin != 1)
 			counter++;
 		}
 		a++;
 	}
 	a = counter;
-	while (data->nodes[i]->split_command[a] && begin == 1)
-	{
-		 free (data->nodes[i]->split_command[a]);
-	 	data->nodes[i]->split_command[a] = NULL;
-		a++;
-	}
-		data->nodes[i]->command = ft_join(data->nodes[i]->split_command); //free not sure if we need it ? 
-
-// printf("getfdOut1:%s\n", data->nodes[i]->split_command[0]);
-		//data->nodes[i]->split_command = ft_split(data->nodes[i]->command, ' ');
-// printf("getfdOut2:%s\n", data->nodes[i]->split_command[0]);
+	cleanup(data, i, a, begin);
 }
-
-/*
-void	get_fds(t_data *data,int i)
-{
-	int a;
-// printf("getfdIn:%s\n", data->nodes[i]->split_command[0]);
-	a = 0;
-	while (data->nodes[i]->split_command[a])
-	{	
-		if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
-			{
-				ft_heredoc(data->nodes[i]->split_command[a + 1],data);
-				break;
-			}
-			else
-				a++;
-	}
-	a = 0;
-	while (data->nodes[i]->split_command[a])
-	{
-		if (check_token_syntax(data->nodes[i]->split_command[a]) == 3) // >
-		{
-			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (data->nodes[i]->fd_out == -1)
-			{
-				dup2(data->original_fd_in, STDIN_FILENO);
-				dup2(data->original_fd_out, STDOUT_FILENO);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed\n", 1);
-				g_exit_status = 1;
-			}	
-			data->nodes[i]->split_command[a][0] = 0;
-			data->nodes[i]->split_command[a + 1][0] = 0;
-			data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
-			dup2(data->nodes[i]->fd_out, STDOUT_FILENO);	
-			//close(data->nodes->redirection->fd_out);
-		}
-		if (check_token_syntax(data->nodes[i]->split_command[a]) == 5) // >
-		{
-			data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1], O_CREAT | O_WRONLY | O_APPEND, 0644);
-			if (data->nodes[i]->fd_out == -1)
-			{
-				dup2(data->original_fd_in, STDIN_FILENO);
-				dup2(data->original_fd_out, STDOUT_FILENO);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed\n", 1);
-				g_exit_status = 1;
-			}	
-			data->nodes[i]->split_command[a][0] = 0;
-			data->nodes[i]->split_command[a + 1][0] = 0;
-			data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
-			dup2(data->nodes[i]->fd_out, STDOUT_FILENO);
-			//close(data->nodes->redirection->fd_out);
-		}
-		if (check_token_syntax(data->nodes[i]->split_command[a]) == 2) // <
-		{
-			data->nodes[i]->fd_in = open(data->nodes[i]->split_command[a + 1], O_RDONLY);
-			if (data->nodes[i]->fd_in == -1)
-			{
-				dup2(data->original_fd_in, STDIN_FILENO);
-				dup2(data->original_fd_out, STDOUT_FILENO);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("open failed, file doesnt exist probably\n", 1);
-				g_exit_status = 1;
-			}
-			data->nodes[i]->split_command[a][0] = 0;
-			data->nodes[i]->split_command[a + 1][0] = 0;
-			data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
-			dup2(data->nodes[i]->fd_in, STDIN_FILENO);
-		}
-		if (check_token_syntax(data->nodes[i]->split_command[a]) == 4) // <<
-		{ 
-			data->nodes[i]->fd_in = open(".heredoc", O_RDONLY);
-			if (data->nodes[i]->fd_in == -1)
-			{
-				dup2(data->original_fd_in, STDIN_FILENO);
-				dup2(data->original_fd_out, STDOUT_FILENO);
-				close(data->original_fd_in);
-				close(data->original_fd_out);
-				ft_putstr_fd("Heredoc failed to create a temp file.\n", 1);
-				g_exit_status = 1;
-			}
-			data->nodes[i]->split_command[a][0] = 0;
-			data->nodes[i]->split_command[a + 1][0] = 0;
-			data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
-			dup2(data->nodes[i]->fd_in, STDIN_FILENO);
-		}
-		a++;
-	}
-		data->nodes[i]->command = ft_join(data->nodes[i]->split_command); //free not sure if we need it ? 
-// printf("getfdOut1:%s\n", data->nodes[i]->split_command[0]);
-		//data->nodes[i]->split_command = ft_split(data->nodes[i]->command, ' ');
-// printf("getfdOut2:%s\n", data->nodes[i]->split_command[0]);
-}
-
-*/

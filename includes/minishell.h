@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/11 13:27:37 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/12 10:06:56 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,16 @@ void	purge_arr(char *cmds,char ***env);
 
 // REDIRECTIONS
 void 	get_fds(t_data *data,int index);
+void	handle_open_fail(t_data *data);
+void	cleanup(t_data *data, int i, int a, int begin);
+void	handle_heredoc(t_data *data, int i);
+void	do_output_truncate(t_data *data, int i, int a, int *begin);
+void	do_output_append(t_data *data, int i, int a, int *begin);
+void	do_input(t_data *data, int i, int a, int *begin);
+void	do_heredoc(t_data *data, int i, int a, int *begin);
+int	check_token_syntax(char *str);
+int	ft_heredoc(char *delimiter, t_data *data);
+int	is_in_quotes(char *string);
 
 // LEXER 
 void 	putback_spaces_and_pipes_in_quotes(char **input, t_data *data);
@@ -124,9 +134,25 @@ int		single_command(t_data *data,int i);
 int		piperino9(t_words **nodes,t_data *data);
 
 // EXECUTOR 
+int	single_command(t_data *data, int i);
+int	check_for_only_tab_or_space(char *str);
 void	exec_cmd(char **split_command,t_data *data);
 int		executor(t_data *data);
 int		cmp_keyword(char *keyword, char *str);
+int	check_for_only_tab_or_space(char *str);
+int	count_spaces(char *str);
+int	count_commands(char **split_command);
+void	copy_commands(char **new_split, char **temp_split_one, char **old_split);
+void	handle_access(char *command);
+void	handle_fork_error(void);
+void	handle_exit_status(int status);
+char	*find_path(char **split_command, char **path, t_data *data);
+char	*join_path_and_command(char *path, char *split_command);
+char	*get_command(char **split_command);
+void	handle_fork_error(void);
+void	handle_access(char *command);
+
+
 // DEBUG 
 void 	print_nodes(t_words **nodes);
 

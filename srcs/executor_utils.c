@@ -43,13 +43,7 @@ int	single_command(t_data *data, int i)
 		else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
 			cd(data->nodes[i], data);
 		else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
-		{
-			b = -1;
-			while (data->envp[++b]);
 				export(data->nodes[i]->split_command, &data->envp);
-			b = -1;
-			while (data->envp[++b]);
-		}
 		else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
 			unset(data->nodes[i]->split_command, &data->envp);
 		else if (cmp_keyword("env", data->nodes[i]->split_command[0]))

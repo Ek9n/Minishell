@@ -6,7 +6,7 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/02/10 20:24:48 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/02/12 10:07:28 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,12 +30,17 @@ SRCS =	Main.c				\
 		enviromentvars_2.c	\
 		utils_1.c			\
 		redirections.c		\
+		redirections_utils.c \
+		redirections_utils_2.c \
 		piperino_1.c		\
 		piperino_2.c		\
 		builtins.c			\
 		builtins_2.c		\
 		expander.c			\
 		executor.c			\
+		executor_utils.c	\
+		executor_utils_2.c	\
+		executor_utils_3.c	\
 		Error.c				\
 		signals.c			\
 		error_checks.c		\

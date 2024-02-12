@@ -6,11 +6,12 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 15:51:32 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/11 15:51:33 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/12 10:05:40 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 void	handle_access(char *command)
 {
 	if (access(command, X_OK))
@@ -34,34 +35,14 @@ void	handle_exit_status(int status)
 		g_exit_status = 130 + WIFSIGNALED(status);
 }
 
-void	exec(char *command, char **split_command, t_data *data)
+char	*get_command(char **split_command)
 {
-	int	pid;
-	int	status;
-
-	handle_access(command);
-	if (g_exit_status == 126)
-		return ;
-	pid = fork();
-	if (pid == -1)
-	{
-		handle_fork_error();
-		return ;
-	}
-	if (pid == 0 && g_exit_status == 0)
-		execve(command, split_command, data->envp);
-	waitpid(pid, &status, 0);
-	handle_exit_status(status);
-}
-
-char	*get_command(char *split_command)
-{
-	if (split_command[0] == '/' || (split_command[0] == '.'
+	if (split_command[0][0] == '/' || (split_command[0][0] == '.'
 			&& split_command[0][1] == '/'))
-		return (ft_strdup(split_command));
-	if (split_command[0] == '.' && split_command[0][1] == '.'
+		return (ft_strdup(split_command[0]));
+	if (split_command[0][0] == '.' && split_command[0][1] == '.'
 		&& split_command[0][2] == '/')
-		return (ft_strdup(split_command));
+		return (ft_strdup(split_command[0]));
 	return (NULL);
 }
 

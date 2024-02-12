@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/10 20:27:08 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/12 10:01:57 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	run(char *input, t_data	*data)
 			assign_interactive_signals();
 			data->nodes = init_nodes(input, data);
 			if (data->nodes != NULL)
-				Executor(data);
+				executor(data);
 		}
 		else
 			printf("-minishell: %s: Invalid input\n", input);
