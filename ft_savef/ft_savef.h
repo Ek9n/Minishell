@@ -10,13 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_savef_H
-# define FT_savef_H
+#ifndef FT_SAVEF_H
+# define FT_SAVEF_H
 
 # include <stdarg.h>
 # include "../libft/libft.h"
 
-// Declarations
 // ft_savef
 char	*ft_savef(const char *formatstr, ...);
 

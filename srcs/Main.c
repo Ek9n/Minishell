@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/12 10:01:57 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/12 18:43:46 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,3 +65,7 @@ int	main(int argc, char **argv, char **envp)
 		//free_and_close_data(data);
 	}
 }
+
+/*
+echo bla $USER dodo %PATH
+*/
