@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/13 16:19:51 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/13 23:32:45 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	main(int argc, char **argv, char **envp)
 	int		a;
 
 	(void)argc;
-	(void)argv; 
+	(void)argv;
 	data = init_data(data, envp);
 	while (true)
 	{
@@ -72,4 +72,8 @@ echo bla $USER dodo %PATH
 Minishell>>: echo bla "HALLO $USERda $USER" 'hi $USER ad'
 bla HALLO @hstein hi $USER ad
 
+Minishell>>: "echo blda > file3"
+LEXER1|"echo@blda@>@file3"|
+LEXER2|"echo blda > file3"|
+blda > file3
 */
