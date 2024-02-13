@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 17:51:50 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/11 19:31:21 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/13 17:05:32 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,17 @@ int	expand_vars(char **input, int i, t_data *data)
 		l_m_r[1] = ft_strdup(ft_strchr(tmp_var, '=') + 1);
 	}
 	else
+	{
+		printf("hiii\n");
 		cnt = build_str(input, l_m_r, i, data);
+	}
 	l_m_r[2] = &input[0][i + cnt];
 	new_str = ft_savef("%s%s%s", l_m_r[0], l_m_r[1], l_m_r[2]);
 	input[0] = new_str;
+	printf("expander1!:%s|\n", l_m_r[0]);
+	printf("expander2!:%s|\n", l_m_r[1]);
+	// printf("expander!:%s\n", l_m_r[2]);
+	// printf("expander!:%s\n", new_str);
 	return (0);
 }
 

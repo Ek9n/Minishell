@@ -3,54 +3,61 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 20:09:25 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/13 18:04:19 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	check_spaces(char **dirty_word, char **tmp_word)
+{
+	int		ij[2];
+	int		last_quote;
+	bool 	quotes;
+
+	last_quote = 0;
+	quotes = false;
+	ij[0] = 0;
+	ij[1] = 0;
+	while (dirty_word[0][ij[1]])
+	{
+		detect_quote(&dirty_word[0][ij[1]], &quotes, &last_quote);
+		if (!quotes && redir_case(&dirty_word[0][ij[1]]) == 1)
+		{
+			tmp_word[0][ij[0]++] = ' ';
+			tmp_word[0][ij[0]++] = dirty_word[0][(ij[1])++];
+			tmp_word[0][ij[0]++] = ' ';
+			detect_quote(&dirty_word[0][ij[1]], &quotes, &last_quote);
+		}
+		else if (!quotes && redir_case(&dirty_word[0][ij[1]]) == 2)
+		{
+			tmp_word[0][ij[0]++] = ' ';
+			tmp_word[0][ij[0]++] = dirty_word[0][(ij[1])++];
+			tmp_word[0][ij[0]++] = dirty_word[0][(ij[1])++];
+			tmp_word[0][ij[0]++] = ' ';
+			detect_quote(&dirty_word[0][ij[1]], &quotes, &last_quote);
+		}
+		tmp_word[0][ij[0]] = dirty_word[0][ij[1]];
+		ij[0]++;
+		ij[1]++;
+	}
+	tmp_word[0][ij[1]] = '\0';
+}
+
 void	redirection_space_extender(char **dirty_word)
 {
-	int		i;
-	int		j;
-	char	*tmp_word2;
-	bool	quotes;
 	int		last_quote;
+	bool	quotes;
+	char	*tmp_word;
 
-	tmp_word2 = malloc(ft_strlen(*dirty_word) * 2);
-	quotes = false;
-	last_quote = 0;
-	i = 0;
-	j = 0;
-	while (dirty_word[0][i])
-	{
-		detect_quote(&dirty_word[0][i], &quotes, &last_quote);
-		if (!quotes && redir_case(&dirty_word[0][i]) == 1)
-		{
-			tmp_word2[j++] = ' ';
-			tmp_word2[j++] = dirty_word[0][i++];
-			tmp_word2[j++] = ' ';
-			detect_quote(&dirty_word[0][i], &quotes, &last_quote);
-		}
-		else if (!quotes && redir_case(&dirty_word[0][i]) == 2)
-		{
-			tmp_word2[j++] = ' ';
-			tmp_word2[j++] = dirty_word[0][i++];
-			tmp_word2[j++] = dirty_word[0][i++];
-			tmp_word2[j++] = ' ';
-			detect_quote(&dirty_word[0][i], &quotes, &last_quote);
-		}
-		tmp_word2[j] = dirty_word[0][i];
-		j++;
-		i++;
-	}
-	tmp_word2[j] = '\0';
+	tmp_word = malloc(ft_strlen(*dirty_word) * 2);
+	check_spaces(dirty_word, &tmp_word);
 	free(dirty_word[0]);
-	dirty_word[0] = ft_strdup(tmp_word2);
-	free(tmp_word2);
+	dirty_word[0] = ft_strdup(tmp_word);
+	free(tmp_word);
 }
 
 void	clean_spaces_in_command(char **command)
@@ -81,6 +88,37 @@ void	clean_spaces_in_command(char **command)
 	free(tmp_clean);
 }
 
+void	replace_spaces_and_pipes_in_quotes(char *input)
+{
+	int		quotes;
+	int		i;
+	int		j;
+
+	quotes = 0;
+	i = 0;
+	j = 0;
+	while (input[i] != '\0')
+	{
+		if (input[i] == '\'' && quotes == 0)
+			quotes = 1;
+		else if (input[i] == '\'' && quotes == 1)
+			quotes = 0;
+		if (input[i] == '\"' && quotes == 0)
+			quotes = 2;
+		else if (input[i] == '\"' && quotes == 2)
+			quotes = 0;
+		if (input[i] == ' ' && (quotes == 1 || quotes == 2))
+			input[i] = '@';
+		if (input[i] == '\t' && (quotes == 1 || quotes == 2))
+			input[i] = '&';
+		if (input[i] == '|' && (quotes == 1 || quotes == 2))
+			input[i] = '*';
+		if (input[i] == '$' && quotes != 1)
+			input[i] = 26;
+		i++;
+	}
+}
+
 void	putback_spaces_and_pipes_in_quotes(char **input, t_data *data)
 {
 	int	i;
@@ -106,6 +144,11 @@ void	putback_spaces_and_pipes_in_quotes(char **input, t_data *data)
 			input[0][i] = '\t';
 		if (input[0][i] == '*' && (quotes == 1 || quotes == 2))
 			input[0][i] = '|';
+		i++;
+	}
+	i = 0;
+	while (*input && input[0][i] != '\0')
+	{
 		if (input[0][i] == 26)
 			expand_vars(input, i, data);
 		i++;
@@ -182,7 +225,9 @@ t_words	**init_nodes(char *input, t_data *data)
 			remove_quotes(&nodes[a]->split_command[i]);
 		}
 		nodes[a]->num_of_elements = i;
+		printf("LEXER1|%s|\n", nodes[a]->command);
 		putback_spaces_and_pipes_in_quotes(&nodes[a]->command, data);
+		printf("LEXER2|%s|\n", nodes[a]->command);
 		remove_quotes(&nodes[a]->command);
 		nodes[a]->fd_in = dup2(data->original_fd_in, STDIN_FILENO);
 		nodes[a]->fd_out = dup2(data->original_fd_out, STDOUT_FILENO);

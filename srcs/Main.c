@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/12 20:18:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/13 16:19:51 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,8 @@ int	main(int argc, char **argv, char **envp)
 
 /*
 echo bla $USER dodo %PATH
+
+Minishell>>: echo bla "HALLO $USERda $USER" 'hi $USER ad'
+bla HALLO @hstein hi $USER ad
+
 */
