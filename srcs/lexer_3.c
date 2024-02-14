@@ -70,7 +70,7 @@ t_words	**init_nodes(char *input, t_data *data)
 	i = 0;
 	while (buffer[i] != NULL)
 	{
-		nodes[a] = ft_calloc(1, sizeof(t_words)); 
+		nodes[a] = ft_calloc(1, sizeof(t_words));
 		nodes[a]->command = ft_strdup(buffer[i]);
 		clean_spaces_in_command(&nodes[a]->command);
 		a++;
