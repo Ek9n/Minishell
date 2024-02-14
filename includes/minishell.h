@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 20:14:08 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:17:08 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ enum		e_errors
 // MAIN_UTILS
 void		puterr(int err);
 int			ft_strcmp(const char *s1, const char *s2);
+
 char		*ft_join(char **arr);
 void		free_and_close_data(t_data *data);
 
@@ -97,7 +98,7 @@ void		purge_arr(char *cmds, char ***env);
 
 // REDIRECTIONS
 void		get_fds(t_data *data, int index);
-void		handle_open_fail(t_data *data);
+void		handle_open_fail(t_data *data,int i);
 void		cleanup(t_data *data, int i, int a, int begin);
 void		handle_heredoc(t_data *data, int i);
 void		do_output_truncate(t_data *data, int i, int a, int *begin);
@@ -107,6 +108,7 @@ void		do_heredoc(t_data *data, int i, int a, int *begin);
 int			check_token_syntax(char *str);
 int			ft_heredoc(char *delimiter, t_data *data);
 int			is_in_quotes(char *string);
+void		init_vars(int *counter, int *a, int *begin);
 
 // LEXER
 void		putback_spaces_and_pipes_in_quotes(char **input, t_data *data);
@@ -162,9 +164,10 @@ void		print_nodes(t_words **nodes);
 // Piperino
 // piperino_1.c
 void		error_exit(char *msg);
-void		free_peperino(int **pipe_fd, pid_t *pids, int numb_of_pipes);
+static void	free_peperino(int **pipe_fd, pid_t *pids, int numb_of_pipes);
 void		close_pipes(int **pipe_fd, int numb_of_pipes);
 void		close_prepipes(int *ij, int **pipe_fd);
+void free_arr(char **arr);
 // piperino_2.c
 
 void		init_piperino(t_data *data, int ***pipe_fd, pid_t **pids);

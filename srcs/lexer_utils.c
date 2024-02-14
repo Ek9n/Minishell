@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:06:21 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 20:12:27 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/13 12:56:18 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,10 @@ void	replace_spaces_and_pipes_in_quotes(char *input)
 {
 	int		quotes;
 	int		i;
-	int		j;
 
 	quotes = 0;
-	i = 0;
-	j = 0;
-	while (input[i] != '\0')
+	i = -1;
+	while (input[++i] != '\0')
 	{
 		if (input[i] == '\'' && quotes == 0)
 			quotes = 1;
@@ -55,7 +53,6 @@ void	replace_spaces_and_pipes_in_quotes(char *input)
 			input[i] = '*';
 		if (input[i] == '$' && quotes != 1)
 			input[i] = 26;
-		i++;
 	}
 }
 

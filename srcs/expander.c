@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 17:51:50 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/11 19:31:21 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/14 14:18:59 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,8 @@ int	expand_vars(char **input, int i, t_data *data)
 	l_m_r[2] = &input[0][i + cnt];
 	new_str = ft_savef("%s%s%s", l_m_r[0], l_m_r[1], l_m_r[2]);
 	input[0] = new_str;
+	free(l_m_r[0]);
+	free(l_m_r[1]);
 	return (0);
 }
 

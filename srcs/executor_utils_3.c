@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:15:51 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 10:06:01 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:53:31 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,7 @@ char	*find_path(char **split_command, char **path, t_data *data)
 			break ;
 		i++;
 	}
+	if (path)
+		free_arr(path);
 	return (command);
 }

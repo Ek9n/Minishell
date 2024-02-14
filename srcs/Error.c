@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 17:17:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 20:18:15 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/13 16:56:15 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ void	free_and_close_data(t_data *data)
 			free(data->nodes[i]->output);
 			if (data->nodes[i]->split_command)
 				free_split_commands(data->nodes[i]);
-			if (data->nodes[i])
-				free(data->nodes[i]);
+			free(data->nodes[i]);
 		}
 	}
 	unlink(".heredoc");

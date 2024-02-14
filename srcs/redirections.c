@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 19:49:06 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/13 13:30:48 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,7 @@ void	get_fds(t_data *data, int i)
 	int	counter;
 	int	begin;
 
-	begin = 0;
-	counter = 0;
-	a = -1;
+	init_vars(&counter, &a, &begin);
 	handle_heredoc(data, i);
 	while (data->nodes[i]->split_command[++a] != NULL)
 	{

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 19:02:18 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/14 14:14:24 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ void	exec_cmd(char **split_command, t_data *data)
 		printf("%s : Not found, sorry not sorry.\n", split_command[0]);
 		g_exit_status = 127;
 	}
-	if (command)
-		free(command);
+	free(path);
+	free(command);
+
 }

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 15:51:32 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 10:05:40 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:54:49 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ char	*get_command(char **split_command)
 char	*join_path_and_command(char *path, char *split_command)
 {
 	char	*command;
-
+	char	*temp;
 	command = ft_strjoin(path, "/");
-	return (ft_strjoin(command, split_command));
+	temp = ft_strjoin(command, split_command);
+	free(command);
+	return (temp);
 }

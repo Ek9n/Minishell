@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 20:09:25 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/14 11:59:02 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	clean_spaces_in_command(char **command)
 		else
 			tmp_clean[j++] = command[0][i++];
 	}
-	while (tmp_clean[--j] == ' ')
-		;
+	while (tmp_clean[--j] == ' ');
+
 	tmp_clean[j + 1] = '\0';
 	free(*command);
 	*command = ft_strdup(tmp_clean);
@@ -190,5 +190,12 @@ t_words	**init_nodes(char *input, t_data *data)
 	}
 	data->numb_of_pipes = a - 1;
 	a = 0;
+	free(input);
+	while(buffer[a])
+	{
+		free(buffer[a]);
+		a++;
+	}
+	free(buffer);
 	return (nodes);
 }

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/12 20:18:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/14 14:17:02 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,14 @@
 
 int	g_exit_status = 0;
 
-static t_data	*init_data(t_data *data, char **envp)
+static t_data	*init_data(t_data *data, char **envp, int argc)
 {
+	if (argc != 1)
+	{
+		printf("Error: Minishell does not accept any arguments,");
+		printf("but nice try ;)\n");
+		exit(1);
+	}
 	data = malloc(sizeof(t_data));
 	data->envp = arrdup(envp);
 	data -> original_fd_in = dup(STDIN_FILENO);
@@ -43,29 +49,56 @@ static void	run(char *input, t_data	*data)
 	}
 }
 
+void	reset(t_data *data)
+{
+	dup2(data->original_fd_in, 0);
+	dup2(data->original_fd_out, 1);
+	data->last_exit_status = g_exit_status;
+	g_exit_status = 0;
+}
+
+void	run_shell(t_data *data, char *input)
+{
+	assign_interactive_signals();
+	data->nodes = init_nodes(input, data);
+	if (data->nodes != NULL)
+		executor(data);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 	char	*input;
 	int		a;
 
-	(void)argc;
 	(void)argv; 
-	data = init_data(data, envp);
+	data = init_data(data, envp, argc);
 	while (true)
 	{
 		assign_signals();
-		dup2(data->original_fd_in, 0);
-		dup2(data->original_fd_out, 1);
-		data->last_exit_status = g_exit_status;
-		g_exit_status = 0;
+		reset(data);
 		input = readline("Minishell>>: ");
-		run(input, data);
-		free (input);
-		//free_and_close_data(data);
+		if (input == NULL)
+			if (rl_end == 0)
+				exit(0);
+		if (input && input[0] != '\0')
+		{
+			add_history(input);
+			if (valid_input(input))
+				run_shell(data, input);
+			else
+				printf("-minishell: %s: Invalid input\n", input);
+			free_and_close_data(data);
+		}
 	}
 }
 
 /*
 echo bla $USER dodo %PATH
+*/
+//LEAK CHECK COMMAND:
+//valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all ./Minishell
+/*
+LEAK_FIX julius:
+in cmp keyword replaced strcmp with strncmp, because of a lot of invalid read errors
 */

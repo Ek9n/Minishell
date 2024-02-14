@@ -62,7 +62,7 @@ char	*ft_join(char **arr)
 	current_length = 0;
 	while (arr[++i] != NULL)
 		total_length += ft_strlen(arr[i]);
-	str = ft_strdup("");
+	str = ft_calloc(total_length + i + 2, sizeof(char));
 	i = -1;
 	while (arr[++i] != NULL)
 	{
@@ -70,10 +70,22 @@ char	*ft_join(char **arr)
 		{
 			if (arr[i][0] == '\0')
 				arr[i] = ft_strdup(" ");
-			current_length += ft_strlcat(str, arr[i], total_length + i + 1);
+			current_length += ft_strlcat(str, arr[i], total_length + i + 2);
 			if (arr[i + 1] && arr[i + 1][0] != '\0')
-				current_length += ft_strlcat(str, " ", total_length + i + 1);
+				current_length += ft_strlcat(str, " ", total_length + i + 2);
 		}
 	}
 	return (str);
+}
+void free_arr(char **arr)
+{
+	int i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }

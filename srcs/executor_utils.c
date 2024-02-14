@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:47:24 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 20:05:32 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/14 11:49:23 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	cmp_keyword(char *keyword, char *str)
 	if (!keyword || !str)
 		return (-1);
 	len = ft_strlen(keyword);
-	if (ft_strlen(str) > 0 && (ft_strcmp(keyword, str) == 0) && (*(str
+	if (ft_strlen(str) > 0 && (ft_strncmp(keyword, str,ft_strlen(keyword)) == 0) && (*(str
 				+ len) == '\0' || *(str + len) == ' '))
 		return (1);
 	return (0);
