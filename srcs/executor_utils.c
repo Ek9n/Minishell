@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:47:24 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 20:05:32 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/14 23:48:00 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,12 @@ int	single_command(t_data *data, int i)
 {
 	if (data->nodes[i] && data->nodes[i]->split_command[0])
 	{
-		if (cmp_keyword("echo", data->nodes[i]->command))
+		if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
+		{
+	printf("aaSTR:|%s|\n", data->nodes[i]->split_command[0]);
+
 			echo(data->nodes[i]);
+		}
 		else if (cmp_keyword("pwd", data->nodes[i]->split_command[0]))
 			data->nodes[i]->output = getpwd();
 		else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))

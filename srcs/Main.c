@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/13 23:32:45 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/14 23:49:45 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,7 @@ Minishell>>: "echo blda > file3"
 LEXER1|"echo@blda@>@file3"|
 LEXER2|"echo blda > file3"|
 blda > file3
+
+"echo bla" should be one work -> split_cmd[0] should be "echo bla" not just "echo"
+
 */
