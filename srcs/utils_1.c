@@ -77,9 +77,10 @@ char	*ft_join(char **arr)
 	}
 	return (str);
 }
-void free_arr(char **arr)
+
+void	free_arr(char **arr)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (arr[i])

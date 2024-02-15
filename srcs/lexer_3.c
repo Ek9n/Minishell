@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/15 13:20:03 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/15 15:43:45 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,9 @@ t_words	**init_nodes(char *input, t_data *data)
 	a = routine(data, nodes, i);
 	data->numb_of_pipes = a - 1;
 	a = 0;
+	while (buffer[a])
+		free(buffer[a++]);
+	free(buffer);//LEAKS_FIX
+	free(input);
 	return (nodes);
 }

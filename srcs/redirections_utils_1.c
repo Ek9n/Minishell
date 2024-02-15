@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirections_utils.c                               :+:      :+:    :+:   */
+/*   redirections_utils_1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:21:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/13 16:05:09 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/15 15:40:19 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	do_output_truncate(t_data *data, int i, int a, int *begin)
 	data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1],
 			O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (data->nodes[i]->fd_out == -1)
-		handle_open_fail(data,i);
+		handle_open_fail(data, i);
 	*begin = 1;
 	dup2(data->nodes[i]->fd_out, STDOUT_FILENO);
 }
@@ -46,7 +46,7 @@ void	do_output_append(t_data *data, int i, int a, int *begin)
 	data->nodes[i]->fd_out = open(data->nodes[i]->split_command[a + 1],
 			O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (data->nodes[i]->fd_out == -1)
-		handle_open_fail(data,i);
+		handle_open_fail(data, i);
 	*begin = 1;
 	dup2(data->nodes[i]->fd_out, STDOUT_FILENO);
 }
@@ -56,7 +56,7 @@ void	do_input(t_data *data, int i, int a, int *begin)
 	data->nodes[i]->fd_in = open(data->nodes[i]->split_command[a + 1],
 			O_RDONLY);
 	if (data->nodes[i]->fd_in == -1)
-		handle_open_fail(data,i);
+		handle_open_fail(data, i);
 	*begin = 1;
 	dup2(data->nodes[i]->fd_in, STDIN_FILENO);
 }
@@ -65,7 +65,7 @@ void	do_heredoc(t_data *data, int i, int a, int *begin)
 {
 	data->nodes[i]->fd_in = open(".heredoc", O_RDONLY);
 	if (data->nodes[i]->fd_in == -1)
-		handle_open_fail(data,i);
+		handle_open_fail(data, i);
 	*begin = 1;
 	dup2(data->nodes[i]->fd_in, STDIN_FILENO);
 }

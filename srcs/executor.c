@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/14 14:14:24 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/15 15:42:20 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,4 @@ void	exec_cmd(char **split_command, t_data *data)
 	}
 	free(path);
 	free(command);
-
 }
