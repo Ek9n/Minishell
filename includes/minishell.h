@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/14 13:17:08 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/15 15:33:17 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,19 @@ void		delete_env_var(char *name, char ***env);
 void		add_env_var(char *name, char ***env);
 int			find_char_from_index(char *str, char c, int index);
 char		*dollar_baby(char *str);
-// BUILTINS
 void		printenv(char **env);
-void		export(char **cmds, char ***env);
-void		unset(char **split_cmds, char ***env);
-// void	unset(char *str, char ***env);
-// void	export(char *str, char ***env);
-// int		echo(t_words *node);
-int			echo(t_words *node);
-// int		cd(char *dir, char ***env);
-// int		cd(char **split_cmds, char ***env);
-int			cd(t_words *node, t_data *data);
-int			ls(char *dir);
-char		*getpwd(void);
-// make exit
+// BUILTINS
+// builtins_1.c
+int		echo(t_words *node);
+int		cd(t_words *node, t_data *data);
+int		ls(char *dir);
+// builtins_2.c
+void	unset(char **split_cmds, char ***env);
+void	export(char **split_cmds, char ***env);
+int		ft_strxcmp(const char *s1, const char *s2, size_t n);
+int		cmp_keywordx(char *keyword, char *str);
+char	*getpwd(void);
+
 // builtin_utils
 int			correct_input(char **cmds);
 void		purge_arr(char *cmds, char ***env);
@@ -111,15 +110,20 @@ int			is_in_quotes(char *string);
 void		init_vars(int *counter, int *a, int *begin);
 
 // LEXER
-void		putback_spaces_and_pipes_in_quotes(char **input, t_data *data);
-void		clean_spaces_in_command(char **command);
 int			skip_spaces(char *str);
-void		redirection_space_extender(char **dirty_word);
 void		detect_quote(char *dirty_word, bool *quotes, int *last_quote);
 int			redir_case(char *c);
 char		*comb_extd_word(char **extd_words);
-void		replace_spaces_and_pipes_in_quotes(char *input);
 int			get_num_of_pipes(char *str);
+
+// lexer_1.c
+void		redirection_space_extender(char **dirty_word);
+void		clean_spaces_in_command(char **command);
+// lexer_2.c
+void		replace_spaces_and_pipes_in_quotes(char *input);
+void		putback_spaces_and_pipes_in_quotes(char **input, t_data *data);
+// lexer_3.c
+void		remove_quotes(char **word);
 t_words		**init_nodes(char *input, t_data *data);
 
 // ERROR CHECKS
@@ -175,5 +179,7 @@ void		terminate_piperino(int *ij, int **pipe_fd, pid_t *pids,
 				t_data *data);
 void		handle_cases(int *ij, int **pipe_fd, t_data *data);
 int			piperino9(t_words **nodes, t_data *data);
+
+
 
 #endif

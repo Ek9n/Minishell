@@ -1,12 +1,13 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:47:24 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/14 11:49:23 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/15 14:01:45 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +20,7 @@ int	cmp_keyword(char *keyword, char *str)
 	if (!keyword || !str)
 		return (-1);
 	len = ft_strlen(keyword);
-	if (ft_strlen(str) > 0 && (ft_strncmp(keyword, str,ft_strlen(keyword)) == 0) && (*(str
+	if (ft_strlen(str) > 0 && (ft_strcmp(keyword, str) == 0) && (*(str
 				+ len) == '\0' || *(str + len) == ' '))
 		return (1);
 	return (0);
@@ -42,10 +43,13 @@ int	single_command(t_data *data, int i)
 {
 	if (data->nodes[i] && data->nodes[i]->split_command[0])
 	{
-		if (cmp_keyword("echo", data->nodes[i]->command))
+		if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
+		{
+			// printf("echoSTR:|%s|\n", data->nodes[i]->split_command[0]);
 			echo(data->nodes[i]);
+		}
 		else if (cmp_keyword("pwd", data->nodes[i]->split_command[0]))
-			data->nodes[i]->output = getpwd();
+			printf("%s\n", getpwd());
 		else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
 			cd(data->nodes[i], data);
 		else if (cmp_keyword("export", data->nodes[i]->split_command[0]))

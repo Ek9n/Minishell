@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*   lexer_utils_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 20:06:21 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/13 12:56:18 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/15 15:34:29 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,34 +26,6 @@ int	get_num_of_pipes(char *str)
 		a++;
 	}
 	return (i);
-}
-
-void	replace_spaces_and_pipes_in_quotes(char *input)
-{
-	int		quotes;
-	int		i;
-
-	quotes = 0;
-	i = -1;
-	while (input[++i] != '\0')
-	{
-		if (input[i] == '\'' && quotes == 0)
-			quotes = 1;
-		else if (input[i] == '\'' && quotes == 1)
-			quotes = 0;
-		if (input[i] == '\"' && quotes == 0)
-			quotes = 2;
-		else if (input[i] == '\"' && quotes == 2)
-			quotes = 0;
-		if (input[i] == ' ' && (quotes == 1 || quotes == 2))
-			input[i] = '@';
-		if (input[i] == '\t' && (quotes == 1 || quotes == 2))
-			input[i] = '&';
-		if (input[i] == '|' && (quotes == 1 || quotes == 2))
-			input[i] = '*';
-		if (input[i] == '$' && quotes != 1)
-			input[i] = 26;
-	}
 }
 
 char	*comb_extd_word(char **extd_words)

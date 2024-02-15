@@ -6,7 +6,7 @@
 #    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/02/13 13:00:35 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/02/15 15:36:17 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,31 +24,30 @@ OBJ_FOLDER		=	./objs/
 HEADERS			=	-I $(INC_FOLDER)
 VPATH			=	$(SRC_FOLDER)
 
-SRCS =	Main.c				\
-		lexer.c				\
-		lexer_utils.c		\
-		lexer_utils_2.c		\
-		enviromentvars.c	\
-		enviromentvars_2.c	\
-		utils_1.c			\
-		redirections.c		\
-		redirections_utils.c \
-		redirections_utils_2.c \
-		piperino_1.c		\
-		piperino_2.c		\
-		builtins.c			\
-		builtins_2.c		\
-		expander.c			\
-		executor.c			\
-		executor_utils.c	\
-		executor_utils_2.c	\
-		executor_utils_3.c	\
-		Error.c				\
-		signals.c			\
-		error_checks.c		\
-		#lexer.c				\
-		parser_utils_1.c	\
-		#expander.c
+SRCS =	Main.c					\
+		lexer_1.c				\
+		lexer_2.c				\
+		lexer_3.c				\
+		lexer_utils_1.c			\
+		lexer_utils_2.c			\
+		enviromentvars_1.c		\
+		enviromentvars_2.c		\
+		utils_1.c				\
+		redirections.c			\
+		redirections_utils_1.c 	\
+		redirections_utils_2.c 	\
+		piperino_1.c			\
+		piperino_2.c			\
+		builtins_1.c				\
+		builtins_2.c			\
+		expander.c				\
+		executor.c				\
+		executor_utils_1.c		\
+		executor_utils_2.c		\
+		executor_utils_3.c		\
+		Error.c					\
+		signals.c				\
+		error_checks.c			\
 
 OBJS = $(patsubst %.c, $(OBJ_FOLDER)/%.o, $(notdir $(SRCS)))
 
