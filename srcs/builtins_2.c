@@ -3,14 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/10 19:02:52 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/12 20:10:19 by jfoltan          ###   ########.fr       */
+/*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
+/*   Updated: 2024/02/15 13:59:03 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	unset(char **split_cmds, char ***env)
+{
+	int		i;
+
+	i = 1;
+	while (split_cmds[i])
+	{
+		delete_env_var(split_cmds[i], env);
+		i++;
+	}
+}
+
+void	export(char **split_cmds, char ***env)
+{
+	int	i;
+
+	if (split_cmds[1] == NULL)
+	{
+		i = 0;
+		while (env[0][i] != NULL)
+		{
+			ft_putstr_fd("declare -x ", 1);
+			ft_putstr_fd(env[0][i], 1);
+			printf("\n");
+			i++;
+		}
+	}
+	else
+	{
+		i = 1;
+		while (split_cmds[i])
+		{
+			purge_arr(split_cmds[i], env);
+			add_env_var(split_cmds[i], env);
+			i++;
+		}
+	}
+}
 
 int	ft_strxcmp(const char *s1, const char *s2, size_t n)
 {

@@ -6,19 +6,22 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/13 23:56:05 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/15 13:19:13 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	conditions(char **dirty_word, char **tmp_word, int *ij)
+static void	conditions(char **dirty_word, char **tmp_word, int *ij, bool start)
 {
-	int		last_quote;
-	bool	quotes;
+	static int	last_quote;
+	static bool	quotes;
 
-	last_quote = 0;
-	quotes = false;
+	if (start == true)
+	{
+		last_quote = 0;
+		quotes = false;
+	}
 	detect_quote(&dirty_word[0][ij[0]], &quotes, &last_quote);
 	if (!quotes && redir_case(&dirty_word[0][ij[0]]) == 1)
 	{
@@ -39,12 +42,16 @@ static void	conditions(char **dirty_word, char **tmp_word, int *ij)
 
 static void	check_str(char **dirty_word, char **tmp_word)
 {
-	int	ij[2];
+	bool	start;
+	int		ij[2];
 
+	start = true;
 	ij[0] = 0;
 	ij[1] = 0;
 	while (dirty_word[0][ij[0]])
 	{
+		conditions(dirty_word, tmp_word, ij, start);
+		start = false;
 		tmp_word[0][ij[1]] = dirty_word[0][ij[0]];
 		ij[0]++;
 		ij[1]++;

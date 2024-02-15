@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/14 23:49:45 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/15 13:36:23 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,21 @@ int	main(int argc, char **argv, char **envp)
 }
 
 /*
-echo bla $USER dodo %PATH
-
 Minishell>>: echo bla "HALLO $USERda $USER" 'hi $USER ad'
 bla HALLO @hstein hi $USER ad
 
-Minishell>>: "echo blda > file3"
-LEXER1|"echo@blda@>@file3"|
-LEXER2|"echo blda > file3"|
-blda > file3
-
 "echo bla" should be one work -> split_cmd[0] should be "echo bla" not just "echo"
+
+
+Minishell>>: cd
+Minishell>>: pwd
+/home/hstein
+Minishell>>: cd Repositories/minishell
+malloc(): invalid next size (unsorted)
+Aborted (core dumped)
+Program received signal SIGABRT, Aborted.
+__pthread_kill_implementation (no_tid=0, signo=6, threadid=140737350893504) at ./nptl/pthread_kill.c:44
+44	./nptl/pthread_kill.c: No such file or directory.
+(gdb) 
 
 */

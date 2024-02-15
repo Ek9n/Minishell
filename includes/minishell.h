@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/13 23:56:58 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/15 14:02:26 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,19 @@ void		delete_env_var(char *name, char ***env);
 void		add_env_var(char *name, char ***env);
 int			find_char_from_index(char *str, char c, int index);
 char		*dollar_baby(char *str);
-// BUILTINS
 void		printenv(char **env);
-void		export(char **cmds, char ***env);
-void		unset(char **split_cmds, char ***env);
-// void	unset(char *str, char ***env);
-// void	export(char *str, char ***env);
-// int		echo(t_words *node);
-int			echo(t_words *node);
-// int		cd(char *dir, char ***env);
-// int		cd(char **split_cmds, char ***env);
-int			cd(t_words *node, t_data *data);
-int			ls(char *dir);
-char		*getpwd(void);
-// make exit
+// BUILTINS
+// builtins_1.c
+int		echo(t_words *node);
+int		cd(t_words *node, t_data *data);
+int		ls(char *dir);
+// builtins_2.c
+void	unset(char **split_cmds, char ***env);
+void	export(char **split_cmds, char ***env);
+int		ft_strxcmp(const char *s1, const char *s2, size_t n);
+int		cmp_keywordx(char *keyword, char *str);
+char	*getpwd(void);
+
 // builtin_utils
 int			correct_input(char **cmds);
 void		purge_arr(char *cmds, char ***env);
