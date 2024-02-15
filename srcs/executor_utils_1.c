@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executor_utils.c                                   :+:      :+:    :+:   */
+/*   executor_utils_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:47:24 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/15 14:01:45 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/15 16:28:30 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int	single_command(t_data *data, int i)
 {
 	if (data->nodes[i] && data->nodes[i]->split_command[0])
 	{
-		if (cmp_keyword("echo", data->nodes[i]->split_command[0]))
+		if (!ft_strncmp("echo", data->nodes[i]->split_command[0], 5))
 		{
-			// printf("echoSTR:|%s|\n", data->nodes[i]->split_command[0]);
+			printf("echoSTR:|%s|\n", data->nodes[i]->split_command[0]);
 			echo(data->nodes[i]);
 		}
 		else if (cmp_keyword("pwd", data->nodes[i]->split_command[0]))
