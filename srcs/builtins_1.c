@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/15 14:07:27 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/17 18:26:32 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,19 @@ int	echo(t_words *node)
 		flag = true;
 		word += 3;
 	}
-	if (*(word + 3) == '\0' && ft_strcmp("-n", word) == 0)
+	// int size = ft_strlen(tmp) + 1;
+	// size_t addr = word + 3 * sizeof(char);
+	// int	isin = addr - tmp;
+	
+	// printf("tmp:%s\n", tmp);
+	// printf("tmp:%ld\n", (word + 3) - tmp);
+	// printf("word:%c\n", word[0]);
+	// printf("word+3:%c\n", (word+1)[0]);
+
+	// printf("isin:%d\n", isin);
+	// printf("isinstr:%s\n", (char *)isin);
+	if (*(word + 2) == '\0' && ft_strcmp("-n", word) == 0)
+	// if (*(word + 3) == '\0' && ft_strcmp("-n", word) == 0)
 	{
 		flag = true;
 		word += 2;
