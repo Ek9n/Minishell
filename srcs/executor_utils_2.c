@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 15:51:32 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/15 15:41:54 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/16 11:37:39 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,16 @@ void	handle_exit_status(int status)
 		g_exit_status = 130 + WIFSIGNALED(status);
 }
 
-char	*get_command(char **split_command)
+int	get_command(char **split_command)
 {
-	if (split_command[0][0] == '/' || (split_command[0][0] == '.'
-			&& split_command[0][1] == '/'))
-		return (ft_strdup(split_command[0]));
-	if (split_command[0][0] == '.' && split_command[0][1] == '.'
-		&& split_command[0][2] == '/')
-		return (ft_strdup(split_command[0]));
-	return (NULL);
+	if (ft_strncmp(split_command[0], "/", 1) == 0)
+		return (1);
+	if ( ft_strncmp(split_command[0], "./", 2) == 0)
+		return(1);
+	if (ft_strncmp(split_command[0], "../", 3) == 0)
+		return (1);
+
+	return (0);
 }
 
 char	*join_path_and_command(char *path, char *split_command)

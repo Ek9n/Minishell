@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/15 15:33:17 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/16 11:29:42 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,7 @@ void		handle_access(char *command);
 void		handle_fork_error(void);
 void		handle_exit_status(int status);
 char		*find_path(char **split_command, char **path, t_data *data);
-char		*join_path_and_command(char *path, char *split_command);
-char		*get_command(char **split_command);
+int			get_command(char **split_command);
 void		handle_fork_error(void);
 void		handle_access(char *command);
 

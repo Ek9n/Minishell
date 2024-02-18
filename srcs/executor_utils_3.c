@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:15:51 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/14 13:53:31 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/16 12:40:56 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,28 +55,25 @@ char	*find_path(char **split_command, char **path, t_data *data)
 {
 	char	*command;
 	int		i;
-	char	*temp_command;
-
-	command = ft_strdup(split_command[0]);
-	path[0] = ft_strdup("$PATH");
-	path[1] = ft_strdup("\0");
-	expand_vars(path, 0, data);
-	path = ft_split(path[0], ':');
+	char 	*temp_path;
+	
 	i = 0;
+	if (get_command(split_command))
+			return(ft_strdup(split_command[0]));
+	temp_path = ft_strdup("$PATH");
+	expand_vars(&temp_path, 0, data);
+	path = ft_split(temp_path, ':');
+	free(temp_path);
 	while (path[i])
 	{
-		temp_command = get_command(split_command);
-		if (temp_command)
-		{
-			command = temp_command;
-			break ;
-		}
-		command = join_path_and_command(path[i], split_command[0]);
+		temp_path = ft_strjoin(path[i], "/");
+		command = ft_strjoin(temp_path, split_command[0]);
 		if (access(command, F_OK) == 0)
 			break ;
+		free(command);
+		free(temp_path);
 		i++;
 	}
-	if (path)
-		free_arr(path);
+	free_arr(path);
 	return (command);
 }
