@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/17 18:47:55 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 01:59:52 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,53 @@ static void	check_str(char **dirty_word, char **tmp_word)
 	tmp_word[0][ij[1]] = '\0';
 }
 
-void	redirection_space_extender(char **dirty_word)
+char	*redirection_space_extender(char *dirty_word)
 {
 	int		last_quote;
 	bool	quotes;
 	char	*tmp_word;
 
-	if (*dirty_word != NULL)
+	tmp_word = NULL;
+	if (dirty_word != NULL)
 	{
-		tmp_word = malloc(ft_strlen(*dirty_word) * 2 + 1);
-		check_str(dirty_word, &tmp_word);
-		free(*dirty_word); //..why it doesn't work like that?
-		*dirty_word = ft_strdup(tmp_word);
-		// strcpy(tmp_word, *dirty_word);
-		free(tmp_word);
-
-	}
+		tmp_word = malloc(ft_strlen(dirty_word) * 2 + 1);
+		check_str(&dirty_word, &tmp_word);
+		// free(tmp_word);
+	} 
+	return (tmp_word);
 }
+// void	redirection_space_extender(char **dirty_word)
+// {
+// 	int		last_quote;
+// 	bool	quotes;
+// 	char	*tmp_word;
+
+// 	if (*dirty_word != NULL)
+// 	{
+// 		tmp_word = malloc(ft_strlen(*dirty_word) * 2 + 1);
+// 		check_str(dirty_word, &tmp_word);
+// 		free(*dirty_word); //..why it doesn't work like that?
+// 		*dirty_word = ft_strdup(tmp_word);
+// 		free(tmp_word);
+
+// 	} //schauen ob ich hier nicht freee
+// }
+// void redirection_space_extender(char **dirty_word)
+// {
+// 	if (*dirty_word != NULL)
+// 	{
+// 		char *tmp_word = malloc(ft_strlen(*dirty_word) * 2 + 1);
+// 		if (tmp_word != NULL)
+// 		{
+// 			strcpy(tmp_word, *dirty_word); // Kopieren des Inhalts von *dirty_word in tmp_word
+// 			free(*dirty_word); // Freigabe des Speichers von *dirty_word
+// 			*dirty_word = tmp_word; // *dirty_word auf tmp_word setzen
+// 		}
+// 		free(tmp_word);
+// 	}
+// }
+
+
     // if (*dirty_word != NULL) {
     //     // Berechnen der neuen Größe für tmp_word
     //     int new_size = ft_strlen(*dirty_word) * 2 + 1; // +1 für den Nullterminator

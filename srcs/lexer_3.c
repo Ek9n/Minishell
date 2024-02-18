@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/15 16:27:04 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 01:55:59 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,23 +86,29 @@ t_words	**init_nodes(char *input, t_data *data)
 	int		a;
 
 	replace_spaces_and_pipes_in_quotes(input);
-	redirection_space_extender(&input);
-	nodes = ft_calloc(get_num_of_pipes(input) + 2, sizeof(t_words *));
-	if (!nodes)
-		g_exit_status = 1;
-	buffer = ft_split(input, '|');
-	a = 0;
-	i = 0;
-	while (buffer[i] != NULL)
+	// redirection_space_extender(&input);
+	char *input2 = NULL;
+	input2 = redirection_space_extender(input);
+	if (input2)
 	{
-		nodes[a] = ft_calloc(1, sizeof(t_words));
-		nodes[a]->command = ft_strdup(buffer[i]);
-		clean_spaces_in_command(&nodes[a]->command);
-		a++;
-		i++;
+		nodes = ft_calloc(get_num_of_pipes(input2) + 2, sizeof(t_words *));
+		if (!nodes)
+			g_exit_status = 1;
+		buffer = ft_split(input2, '|');
+		a = 0;
+		i = 0;
+		while (buffer[i] != NULL)
+		{
+			nodes[a] = ft_calloc(1, sizeof(t_words));
+			nodes[a]->command = ft_strdup(buffer[i]);
+			clean_spaces_in_command(&nodes[a]->command);
+			a++;
+			i++;
+		}
+		a = routine(data, nodes, i);
+		data->numb_of_pipes = a - 1;
+		a = 0;
+		return (nodes);
 	}
-	a = routine(data, nodes, i);
-	data->numb_of_pipes = a - 1;
-	a = 0;
-	return (nodes);
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/15 14:02:26 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 01:57:35 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char		*comb_extd_word(char **extd_words);
 int			get_num_of_pipes(char *str);
 
 // lexer_1.c
-void		redirection_space_extender(char **dirty_word);
+char	*redirection_space_extender(char *dirty_word);
 void		clean_spaces_in_command(char **command);
 // lexer_2.c
 void		replace_spaces_and_pipes_in_quotes(char *input);
