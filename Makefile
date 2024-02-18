@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: hstein <hstein@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/02/15 15:36:17 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/02/18 21:11:13 by hstein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,9 +38,10 @@ SRCS =	Main.c					\
 		redirections_utils_2.c 	\
 		piperino_1.c			\
 		piperino_2.c			\
-		builtins_1.c				\
+		builtins_1.c			\
 		builtins_2.c			\
-		expander.c				\
+		expander_1.c			\
+		expander_2.c			\
 		executor.c				\
 		executor_utils_1.c		\
 		executor_utils_2.c		\

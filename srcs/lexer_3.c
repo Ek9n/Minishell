@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 14:55:09 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:02:11 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,18 @@ int	routine(t_data *data, t_words **nodes, int i)
 	return (a);
 }
 
+static void	cleaner(t_words	**nodes, int *i, int *a, char **buffer)
+{
+	while (buffer[*i] != NULL)
+	{
+		nodes[*a] = ft_calloc(1, sizeof(t_words));
+		nodes[*a]->command = ft_strdup(buffer[*i]);
+		clean_spaces_in_command(&nodes[*a]->command);
+		(*a)++;
+		(*i)++;
+	}
+}
+
 t_words	**init_nodes(char *input, t_data *data)
 {
 	t_words	**nodes;
@@ -93,20 +105,13 @@ t_words	**init_nodes(char *input, t_data *data)
 	buffer = ft_split(input, '|');
 	a = 0;
 	i = 0;
-	while (buffer[i] != NULL)
-	{
-		nodes[a] = ft_calloc(1, sizeof(t_words));
-		nodes[a]->command = ft_strdup(buffer[i]);
-		clean_spaces_in_command(&nodes[a]->command);
-		a++;
-		i++;
-	}
+	cleaner(nodes, &i, &a, buffer);
 	a = routine(data, nodes, i);
 	data->numb_of_pipes = a - 1;
 	a = 0;
 	while (buffer[a])
 		free(buffer[a++]);
-	free(buffer);//LEAKS_FIX
+	free(buffer);
 	free(input);
 	return (nodes);
 }

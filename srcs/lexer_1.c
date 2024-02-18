@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 14:54:46 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:02:41 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,63 +69,11 @@ void	redirection_space_extender(char **dirty_word)
 	{
 		tmp_word = malloc(ft_strlen(*dirty_word) * 2 + 1);
 		check_str(dirty_word, &tmp_word);
-		free(*dirty_word); //..why it doesn't work like that?
+		free(*dirty_word);
 		*dirty_word = ft_strdup(tmp_word);
-		// strcpy(tmp_word, *dirty_word);
 		free(tmp_word);
-
 	}
 }
-    // if (*dirty_word != NULL) {
-    //     // Berechnen der neuen Größe für tmp_word
-    //     int new_size = ft_strlen(*dirty_word) * 2 + 1; // +1 für den Nullterminator
-
-    //     // Allokieren von Speicher für tmp_word
-    //     tmp_word = malloc(new_size);
-    //     if (tmp_word == NULL) {
-    //         // Fehlerbehandlung, wenn malloc fehlschlägt
-    //         // Hier muss entschieden werden, wie mit dem Fehler umgegangen wird
-    //         return; // Zum Beispiel: Rückkehr oder anderes Verhalten
-    //     }
-
-    //     // Kopieren des Inhalts von *dirty_word in tmp_word
-    //     strcpy(tmp_word, *dirty_word);
-
-    //     // Freigeben des ursprünglichen Speichers von *dirty_word
-    //     free(*dirty_word);
-
-    //     // Kopieren des Inhalts von tmp_word in *dirty_word
-    //     *dirty_word = ft_strdup(tmp_word);
-
-    //     // Freigeben des temporären Speichers von tmp_word
-    //     free(tmp_word);
-    // }
-//char 	*clean_spaces_in_command(char *command)
-//{
-//	char	*tmp_clean;
-//	int		i;
-//	int		j;
-
-//	tmp_clean = malloc(ft_strlen(command) + 1);
-//	i = 0;
-//	j = 0;
-//	i += skip_spaces(command);
-//	while (command[i] != '\0')
-//	{
-//		if (command[i] == ' ' || command[i] == '\t')
-//		{
-//			i += skip_spaces(&command[i]);
-//			tmp_clean[j++] = ' ';
-//		}
-//		else
-//			tmp_clean[j++] = command[i++];
-//	}
-//	while (tmp_clean[--j] == ' ');
-//	tmp_clean[j + 1] = '\0';
-//	free(command);
-//	command = ft_strdup(tmp_clean);
-//	free(tmp_clean);
-//		return(command);
 
 void	clean_spaces_in_command(char **command)
 {

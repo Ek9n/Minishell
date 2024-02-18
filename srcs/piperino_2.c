@@ -3,24 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   piperino_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 15:45:45 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:03:37 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void free_int_array(int **arr, int size)
+void	free_int_array(int **arr, int size)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < size)
 		free(arr[i]);
 	free(arr);
 }
+
 void	init_piperino(t_data *data, int ***pipe_fd, pid_t **pids)
 {
 	int	i;
