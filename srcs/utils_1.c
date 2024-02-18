@@ -90,3 +90,10 @@ void	free_arr(char **arr)
 	}
 	free(arr);
 }
+
+void	dosome(char **word, char **tmp, t_words *node)
+{
+	*tmp = ft_strdup(node->command);
+	*word = *tmp;
+	*word += 5;
+}

@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 20:38:25 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:01:06 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	export(char **split_cmds, char ***env)
 	else
 	{
 		i = 1;
-		if (ft_strchr(split_cmds[1],'=') == NULL)
-			return;
+		if (ft_strchr(split_cmds[1], '=') == NULL)
+			return ;
 		while (split_cmds[i])
 		{
 			purge_arr(split_cmds[i], env);

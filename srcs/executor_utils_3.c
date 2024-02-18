@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:15:51 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 19:17:32 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 20:58:33 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ void	copy_commands(char **new_split, char **temp_split_one, char **old_split)
 
 char	*find_path(char **split_command, char **path, t_data *data)
 {
-	char	*command;
-	int		i;
-	char 	*temp_path;
-	
+	char		*command;
+	int			i;
+	char		*temp_path;
+
 	i = 0;
 	if (get_command(split_command))
-			return(ft_strdup(split_command[0]));
+		return (ft_strdup(split_command[0]));
 	temp_path = ft_strdup("$PATH");
 	expand_vars(&temp_path, 0, data);
 	path = ft_split(temp_path, ':');

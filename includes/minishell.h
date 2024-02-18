@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 18:09:21 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:23:38 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,24 @@ char		*dollar_baby(char *str);
 void		printenv(char **env);
 // BUILTINS
 // builtins_1.c
-int		echo(t_words *node);
-int		cd(t_words *node, t_data *data);
-int		ls(char *dir);
+int			echo(t_words *node);
+int			cd(t_words *node, t_data *data);
+int			ls(char *dir);
 // builtins_2.c
-void	unset(char **split_cmds, char ***env);
-void	export(char **split_cmds, char ***env);
-int		ft_strxcmp(const char *s1, const char *s2, size_t n);
-int		cmp_keywordx(char *keyword, char *str);
-char	*getpwd(void);
+void		unset(char **split_cmds, char ***env);
+void		export(char **split_cmds, char ***env);
+int			ft_strxcmp(const char *s1, const char *s2, size_t n);
+int			cmp_keywordx(char *keyword, char *str);
+char		*getpwd(void);
 
 // builtin_utils
 int			correct_input(char **cmds);
 void		purge_arr(char *cmds, char ***env);
+void		dosome(char **word, char **tmp, t_words *node);
 
 // REDIRECTIONS
 void		get_fds(t_data *data, int index);
-void		handle_open_fail(t_data *data,int i);
+void		handle_open_fail(t_data *data, int i);
 void		cleanup(t_data *data, int i, int a, int begin);
 void		handle_heredoc(t_data *data, int i);
 void		do_output_truncate(t_data *data, int i, int a, int *begin);
@@ -135,7 +136,7 @@ int			quote_error(char *str);
 int			find_var(char *str, char **envp);
 char		*put_var(char **str, int dollar_pos, char **envp);
 int			expand_vars(char **input, int i, t_data *data);
-
+int			cnt_var(char **str, int dollar_pos);
 // PARSER
 int			single_command(t_data *data, int i);
 int			piperino9(t_words **nodes, t_data *data);
@@ -171,7 +172,7 @@ void		error_exit(char *msg);
 static void	free_peperino(int **pipe_fd, pid_t *pids, int numb_of_pipes);
 void		close_pipes(int **pipe_fd, int numb_of_pipes);
 void		close_prepipes(int *ij, int **pipe_fd);
-void free_arr(char **arr);
+void		free_arr(char **arr);
 // piperino_2.c
 
 void		init_piperino(t_data *data, int ***pipe_fd, pid_t **pids);
@@ -180,9 +181,6 @@ void		terminate_piperino(int *ij, int **pipe_fd, pid_t *pids,
 void		handle_cases(int *ij, int **pipe_fd, t_data *data);
 int			piperino9(t_words **nodes, t_data *data);
 
-
-
-
-void	free_split_commands(t_words *nodes);
+void		free_split_commands(t_words *nodes);
 
 #endif

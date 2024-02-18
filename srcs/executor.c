@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 18:16:38 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 20:49:24 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	exec(char *command, char **split_command, t_data *data)
 		execve(command, split_command, data->envp);
 	waitpid(pid, &status, 0);
 	handle_exit_status(status);
-	
 }
 
 void	exec_cmd(char **split_command, t_data *data)

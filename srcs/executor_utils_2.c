@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 15:51:32 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/16 11:37:39 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 20:57:48 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,10 @@ int	get_command(char **split_command)
 {
 	if (ft_strncmp(split_command[0], "/", 1) == 0)
 		return (1);
-	if ( ft_strncmp(split_command[0], "./", 2) == 0)
-		return(1);
+	if (ft_strncmp(split_command[0], "./", 2) == 0)
+		return (1);
 	if (ft_strncmp(split_command[0], "../", 3) == 0)
 		return (1);
-
 	return (0);
 }
 

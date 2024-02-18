@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 20:05:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:20:08 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,10 @@ int	echo(t_words *node)
 
 	flag = false;
 	if (node->command[0] == '\0')
-	{
-		printf("\n");
-		return (0);
-	}	
-	tmp = ft_strdup(node->command);
-	word = tmp;
-	word += 5;
+		return (printf("\n"));
+	dosome(&word, &tmp, node);
 	if (*word == '\0')
-	{
-		printf("\n");
-		free(tmp);
-		return (0);
-	}
+		return (free(tmp), printf("\n"));
 	while (ft_strcmp("-n ", word) == 0)
 	{
 		flag = true;
@@ -47,8 +38,7 @@ int	echo(t_words *node)
 		ft_putstr_fd(word, 1);
 	else
 		printf("%s\n", word);
-	free(tmp);
-	return (0);
+	return (free(tmp), 0);
 }
 
 static void	cd_endfree(char ***buffer, char **dir)
@@ -62,7 +52,7 @@ static void	cd_endfree(char ***buffer, char **dir)
 
 static int	cd_prep(t_words *node, char **oldpwd, char **dir)
 {
-	char *temp;
+	char	*temp;
 
 	temp = getpwd();
 	if (node->num_of_elements > 2)
@@ -104,14 +94,14 @@ int	cd(t_words *node, t_data *data)
 	{
 		buffer = calloc(4, sizeof(char *));
 		buffer[0] = getpwd();
-		pwd = ft_strjoin("PWD=",buffer[0]);
+		pwd = ft_strjoin("PWD=", buffer[0]);
 		free(buffer[0]);
 		buffer[0] = ft_strdup("export");
 		buffer[1] = oldpwd;
 		buffer[2] = pwd;
 		export(buffer, &data->envp);
 	}
-		cd_endfree(&buffer, &dir);
+	cd_endfree(&buffer, &dir);
 	return (EXIT_SUCCESS);
 }
 

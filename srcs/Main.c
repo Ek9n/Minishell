@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 16:36:33 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 20:59:31 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,70 +92,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 	}
 }
-
 /*
-"echo bla" should be one work -> split_cmd[0] should be "echo bla" not just "echo"
-
-Minishell>>: cd Repositories/minishell
-malloc(): invalid next size (unsorted)
-Aborted (core dumped)
-Program received signal SIGABRT, Aborted.
-__pthread_kill_implementation (no_tid=0, signo=6, threadid=140737350893504) at ./nptl/pthread_kill.c:44
-44	./nptl/pthread_kill.c: No such file or directory.
-(gdb) TEST STILL!!!!!
-
-
-
-
+LEAK CHECK COMMAND:
+valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all ./Minishell
 */
-//LEAK CHECK COMMAND:
-//valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all ./Minishell
-/*
-LEAK_FIX julius:
-in cmp keyword replaced strcmp with strncmp, because of a lot of invalid read errors
-*/
-/*
-LEAKS:
-case cat < file
-=======
-==17522== 135 bytes in 1 blocks are definitely lost in loss record 28 of 72
-==17522==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==17522==    by 0x406019: ft_strjoin (ft_strjoin.c:26)
-==17522==    by 0x406B09: ft_strjoinfree (in /home/jfoltan/Desktop/42Work/FINAL_MINI/Minishell)
-==17522==    by 0x406CA7: ft_strhandler (in /home/jfoltan/Desktop/42Work/FINAL_MINI/Minishell)
-==17522==    by 0x406F1A: printtype (in /home/jfoltan/Desktop/42Work/FINAL_MINI/Minishell)
-==17522==    by 0x4068CF: ft_writeline (in /home/jfoltan/Desktop/42Work/FINAL_MINI/Minishell)
-==17522==    by 0x406A99: ft_savef (in /home/jfoltan/Desktop/42Work/FINAL_MINI/Minishell)
-==17522==    by 0x404A2D: expand_vars (expander.c:111)
-==17522==    by 0x405675: find_path (executor_utils_3.c:63)
-==17522==    by 0x404D96: exec_cmd (executor.c:81)
-==17522==    by 0x4051E3: single_command (executor_utils_1.c:66)
-==17522==    by 0x404B92: executor (executor.c:25)
-==17522== 
-=======
-==17522== 11 bytes in 1 blocks are definitely lost in loss record 6 of 72
-==17522==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==17522==    by 0x406559: ft_strdup (ft_strdup.c:23)
-==17522==    by 0x401E96: remove_quotes (lexer_3.c:52)
-==17522==    by 0x402122: routine (lexer_3.c:73)
-==17522==    by 0x402280: init_nodes (lexer_3.c:104)
-==17522==    by 0x401351: run_shell (Main.c:63)
-==17522==    by 0x401436: main (Main.c:88)
-==17522== 
-===== HANNES
-
-c4c3c3% cd Desktop/42Work/FINAL_MINI 
-c4c3c3% ./Minishell 
-Minishell>>: export PATH
-Minishell>>: echo $PATH
-zsh: segmentation fault (core dumped)  ./Minishell
-c4c3c3% ./Minishell 
-Minishell>>: echo $CUNT
-
-Minishell>>: echo $PATH
-/home/jfoltan/bin:/home/jfoltan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-Minishell>>: export PATH=cunt
-Minishell>>: cat
-free(): double free detected in tcache 2
-zsh: IOT instruction (core dumped)  ./Minishell
-c4c3c3% ./Minishell */
