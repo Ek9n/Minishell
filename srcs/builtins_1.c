@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/17 18:26:32 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 16:27:35 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ static void	cd_endfree(char ***buffer, char **dir)
 
 static int	cd_prep(t_words *node, char **oldpwd, char **dir)
 {
+	char *temp;
+
+	temp = getpwd();
 	if (node->num_of_elements > 2)
 	{
 		ft_putstr_fd("-minishell: cd: too many arguments\n", 1);
@@ -70,7 +73,8 @@ static int	cd_prep(t_words *node, char **oldpwd, char **dir)
 	}
 	if (node->num_of_elements == 2 && !ft_strcmp(node->split_command[1], ""))
 		return (EXIT_SUCCESS);
-	*oldpwd = ft_strjoin("OLDPWD=", getpwd());
+	*oldpwd = ft_strjoin("OLDPWD=", temp);
+	free(temp);
 	if (node->split_command[1] == NULL || \
 		ft_strcmp(node->split_command[1], "~") == 0)
 		*dir = ft_strdup(getenv("HOME"));
@@ -99,14 +103,16 @@ int	cd(t_words *node, t_data *data)
 		return (EXIT_FAILURE);
 	if (exit_status == 99)
 	{
-		pwd = ft_strjoin("PWD=", getpwd());
 		buffer = calloc(4, sizeof(char *));
+		buffer[0] = getpwd();
+		pwd = ft_strjoin("PWD=",buffer[0]);
+		free(buffer[0]);
 		buffer[0] = ft_strdup("export");
 		buffer[1] = oldpwd;
 		buffer[2] = pwd;
 		export(buffer, &data->envp);
-		cd_endfree(&buffer, &dir);
 	}
+		cd_endfree(&buffer, &dir);
 	return (EXIT_SUCCESS);
 }
 

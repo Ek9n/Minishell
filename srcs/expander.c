@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 17:51:50 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/15 15:34:06 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 15:13:55 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	expand_vars(char **input, int i, t_data *data)
 		cnt = build_str(input, l_m_r, i, data);
 	l_m_r[2] = &input[0][i + cnt];
 	new_str = ft_savef("%s%s%s", l_m_r[0], l_m_r[1], l_m_r[2]);
+	free(input[0]);
 	input[0] = new_str;
 	free(l_m_r[0]);
 	free(l_m_r[1]);

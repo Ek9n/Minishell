@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/15 13:59:03 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 16:05:29 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ char	*getpwd(void)
 {
 	char	*buf;
 
-	buf = NULL;
 	buf = getcwd(NULL, 0);
 	if (!buf)
 	{

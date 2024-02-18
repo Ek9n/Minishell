@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/16 11:29:42 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 16:30:37 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_data
 	int		original_fd_out;
 	int		numb_of_pipes;
 	int		last_exit_status;
+	char	*temp_for_happy_us;
 	t_words	**nodes;
 }			t_data;
 
@@ -180,5 +181,8 @@ void		handle_cases(int *ij, int **pipe_fd, t_data *data);
 int			piperino9(t_words **nodes, t_data *data);
 
 
+
+
+void	free_split_commands(t_words *nodes);
 
 #endif

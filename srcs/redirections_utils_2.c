@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:41:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/15 15:41:30 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 15:07:10 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void	cleanup(t_data *data, int i, int a, int begin)
 		a++;
 	}
 	if (begin == 1)
+	{
+		free(data->nodes[i]->command);
 		data->nodes[i]->command = ft_join(data->nodes[i]->split_command);
+	}
 }
 
 void	init_vars(int *counter, int *a, int *begin)

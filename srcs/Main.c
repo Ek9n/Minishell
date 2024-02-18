@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/15 16:41:48 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 16:36:33 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,4 +144,18 @@ case cat < file
 ==17522== 
 ===== HANNES
 
-*/
+c4c3c3% cd Desktop/42Work/FINAL_MINI 
+c4c3c3% ./Minishell 
+Minishell>>: export PATH
+Minishell>>: echo $PATH
+zsh: segmentation fault (core dumped)  ./Minishell
+c4c3c3% ./Minishell 
+Minishell>>: echo $CUNT
+
+Minishell>>: echo $PATH
+/home/jfoltan/bin:/home/jfoltan/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+Minishell>>: export PATH=cunt
+Minishell>>: cat
+free(): double free detected in tcache 2
+zsh: IOT instruction (core dumped)  ./Minishell
+c4c3c3% ./Minishell */

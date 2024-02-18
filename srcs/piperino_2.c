@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   piperino_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/10 18:19:42 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 15:45:45 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void free_int_array(int **arr, int size)
+{
+	int i;
+
+	i = -1;
+	while (++i < size)
+		free(arr[i]);
+	free(arr);
+}
 void	init_piperino(t_data *data, int ***pipe_fd, pid_t **pids)
 {
 	int	i;
@@ -30,11 +39,13 @@ void	init_piperino(t_data *data, int ***pipe_fd, pid_t **pids)
 void	terminate_piperino(int *ij, int **pipe_fd, pid_t *pids, t_data *data)
 {
 	close_pipes(pipe_fd, data->numb_of_pipes);
+	free_int_array(pipe_fd, data->numb_of_pipes);
 	ij[1] = -1;
 	while (++ij[1] < ij[0])
 	{
 		waitpid(pids[ij[1]], NULL, 0);
 	}
+	free(pids);
 }
 
 void	handle_cases(int *ij, int **pipe_fd, t_data *data)
@@ -83,6 +94,9 @@ int	piperino9(t_words **nodes, t_data *data)
 		{
 			handle_cases(ij, pipe_fd, data);
 			single_command(data, ij[0]);
+			free_int_array(pipe_fd, data->numb_of_pipes);
+			free(pids);
+			free_and_close_data(data);
 			exit(0);
 		}
 		close_prepipes(ij, pipe_fd);

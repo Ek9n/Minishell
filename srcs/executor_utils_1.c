@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:47:24 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 14:25:52 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 16:31:11 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ int	single_command(t_data *data, int i)
 		if (!ft_strncmp("echo", data->nodes[i]->split_command[0], 5))
 			echo(data->nodes[i]);
 		else if (cmp_keyword("pwd", data->nodes[i]->split_command[0]))
-			printf("%s\n", getpwd());
+			{
+				data->temp_for_happy_us = getpwd();
+				printf("%s\n",data->temp_for_happy_us);
+				free(data->temp_for_happy_us);
+			}
 		else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
 			cd(data->nodes[i], data);
 		else if (cmp_keyword("export", data->nodes[i]->split_command[0]))

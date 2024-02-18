@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/17 18:47:55 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 14:54:46 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,33 @@ void	redirection_space_extender(char **dirty_word)
     //     // Freigeben des temporären Speichers von tmp_word
     //     free(tmp_word);
     // }
+//char 	*clean_spaces_in_command(char *command)
+//{
+//	char	*tmp_clean;
+//	int		i;
+//	int		j;
+
+//	tmp_clean = malloc(ft_strlen(command) + 1);
+//	i = 0;
+//	j = 0;
+//	i += skip_spaces(command);
+//	while (command[i] != '\0')
+//	{
+//		if (command[i] == ' ' || command[i] == '\t')
+//		{
+//			i += skip_spaces(&command[i]);
+//			tmp_clean[j++] = ' ';
+//		}
+//		else
+//			tmp_clean[j++] = command[i++];
+//	}
+//	while (tmp_clean[--j] == ' ');
+//	tmp_clean[j + 1] = '\0';
+//	free(command);
+//	command = ft_strdup(tmp_clean);
+//	free(tmp_clean);
+//		return(command);
+
 void	clean_spaces_in_command(char **command)
 {
 	char	*tmp_clean;
