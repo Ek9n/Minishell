@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/16 11:47:26 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 14:25:43 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,12 @@ void	exec_cmd(char **split_command, t_data *data)
 //		split_command = resplit_lol(split_command);
 	//if (split_command == NULL)
 		//return ;
+// printf("exec_cmd1:%s\n", split_command[0]);
+// 	if (ft_strchr(split_command[0], ' '))
+// 		split_command = resplit_lol(split_command);
+// printf("exec_cmd2:%s\n", split_command[0]);
+	if (split_command == NULL)
+		return ;
 	command = find_path(split_command, path, data);
 	if (access(command, F_OK) == 0)
 		exec(command, split_command, data);
