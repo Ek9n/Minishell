@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 16:30:37 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 18:09:21 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_data
 	int		original_fd_out;
 	int		numb_of_pipes;
 	int		last_exit_status;
-	char	*temp_for_happy_us;
+	char	*lucky_happy_temp_variable;
 	t_words	**nodes;
 }			t_data;
 

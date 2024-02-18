@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 17:51:50 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 15:13:55 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 20:07:33 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,28 @@ int	expand_vars(char **input, int i, t_data *data)
 	l_m_r[0] = ft_strdup(input[0]);
 	l_m_r[0][i] = '\0';
 	tmp_var = put_var(input, i + 1, data->envp);
+	
+	if (ft_strchr(tmp_var, '=') == NULL)
+		{
+			free(input[0]);
+			input[0] = ft_calloc(4, 1);
+			return (0);		
+		}
+	//{
+	//	//free(input[0]);
+	//	input[0] = ft_strjoinfree("input[0]", "");
+	//	free(l_m_r[0]);
+	//	free(l_m_r[1]);
+
+	//	return (0);
+	//}
 	if (tmp_var != NULL)
 	{
+		if (ft_strchr(tmp_var, '=') == NULL)
+		{
+			//tmp_var = ft_strjoin(tmp_var, "=");
+			tmp_var = ft_strdup("");
+		}
 		cnt = ft_strchr(tmp_var, '=') - tmp_var + 1;
 		l_m_r[1] = ft_strdup(ft_strchr(tmp_var, '=') + 1);
 	}

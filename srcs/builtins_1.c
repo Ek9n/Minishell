@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 16:27:35 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 20:05:49 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,27 +19,26 @@ int	echo(t_words *node)
 	bool	flag;
 
 	flag = false;
+	if (node->command[0] == '\0')
+	{
+		printf("\n");
+		return (0);
+	}	
 	tmp = ft_strdup(node->command);
 	word = tmp;
 	word += 5;
+	if (*word == '\0')
+	{
+		printf("\n");
+		free(tmp);
+		return (0);
+	}
 	while (ft_strcmp("-n ", word) == 0)
 	{
 		flag = true;
 		word += 3;
 	}
-	// int size = ft_strlen(tmp) + 1;
-	// size_t addr = word + 3 * sizeof(char);
-	// int	isin = addr - tmp;
-	
-	// printf("tmp:%s\n", tmp);
-	// printf("tmp:%ld\n", (word + 3) - tmp);
-	// printf("word:%c\n", word[0]);
-	// printf("word+3:%c\n", (word+1)[0]);
-
-	// printf("isin:%d\n", isin);
-	// printf("isinstr:%s\n", (char *)isin);
 	if (*(word + 2) == '\0' && ft_strcmp("-n", word) == 0)
-	// if (*(word + 3) == '\0' && ft_strcmp("-n", word) == 0)
 	{
 		flag = true;
 		word += 2;
