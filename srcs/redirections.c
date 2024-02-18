@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 13:03:18 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/13 13:30:48 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:30:18 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	get_fds(t_data *data, int i)
 			else if (check_token_syntax(data->nodes[i]->split_command[a]) == 2)
 				do_input(data, i, a, &begin);
 			else if (check_token_syntax(data->nodes[i]->split_command[a]) == 4)
-				do_heredoc(data, i, a, &begin);
+				do_heredoc(data, i, &begin);
 			else if (begin != 1)
 				counter++;
 		}

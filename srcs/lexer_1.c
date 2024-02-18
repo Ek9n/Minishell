@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 21:02:41 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 21:29:23 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ static void	check_str(char **dirty_word, char **tmp_word)
 
 void	redirection_space_extender(char **dirty_word)
 {
-	int		last_quote;
-	bool	quotes;
 	char	*tmp_word;
 
 	if (*dirty_word != NULL)

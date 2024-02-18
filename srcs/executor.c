@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 20:49:24 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:30:03 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void	exec_cmd(char **split_command, t_data *data)
 {
 	char	*command;
 	char	**path;
-	int		i;
 
 	path = malloc(sizeof(char *) * 2);
 	if (split_command == NULL)

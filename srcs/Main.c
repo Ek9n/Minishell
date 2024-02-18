@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 20:59:31 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 22:02:21 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,6 @@ static t_data	*init_data(t_data *data, char **envp, int argc)
 	return (data);
 }
 
-static void	run(char *input, t_data	*data)
-{
-	if (input == NULL)
-		if (rl_end == 0)
-			exit(0);
-	if (input && input[0] != '\0')
-	{
-		add_history(input);
-		if (valid_input(input))
-		{
-			assign_interactive_signals();
-			data->nodes = init_nodes(input, data);
-			if (data->nodes != NULL)
-				executor(data);
-		}
-		else
-			printf("-minishell: %s: Invalid input\n", input);
-	}
-}
-
 void	reset(t_data *data)
 {
 	dup2(data->original_fd_in, 0);
@@ -69,9 +49,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 	char	*input;
-	int		a;
 
 	(void)argv; 
+	data = NULL;
 	data = init_data(data, envp, argc);
 	while (true)
 	{
@@ -95,4 +75,8 @@ int	main(int argc, char **argv, char **envp)
 /*
 LEAK CHECK COMMAND:
 valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all ./Minishell
+*/
+/*
+after unset it fials fml
+
 */

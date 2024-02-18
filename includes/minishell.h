@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 21:23:38 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:29:49 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void		handle_heredoc(t_data *data, int i);
 void		do_output_truncate(t_data *data, int i, int a, int *begin);
 void		do_output_append(t_data *data, int i, int a, int *begin);
 void		do_input(t_data *data, int i, int a, int *begin);
-void		do_heredoc(t_data *data, int i, int a, int *begin);
+void		do_heredoc(t_data *data, int i, int *begin);
 int			check_token_syntax(char *str);
 int			ft_heredoc(char *delimiter, t_data *data);
 int			is_in_quotes(char *string);
@@ -169,7 +169,6 @@ void		print_nodes(t_words **nodes);
 // Piperino
 // piperino_1.c
 void		error_exit(char *msg);
-static void	free_peperino(int **pipe_fd, pid_t *pids, int numb_of_pipes);
 void		close_pipes(int **pipe_fd, int numb_of_pipes);
 void		close_prepipes(int *ij, int **pipe_fd);
 void		free_arr(char **arr);

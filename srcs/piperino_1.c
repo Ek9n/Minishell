@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   piperino_1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/10 18:19:43 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 21:28:55 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,6 @@ void	error_exit(char *msg)
 {
 	perror(msg);
 	exit(EXIT_FAILURE);
-}
-
-void	free_peperino(int **pipe_fd, pid_t *pids, int numb_of_pipes)
-{
-	int	i;
-
-	i = -1;
-	while (++i < numb_of_pipes)
-		free(pipe_fd[i]);
-	free(pipe_fd);
-	free(pids);
 }
 
 void	close_pipes(int	**pipe_fd, int numb_of_pipes)

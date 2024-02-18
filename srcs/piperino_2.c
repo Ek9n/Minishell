@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   piperino_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:56:02 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 21:03:37 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/18 21:29:58 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ void	handle_cases(int *ij, int **pipe_fd, t_data *data)
 
 int	piperino9(t_words **nodes, t_data *data)
 {
-	char	**cmd1;
-	char	*path1;
 	int		**pipe_fd;
 	pid_t	*pids;
 	int		ij[2];

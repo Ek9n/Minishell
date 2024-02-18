@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:21:45 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/15 15:40:19 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 21:29:34 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	do_input(t_data *data, int i, int a, int *begin)
 	dup2(data->nodes[i]->fd_in, STDIN_FILENO);
 }
 
-void	do_heredoc(t_data *data, int i, int a, int *begin)
+void	do_heredoc(t_data *data, int i, int *begin)
 {
 	data->nodes[i]->fd_in = open(".heredoc", O_RDONLY);
 	if (data->nodes[i]->fd_in == -1)

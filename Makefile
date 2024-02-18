@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hstein <hstein@student.42.fr>              +#+  +:+       +#+         #
+#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/02/18 21:11:13 by hstein           ###   ########.fr        #
+#    Updated: 2024/02/18 21:27:06 by jfoltan          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	Minishell
-CFLAGS			=	-g# -Wall -Wextra -Werror
+CFLAGS			=	-g -Wall -Wextra -Werror
 LDFLAGS			=	-lreadline -lhistory
 RM				=	rm -rf
 LIBFT_FOLDER	=	./libft/

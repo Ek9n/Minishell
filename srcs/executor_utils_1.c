@@ -6,7 +6,7 @@
 /*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:47:24 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 21:22:32 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/18 22:01:06 by jfoltan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,11 @@ int	cnt_bytes(char **arr)
 	return (bytes);
 }
 
-int	compare_rest(t_data *data, int i)
+void	pwd(t_data *data)
 {
-	if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
-		unset(data->nodes[i]->split_command, &data->envp);
-	else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
-		printenv(data->envp);
-	else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
-	{
-		g_exit_status = 69;
-		free_and_close_data(data);
-	}
-	return (0);
+	data->lucky_happy_temp_variable = getpwd();
+	printf("%s\n", data->lucky_happy_temp_variable);
+	free(data->lucky_happy_temp_variable);
 }
 
 int	single_command(t_data *data, int i)
@@ -59,16 +52,21 @@ int	single_command(t_data *data, int i)
 		if (!ft_strncmp("echo", data->nodes[i]->split_command[0], 5))
 			echo(data->nodes[i]);
 		else if (cmp_keyword("pwd", data->nodes[i]->split_command[0]))
-		{
-			data->lucky_happy_temp_variable = getpwd();
-			printf("%s\n", data->lucky_happy_temp_variable);
-			free(data->lucky_happy_temp_variable);
-		}
+			pwd(data);
 		else if (cmp_keyword("cd", data->nodes[i]->split_command[0]))
 			cd(data->nodes[i], data);
 		else if (cmp_keyword("export", data->nodes[i]->split_command[0]))
 			export(data->nodes[i]->split_command, &data->envp);
-		else if (compare_rest(data, i) == 0 && data->nodes[i]->split_command[0])
+		else if (cmp_keyword("unset", data->nodes[i]->split_command[0]))
+			unset(data->nodes[i]->split_command, &data->envp);
+		else if (cmp_keyword("env", data->nodes[i]->split_command[0]))
+			printenv(data->envp);
+		else if (cmp_keyword("exit", data->nodes[i]->split_command[0]))
+		{
+			g_exit_status = 69;
+			free_and_close_data(data);
+		}
+		else if (data->nodes[i]->split_command[0])
 			exec_cmd(data->nodes[i]->split_command, data);
 	}
 	return (0);
