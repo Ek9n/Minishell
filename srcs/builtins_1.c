@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 20:53:46 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 21:20:08 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/19 17:44:41 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	cd(t_words *node, t_data *data)
 		return (EXIT_FAILURE);
 	if (exit_status == 99)
 	{
-		buffer = calloc(4, sizeof(char *));
+		buffer = ft_calloc(4, sizeof(char *));
 		buffer[0] = getpwd();
 		pwd = ft_strjoin("PWD=", buffer[0]);
 		free(buffer[0]);

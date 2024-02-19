@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: hstein <hstein@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/06 16:46:40 by hstein            #+#    #+#              #
-#    Updated: 2024/02/18 21:27:06 by jfoltan          ###   ########.fr        #
+#    Updated: 2024/02/19 17:48:02 by hstein           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	Minishell
+NAME			=	minishell
 CFLAGS			=	-g -Wall -Wextra -Werror
 LDFLAGS			=	-lreadline -lhistory
 RM				=	rm -rf

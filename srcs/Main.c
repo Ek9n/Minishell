@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/21 02:57:58 by hstein            #+#    #+#             */
-/*   Updated: 2024/02/18 22:02:21 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/19 17:49:45 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,3 @@ int	main(int argc, char **argv, char **envp)
 		}
 	}
 }
-/*
-LEAK CHECK COMMAND:
-valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all ./Minishell
-*/
-/*
-after unset it fials fml
-
-*/

@@ -6,7 +6,7 @@
 /*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/19 17:41:03 by hstein           ###   ########.fr       */
+/*   Updated: 2024/02/19 17:43:59 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	clean_spaces_in_command(char **command)
 	int		i;
 	int		j;
 
-	tmp_clean = calloc(ft_strlen(*command) + 1, 1);
+	tmp_clean = ft_calloc(ft_strlen(*command) + 1, 1);
 	i = 0;
 	j = 0;
 	i += skip_spaces(*command);

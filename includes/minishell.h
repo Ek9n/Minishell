@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 11:38:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 21:29:49 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/19 17:47:40 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void		assign_interactive_backslash(int sig);
 void		assign_interactive_c(int sig);
 void		assign_empty_line(int sig);
 void		assign_interactive_signals(void);
+
 // ENVIROMENT
 char		**arrdup(char **enviroment);
 int			cntenv(char **env);
@@ -80,6 +81,7 @@ void		add_env_var(char *name, char ***env);
 int			find_char_from_index(char *str, char c, int index);
 char		*dollar_baby(char *str);
 void		printenv(char **env);
+
 // BUILTINS
 // builtins_1.c
 int			echo(t_words *node);
@@ -117,7 +119,6 @@ void		detect_quote(char *dirty_word, bool *quotes, int *last_quote);
 int			redir_case(char *c);
 char		*comb_extd_word(char **extd_words);
 int			get_num_of_pipes(char *str);
-
 // lexer_1.c
 void		redirection_space_extender(char **dirty_word);
 void		clean_spaces_in_command(char **command);
@@ -160,12 +161,6 @@ int			get_command(char **split_command);
 void		handle_fork_error(void);
 void		handle_access(char *command);
 
-// DEBUG
-void		print_nodes(t_words **nodes);
-
-// utils_1.c
-// void	redirection_space_extender(char **dirty_word);
-
 // Piperino
 // piperino_1.c
 void		error_exit(char *msg);
@@ -173,13 +168,14 @@ void		close_pipes(int **pipe_fd, int numb_of_pipes);
 void		close_prepipes(int *ij, int **pipe_fd);
 void		free_arr(char **arr);
 // piperino_2.c
-
 void		init_piperino(t_data *data, int ***pipe_fd, pid_t **pids);
 void		terminate_piperino(int *ij, int **pipe_fd, pid_t *pids,
 				t_data *data);
 void		handle_cases(int *ij, int **pipe_fd, t_data *data);
 int			piperino9(t_words **nodes, t_data *data);
-
 void		free_split_commands(t_words *nodes);
+
+// DEBUG
+void		print_nodes(t_words **nodes);
 
 #endif
