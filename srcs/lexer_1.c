@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:38:38 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 21:29:23 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/19 17:41:03 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	clean_spaces_in_command(char **command)
 	int		i;
 	int		j;
 
-	tmp_clean = malloc(ft_strlen(*command) + 1);
+	tmp_clean = calloc(ft_strlen(*command) + 1, 1);
 	i = 0;
 	j = 0;
 	i += skip_spaces(*command);
@@ -93,9 +93,9 @@ void	clean_spaces_in_command(char **command)
 		else
 			tmp_clean[j++] = command[0][i++];
 	}
-	while (tmp_clean[--j] == ' ')
-		;
-	tmp_clean[j + 1] = '\0';
+	if (j > 0)
+		while (tmp_clean[--j] == ' ')
+			tmp_clean[j] = '\0';
 	free(*command);
 	*command = ft_strdup(tmp_clean);
 	free(tmp_clean);

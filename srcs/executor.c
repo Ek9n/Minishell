@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfoltan <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: hstein <hstein@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 19:40:26 by jfoltan           #+#    #+#             */
-/*   Updated: 2024/02/18 21:30:03 by jfoltan          ###   ########.fr       */
+/*   Updated: 2024/02/19 17:42:27 by hstein           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	exec_cmd(char **split_command, t_data *data)
 	if (command == NULL)
 	{
 		free(path);
-		printf("%s : Not found, sorry not sorry.\n", split_command[0]);
+		printf("\'%s\': Not found, sorry not sorry.\n", split_command[0]);
 		g_exit_status = 127;
 		return ;
 	}
