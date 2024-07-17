@@ -5,7 +5,6 @@
     Features
     Installation
     Usage
-    Commands
 
 ## Introduction
 
