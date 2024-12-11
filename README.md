@@ -1,6 +1,5 @@
 # Minishell README
 Minishell is a lightweight shell designed to provide essential command-line interface functionality. It serves as an educational, simplified version of Unix shells like bash or zsh, created to help users understand shell operations, process management, and user input handling.
-Features
 
 ## Table of Contents
 
